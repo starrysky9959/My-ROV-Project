@@ -3,7 +3,7 @@
 
 #include "stm32f4xx.h"
 /********************************************宏定义********************************************/
-//定时器
+//通用定时器TIM4
 #define TICK_TIM_RCC_ENABLE       		   		RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);																				
 #define TICK_TIM           		    					TIM4
 

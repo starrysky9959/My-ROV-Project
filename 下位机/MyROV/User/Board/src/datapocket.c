@@ -4,18 +4,16 @@
 #include "datapocket.h"
 #include "JY901.h"
 #include "servo.h"
-#include "led.h"
 #include "systick.h"
 #include "control.h"
 #include "MS5837.h"
-extern int Mode;
-/***************************************************************
-PackDataUp(void)
-功能：根据起始码startbit，向上位机发送相应的ROV数据信息
-参数：startbit
-返回：无
 
-*********************************************************************/
+/**************************************************************
+ * @brief 根据起始码startbit，向上位机发送相应的ROV数据信息
+ * @param startbit：起始位
+ * @retval
+ * @addition
+**************************************************************/
 void PackDataUp(uint8_t startbit)
 {
 	uint8_t i;
@@ -154,10 +152,10 @@ void PackDataUp(uint8_t startbit)
 }
 
 /**************************************************************
- *@brief	对数据包进行接收校验
- *@param	data：当前接收的一字节数据
- *@retval
- *@addition	校验通过后，调用对应的函数处理已接收到的数据
+ * @brief	对数据包进行接收校验
+ * @param	data：当前接收的一字节数据
+ * @retval
+ * @addition	校验通过后，调用对应的函数处理已接收到的数据
 **************************************************************/
 void Command_ReceiveAndCheck(uint8_t data)
 {
@@ -184,12 +182,7 @@ void Command_ReceiveAndCheck(uint8_t data)
 	}
 	
 	switch (startbit)	//按类型将数据存储到对应的共用体中
-	{
-//		case(RX_StartBit_RGB):
-//		{
-//			break;
-//		}
-		
+	{		
 		case(RX_StartBit_MODE):
 		{			
 			if (RX_Cnt<=RX_MODE_BUFF_LEN+1)
@@ -225,11 +218,6 @@ void Command_ReceiveAndCheck(uint8_t data)
 	checkbit=0x00^startbit;
 	switch (startbit)
 	{
-//		case(RX_StartBit_RGB):
-//		{
-//			break;
-//		}
-//		
 		case(RX_StartBit_MODE):
 		{
 			for (i=0;i<RX_MODE_BUFF_LEN;i++)
@@ -282,10 +270,10 @@ void Command_ReceiveAndCheck(uint8_t data)
 
 
 /**************************************************************
- *@brief	修改控制模式
- *@param	Data：控制模式数据体
- *@retval
- *@addition
+ * @brief	修改控制模式
+ * @param	Data：控制模式数据体
+ * @retval
+ * @addition
 **************************************************************/
 void RX_MODE_DataHandler(RX_MODE_Buff_Union Data)
 {
@@ -298,10 +286,10 @@ void RX_MODE_DataHandler(RX_MODE_Buff_Union Data)
 
 
 /**************************************************************
- *@brief	更新舵机数据
- *@param	Data：舵机数据体
- *@retval
- *@addition
+ * @brief	更新舵机数据
+ * @param	Data：舵机数据体
+ * @retval
+ * @addition
 **************************************************************/
 void RX_SERVO_DataHandler(RX_SEVRO_Buff_Union Data)
 {

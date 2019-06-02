@@ -13,13 +13,38 @@
 	在实际使用模拟I2C时，也需要调用此IIC_STRUCT结构体对所用的模拟I2C进行指称。
 	这样做的好处是，同一个.c文件可以实例化多个I2C，从而拥有多个I2C总线。（不过I2C总线本来就可以一对多，这么一想，好像这个设计没什么用呢_(:зゝ∠)_）
 */
+/******************************************************************************
+  * @file    I2C.c
+  * @author  ???
+  * @version V1.0
+  * @date    ????-??-??
+  * @brief   模拟I2C底层驱动代码。I2C初始化，软件模拟I2C，协助读取MS5837数据
+	* @attention 关于模拟I2C：
+						   所谓硬件I2C对应芯片上的I2C外设，有相应I2C驱动电路，其所使用的I2C管脚也是专用的；					
+					     软件I2C则使用GPIO管脚，用软件控制管脚状态以模拟I2C通信波形。
+							 硬件I2C的效率要远高于软件的，而软件I2C由于不受管脚限制，接口比较灵活。
+							 模拟I2C 是通过GPIO，软件模拟寄存器的工作方式，而硬件（固件）I2C是直接调用内部寄存器进行配置。
+							 如果要从具体硬件上来看，可以去看下芯片手册。因为固件I2C的端口是固定的，所以会有所区别。
+
+						   本.c文件思路与普通模拟I2C稍有不同，采用类似面向对象的编程思路，自定义了一个IIC_STRUCT结构体。
+							 使用时先初始化一个自定义IIC_STRUCT结构体，内含I2C所用端口、时钟、引脚，再按照此结构体进行初始化。
+							 在实际使用模拟I2C时，也需要调用此IIC_STRUCT结构体对所用的模拟I2C进行指称。
+							 这样做的好处是，同一个.c文件可以实例化多个I2C，从而拥有多个I2C总线。
+							（不过I2C总线本来就可以一对多，这么一想，好像这个设计没什么用呢_(:зゝ∠)_）
+*******************************************************************************/
 
 #include "I2C.h"
 
-
-/*
-IIC_STRUCT结构体初始化程序，输入时钟线、信号线的端口和引脚，完成对IIC_STRUCT结构体内各成员的配置
-*/
+/**************************************************************
+ * @brief IIC_STRUCT结构体初始化程序，输入时钟线、信号线的端口和引脚，完成对IIC_STRUCT结构体内各成员的配置
+ * @param	*I2C：I2C结构体
+	 @param *SCL_GPIO_Port：控制线GPIO口
+	 @param SCL_Pin：控制线引脚
+	 @param *SDA_GPIO_Port：数据线GPIO口
+	 @param SDA_Pin：数据线引脚
+ * @retval
+ * @addition
+**************************************************************/
 void I2C_Struct_Config(IIC_STRUCT *I2C,GPIO_TypeDef *SCL_GPIO_Port,uint32_t SCL_Pin,GPIO_TypeDef * SDA_GPIO_Port,uint32_t SDA_Pin)
 {
 	I2C->SCL_GPIO_Port=SCL_GPIO_Port;
@@ -44,9 +69,13 @@ void I2C_Struct_Config(IIC_STRUCT *I2C,GPIO_TypeDef *SCL_GPIO_Port,uint32_t SCL_
 	I2C->SDA_Pin=SDA_Pin;
 }
 
-/*
-模拟I2C初始化程序，根据输入IIC_STRUCT结构体的成员信息，对相应GPIO进行初始化。
-*/
+
+/**************************************************************
+ * @brief 模拟I2C初始化程序，根据输入IIC_STRUCT结构体的成员信息，对相应GPIO进行初始化
+ * @param	*I2C：I2C结构体
+ * @retval
+ * @addition
+**************************************************************/
 void I2C_Simu_Init(IIC_STRUCT I2C)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;

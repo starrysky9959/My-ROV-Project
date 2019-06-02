@@ -3,16 +3,16 @@
 #include "math.h"
 
 /**************************************************************
- *@brief	PID结构体参数初始化
- *@param	*pidData：对应 PID 结构体传址调用
-	@param  Kp：比例系数
-	@param  Ki：积分系数
-	@param  Kd：微分系数
-	@param  MaxOut：被控对象输出上限
-	@param  IMax：积分调节输出上限
-	@param  FuzzInterval：模糊区间
- *@retval
- *@addition 除给定值其他变量均置零
+ * @brief	PID结构体参数初始化
+ * @param	*pidData：对应 PID 结构体传址调用
+	 @param  Kp：比例系数
+	 @param  Ki：积分系数
+	 @param  Kd：微分系数
+	 @param  MaxOut：被控对象输出上限
+	 @param  IMax：积分调节输出上限
+	 @param  FuzzInterval：模糊区间
+ * @retval
+ * @addition 除给定值其他变量均置零
 **************************************************************/
 void PID_Init(struct PID *pidData, float Kp, float Ki, float Kd, float MaxOut, float IMax, float FuzzInterval)
 {				
@@ -33,12 +33,12 @@ void PID_Init(struct PID *pidData, float Kp, float Ki, float Kd, float MaxOut, f
 
 
 /**************************************************************
- *@brief	对数据进行限定
- *@param	Ans：待处理的数据
-	@param	max：数据范围上限 
-	@param	min：数据范围下限
- *@retval
- *@addition Ans 进行限定后的数据
+ * @brief	对数据进行限定
+ * @param	Ans：待处理的数据
+	 @param	max：数据范围上限 
+	 @param	min：数据范围下限
+ * @retval
+ * @addition Ans 进行限定后的数据
 **************************************************************/
 float Limitation(float Ans, float max, float min)
 {
@@ -49,10 +49,10 @@ float Limitation(float Ans, float max, float min)
 
 
 /**************************************************************
- *@brief	PID输出计算
- *@param	*pidData：对应 PID 结构体传址调用
- *@retval
- *@addition
+ * @brief	PID输出计算
+ * @param	*pidData：对应 PID 结构体传址调用
+ * @retval
+ * @addition
 **************************************************************/
 void Calculate(struct PID *pidData)
 {
@@ -79,10 +79,10 @@ void Calculate(struct PID *pidData)
 
 
 /**************************************************************
- *@brief	PID复位
- *@param	*pidData：对应 PID 结构体传址调用
- *@retval
- *@addition
+ * @brief	PID复位
+ * @param	*pidData：对应 PID 结构体传址调用
+ * @retval
+ * @addition
 **************************************************************/
 void ResetPID(struct PID *pidData)
 {
@@ -96,10 +96,10 @@ void ResetPID(struct PID *pidData)
 
 
 /**************************************************************
- *@brief	积分作用归零
- *@param	*pidData：对应 PID 结构体传址调用
- *@retval
- *@addition
+ * @brief	积分作用归零
+ * @param	*pidData：对应 PID 结构体传址调用
+ * @retval
+ * @addition
 **************************************************************/
 void ResetI(struct PID *pidData)
 {			
@@ -108,11 +108,11 @@ void ResetI(struct PID *pidData)
 
 
 /**************************************************************
- *@brief	指定使用比例、积分、微分中的几个进行调节
- *@param	*pidData：对应 PID 结构体传址调用
-	@param	*pFlag：对应不同调节类型的标志字符
- *@retval
- *@addition
+ * @brief	指定使用比例、积分、微分中的几个进行调节
+ * @param	*pidData：对应 PID 结构体传址调用
+	 @param	*pFlag：对应不同调节类型的标志字符
+ * @retval
+ * @addition
 **************************************************************/
 void DebugPID(struct PID *pidData, char *pFlag)
 {			

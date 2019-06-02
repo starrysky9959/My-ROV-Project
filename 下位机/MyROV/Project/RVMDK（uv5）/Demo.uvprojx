@@ -771,16 +771,6 @@
               <FilePath>..\..\User\stm32f4xx_it.c</FilePath>
             </File>
             <File>
-              <FileName>led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\User\Board\src\led.c</FilePath>
-            </File>
-            <File>
-              <FileName>led.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\User\Board\inc\led.h</FilePath>
-            </File>
-            <File>
               <FileName>systick.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\User\Board\src\systick.c</FilePath>

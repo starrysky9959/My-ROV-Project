@@ -145,6 +145,33 @@ void TIM8_Init(void)
 
 
 /**************************************************************
+ * @brief	所有舵机位置初始化
+ * @param	
+ * @retval
+ * @addition	主程序开始时直接调用
+**************************************************************/
+void Servo_Reset()
+{
+//	Servo_Val.FinTail_Advance_StartingPosition = ;  //尾部推进舵机 起始位置
+//  Servo_Val.FinTail_Advance_EndingPosition   = ;   //尾部推进舵机 终止位置
+//  Servo_Val.FinLeft_Attitude_Position        = ;   			//左侧鱼鳍姿态舵机 终止位置
+//  Servo_Val.FinLeft_Thrash_StartingPosition	 = ;   //左侧鱼鳍划水舵机 起始位置
+//  Servo_Val.FinLeft_Thrash_EndingPosition		 = ;     //左侧鱼鳍划水舵机 终止位置
+//  Servo_Val.FinRight_Attitude_Position			 = ;  			//右侧鱼鳍姿态舵机 终止位置
+//	Servo_Val.FinRight_Thrash_StartingPosition = ;  //右侧鱼鳍划水舵机 起始位置
+//  Servo_Val.FinRight_Thrash_EndingPosition	 = ;    //右侧鱼鳍划水舵机 终止位置
+//	Servo_Val.Camera_Position									 = ;                   //摄像机云台舵机 位置  
+//	
+//	TIM_SetCompare1(TIM8, Servo_Val.Camera_Position);
+//	TIM_SetCompare2(TIM8, Servo_Val.FinTail_Advance_StartingPosition);
+//	TIM_SetCompare1(TIM1, Servo_Val.FinRight_Thrash_StartingPosition);
+//	TIM_SetCompare2(TIM1, Servo_Val.FinLeft_Thrash_StartingPosition);
+//	TIM_SetCompare3(TIM1, Servo_Val.FinRight_Attitude_Position);
+//	TIM_SetCompare4(TIM1, Servo_Val.FinLeft_Attitude_Position);
+}
+
+
+/**************************************************************
  * @brief	左右鱼鳍方向，摄像头云台位置更新
  * @param	
  * @retval
@@ -152,9 +179,9 @@ void TIM8_Init(void)
 **************************************************************/
 void Servo_PositionSet()
 {
-	TIM_SetCompare1(TIM1, Servo_Val.FinLeft_Attitude_Position);
+	TIM_SetCompare4(TIM1, Servo_Val.FinLeft_Attitude_Position);
 	TIM_SetCompare3(TIM1, Servo_Val.FinRight_Attitude_Position);
-	TIM_SetCompare2(TIM8, Servo_Val.Camera_Position);
+	TIM_SetCompare1(TIM8, Servo_Val.Camera_Position);
 }
 
 

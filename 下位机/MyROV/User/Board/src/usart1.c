@@ -11,10 +11,10 @@
 #include "datapocket.h"
 
 /**************************************************************
- *@brief	USART1的GPIO与工作模式配置
- *@param	
- *@retval
- *@addition	
+ * @brief	USART1的GPIO与工作模式配置
+ * @param	
+ * @retval
+ * @addition	
 **************************************************************/
 void USART1_Init(int baudrate)
 {
@@ -77,10 +77,10 @@ void USART1_Init(int baudrate)
 
 
 /****************************************************************
- *@brief 输出一个字符
- *@param DataToSend：要发送的字符
- *@retval
- *@addition
+ * @brief 输出一个字符
+ * @param DataToSend：要发送的字符
+ * @retval
+ * @addition
 *****************************************************************/
 void USART1_PutChar(char ch)
 {
@@ -90,10 +90,10 @@ void USART1_PutChar(char ch)
 
 
 /***************************************************************
- *@brief USART1 中断处理函数
- *@param
- *@retval
- *@addition
+ * @brief USART1 中断处理函数
+ * @param
+ * @retval
+ * @addition
 ****************************************************************/
 void USART1_IRQHandler(void)
 {
@@ -106,10 +106,10 @@ void USART1_IRQHandler(void)
 }
 
 /**************************************************************
- *@brief	重定向c库函数printf到串口
- *@param	
- *@retval
- *@addition	重定向后可使用printf函数
+ * @brief	重定向c库函数printf到串口
+ * @param	
+ * @retval
+ * @addition	重定向后可使用printf函数
 **************************************************************/
 int fputc(int ch, FILE *f)
 {
@@ -122,10 +122,10 @@ int fputc(int ch, FILE *f)
 	return (ch);
 }
 /**************************************************************
- *@brief	重定向c库函数scanf到串口
- *@param	
- *@retval
- *@addition	重写向后可使用scanf、getchar等函数
+ * @brief	重定向c库函数scanf到串口
+ * @param	
+ * @retval
+ * @addition	重写向后可使用scanf、getchar等函数
 **************************************************************/
 int fgetc(FILE *f)
 {

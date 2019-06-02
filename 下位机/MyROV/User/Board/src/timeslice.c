@@ -20,6 +20,7 @@ struct TS TimeSclice={0};
  * @param  
  * @retval 
  * @addition	每20ms PID闭环控制输出
+							每50ms 
 							每100ms 读取MS5837数据，上传一次MS5837、JY901数据
 							每200ms 上传一次舵机参数
 							每5000ms 上传PID系数
@@ -32,11 +33,11 @@ void SpecialAction(void)
 		Loop_20ms();
 	}
 	
-//	if (TimeSlice.Count_50ms>=50)
-//	{
-//		TimeSlice.Count_50ms = 0;
-//		Loop_50ms();
-//	}
+	if (TimeSlice.Count_50ms>=50)
+	{
+		TimeSlice.Count_50ms = 0;
+		Loop_50ms();
+	}
 		
 	if (TimeSlice.Count_100ms>=100)
 	{

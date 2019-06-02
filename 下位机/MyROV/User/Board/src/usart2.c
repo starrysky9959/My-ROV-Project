@@ -11,10 +11,10 @@
 #include "JY901.h"
 
 /**************************************************************
- *@brief	USART2的GPIO与工作模式配置
- *@param	
- *@retval
- *@addition	
+ * @brief	USART2的GPIO与工作模式配置
+ * @param	
+ * @retval
+ * @addition	
 **************************************************************/
 void USART2_Init(int baudrate)
 {
@@ -78,10 +78,10 @@ void USART2_Init(int baudrate)
 
 
 /***************************************************************
- *@brief USART2 中断处理函数
- *@param
- *@retval
- *@addition
+ * @brief USART2 中断处理函数
+ * @param
+ * @retval
+ * @addition
 ****************************************************************/
 
 void USART2_IRQHandler(void)

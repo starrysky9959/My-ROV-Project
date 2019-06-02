@@ -22,12 +22,12 @@ short CharToShort(unsigned char cData[])
 }
 
 
-/**
- *@brief	串口2中断调用函数，串口每收到一个数据，调用一次这个函数。
- *@param	ucData：接收到的数据
- *@retval
- *@addition
-*/
+/**************************************************************
+ * @brief 串口2中断调用函数，串口每收到一个数据，调用一次这个函数。
+ * @param ucData：接收到的数据
+ * @retval
+ * @addition
+**************************************************************/
 void JY901_DataReceive(uint8_t ucData)
 {
   static unsigned char ucRxBuffer[250];

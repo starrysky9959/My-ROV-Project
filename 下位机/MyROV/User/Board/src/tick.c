@@ -12,10 +12,10 @@
 #include "usart1.h"
 
 /**************************************************************
- *@brief	高级定时器 工作模式与中断 配置
- *@param	
- *@retval
- *@addition	
+ * @brief	通用定时器 工作模式与中断 配置
+ * @param	
+ * @retval
+ * @addition	
 **************************************************************/
 void TICK_TIM_Init(void)
 {
@@ -52,11 +52,12 @@ void TICK_TIM_Init(void)
 	TIM_Cmd(TICK_TIM, ENABLE);	
 }
 
+
 /***************************************************************
- *@brief TIM8 中断处理函数
- *@param
- *@retval
- *@addition
+ * @brief TIM4 中断处理函数
+ * @param
+ * @retval
+ * @addition
 ****************************************************************/
 void TIM4_IRQHandler(void)
 {
