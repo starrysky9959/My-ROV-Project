@@ -88,30 +88,6 @@ namespace ROV_Test
         #endregion
 
 
-        /// <summary>
-        /// 查找窗口
-        /// </summary>
-        /// <param name="hwnd">窗口句柄</param>
-        /// <param name="title">窗口标题</param>
-        /// <returns></returns>
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        static extern IntPtr FindWindow(IntPtr hwnd, string title);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern int PostMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
-
-        public const int WM_CLOSE = 0x10;
-
-        private void KillMessageBox(string Title)
-        {
-            //查找MessageBox的弹出窗口,注意MessageBox对应的标题
-            IntPtr ptr = FindWindow(IntPtr.Zero, Title);
-            if (ptr != IntPtr.Zero)
-            {
-                //查找到窗口则关闭
-                PostMessage(ptr, WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
-            }
-        }
 
 
 
@@ -125,31 +101,29 @@ namespace ROV_Test
             //读档
             Txt_FinTail_Advance_StartingPosition.Text = ReadIni("舵机参数—尾部推进舵机", "起始位置", "0");
             Txt_FinTail_Advance_EndingPosition.Text   = ReadIni("舵机参数—尾部推进舵机", "终止位置", "0");
-            Txt_FinTail_Advance_EachCCR.Text          = ReadIni("舵机参数—尾部推进舵机", "每次改变的占空比", "0");            
+            Txt_FinTail_Advance_EachCCR.Text          = ReadIni("舵机参数—尾部推进舵机", "每次改变的占空比", "100");            
             Txt_FinTail_Advance_DelayTime.Text        = ReadIni("舵机参数—尾部推进舵机", "延时长度", "0");
 
             Txt_FinLeft_Attitude_Position.Text        = ReadIni("舵机参数—左侧鱼鳍姿态舵机", "终止位置", "0");
 
             Txt_FinLeft_Thrash_StartingPosition.Text  = ReadIni("舵机参数—左侧鱼鳍划水舵机", "起始位置", "0");
             Txt_FinLeft_Thrash_EndingPosition.Text    = ReadIni("舵机参数—左侧鱼鳍划水舵机", "终止位置", "0");
-            Txt_FinLeft_Thrash_Down_EachCCR.Text      = ReadIni("舵机参数—左侧鱼鳍划水舵机", "每次改变的占空比", "0");          
-            Txt_FinLeft_Thrash_Down_DelayTime.Text    = ReadIni("舵机参数—左侧鱼鳍划水舵机", "延时长度", "0");
-            Txt_FinLeft_Thrash_Up_EachCCR.Text        = ReadIni("舵机参数—左侧鱼鳍划水舵机", "每次改变的占空比", "0");            
-            Txt_FinLeft_Thrash_Up_DelayTime.Text      = ReadIni("舵机参数—左侧鱼鳍划水舵机", "延时长度", "0");
+            Txt_FinLeft_Thrash_Down_EachCCR.Text      = ReadIni("舵机参数—左侧鱼鳍划水舵机", "向下拍水时 每次改变的占空比", "100");          
+            Txt_FinLeft_Thrash_Down_DelayTime.Text    = ReadIni("舵机参数—左侧鱼鳍划水舵机", "向下拍水时 延时长度", "0");
+            Txt_FinLeft_Thrash_Up_EachCCR.Text        = ReadIni("舵机参数—左侧鱼鳍划水舵机", "向上拍水时 每次改变的占空比", "100");            
+            Txt_FinLeft_Thrash_Up_DelayTime.Text      = ReadIni("舵机参数—左侧鱼鳍划水舵机", "向上拍水时 延时长度", "0");
 
             Txt_FinRight_Attitude_Position.Text       = ReadIni("舵机参数—右侧鱼鳍姿态舵机", "终止位置", "0");
 
             Txt_FinRight_Thrash_StartingPosition.Text = ReadIni("舵机参数—右侧鱼鳍划水舵机", "起始位置", "0");
             Txt_FinRight_Thrash_EndingPosition.Text   = ReadIni("舵机参数—右侧鱼鳍划水舵机", "终止位置", "0");
-            Txt_FinRight_Thrash_Down_EachCCR.Text     = ReadIni("舵机参数—右侧鱼鳍划水舵机", "每次改变的占空比", "0");            
-            Txt_FinRight_Thrash_Down_DelayTime.Text   = ReadIni("舵机参数—右侧鱼鳍划水舵机", "延时长度", "0");
-            Txt_FinRight_Thrash_Up_EachCCR.Text       = ReadIni("舵机参数—右侧鱼鳍划水舵机", "每次改变的占空比", "0");            
-            Txt_FinRight_Thrash_Up_DelayTime.Text     = ReadIni("舵机参数—右侧鱼鳍划水舵机", "延时长度", "0");
+            Txt_FinRight_Thrash_Down_EachCCR.Text     = ReadIni("舵机参数—右侧鱼鳍划水舵机", "向下拍水时 每次改变的占空比", "100");            
+            Txt_FinRight_Thrash_Down_DelayTime.Text   = ReadIni("舵机参数—右侧鱼鳍划水舵机", "向下拍水时 延时长度", "0");
+            Txt_FinRight_Thrash_Up_EachCCR.Text       = ReadIni("舵机参数—右侧鱼鳍划水舵机", "向上拍水时 每次改变的占空比", "100");            
+            Txt_FinRight_Thrash_Up_DelayTime.Text     = ReadIni("舵机参数—右侧鱼鳍划水舵机", "向上拍水时 延时长度", "0");
 
             Txt_Camera_Position.Text = ReadIni("舵机参数—摄像机云台舵机", "终止位置", "0");
-
-            MessageBox.Show("舵机参数初始化完成", "Success");
-            FindAndKillWindow();
+            
         }
 
 
@@ -161,7 +135,7 @@ namespace ROV_Test
         /// <param name="e"></param>
         private void Btn_Preservation_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("保存数据中,请稍等。。。", "Waiting");
+          
             //存档
             WriteIni("舵机参数—尾部推进舵机", "起始位置", Txt_FinTail_Advance_StartingPosition.Text);
             WriteIni("舵机参数—尾部推进舵机", "终止位置", Txt_FinTail_Advance_EndingPosition.Text);
@@ -206,11 +180,14 @@ namespace ROV_Test
 
             WriteIni("舵机参数—摄像机云台舵机", "终止位置 ", Txt_Camera_Position.Text);
             MyRov.ServoData.Camera_Position = Convert.ToUInt16(Txt_Camera_Position.Text);
-
+ 
+                SendCommand(TX_StartBit_SERVO, MyRov);
+            SendCommand(TX_StartBit_SERVO, MyRov);
+            SendCommand(TX_StartBit_SERVO, MyRov);
+            SendCommand(TX_StartBit_SERVO, MyRov);
+            SendCommand(TX_StartBit_SERVO, MyRov);
             SendCommand(TX_StartBit_SERVO, MyRov);
 
-            MessageBox.Show("数据保存成功并已发送对应指令", "Success");
-            FindAndKillWindow();
         }
 
 
@@ -223,6 +200,11 @@ namespace ROV_Test
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void Servo参数_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = false;
         }
     }
 }

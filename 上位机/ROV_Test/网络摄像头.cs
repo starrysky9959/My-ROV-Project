@@ -95,6 +95,7 @@ namespace ROV_Test
         /// <param name="e"></param>
         private void 网络摄像头_Shown(object sender, EventArgs e)
         {
+
             //读档
             Txt_UserName.Text = ReadIni("网络摄像头设置", "用户名", "");
             Txt_Password.Text = ReadIni("网络摄像头设置", "密码", "");
@@ -119,7 +120,6 @@ namespace ROV_Test
         private void Btn_Preservation_Click(object sender, EventArgs e)
         {
             MessageBox.Show("保存数据中,请稍等。。。", "Waiting");
-
             //存档
             WriteIni("网络摄像头设置", "用户名", Txt_UserName.Text);
             WriteIni("网络摄像头设置", "密码", Txt_Password.Text);
@@ -131,7 +131,6 @@ namespace ROV_Test
 
             Path = "rtsp://" + UserName + ":" + Password + "@" + IPAddress + "/Streaming/Channels/0";
 
-            MessageBox.Show("数据保存成功", "Success");
             FindAndKillWindow();
 
         }
@@ -162,6 +161,7 @@ namespace ROV_Test
             while (true)
             {
                 cap.Read(Source);
+                if (Isopen == 0) break;
                 try
                 {
                     (this.Owner as MainForm).PicBox_Video.Image = BitmapConverter.ToBitmap(Source);
@@ -171,13 +171,7 @@ namespace ROV_Test
                     MessageBox.Show(e.Message);
                 }
             }
-
-
-        }
-
-        private void CallBack(string message)
-        {
-            MessageBox.Show(message);
+            if (Isopen == 0) this.th.Abort();
         }
 
 
@@ -197,6 +191,12 @@ namespace ROV_Test
         {
             e.Cancel = true;
             this.Hide();    
+        }
+
+        private void Btn_Close_Click(object sender, EventArgs e)
+        {
+            Isopen = 0;
+            this.th.Abort();
         }
     }
 }

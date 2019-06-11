@@ -10,11 +10,12 @@
 #include "timeslice.h"
 #include "control.h"
 #include "MS5837.h"
+#include "servo.h"
 #include "PID.h"
 #include "datapocket.h"
 #include "usart1.h"
 
-struct TS TimeSclice={0};
+
 /*****************************************************
  * @brief  时间片轮询函数
  * @param  
@@ -27,6 +28,8 @@ struct TS TimeSclice={0};
 ******************************************************/
 void SpecialAction(void)
 {
+//	static int i=1,j=1;
+	
 	if (TimeSlice.Count_20ms>=20)
 	{
 		TimeSlice.Count_20ms = 0;
@@ -56,6 +59,39 @@ void SpecialAction(void)
 		TimeSlice.Count_5000ms = 0;
 		Loop_5000ms();
 	}
+	
+//	//左侧划水舵机
+//	if ((i <= Step_Val.Len_Left_Down)&&
+//		  (TimeSlice.Count_Left >= Servo_Val.FinLeft_Thrash_Down_DelayTime))
+//	{
+//		TimeSlice.Count_Left = 0;
+//		TIM_SetCompare2(TIM1, Step_Val.Left[i]);
+//		i++;
+//	}
+//	else if ((i > Step_Val.Len_Left_Down)&&
+//		       (TimeSlice.Count_Left >= Servo_Val.FinLeft_Thrash_Up_DelayTime))
+//	{
+//		TimeSlice.Count_Left = 0;
+//		TIM_SetCompare2(TIM1, Step_Val.Left[i]);
+//		i++;
+//		if (i > Step_Val.Len_Left) i = 1;
+//	}
+//	//右侧划水舵机
+//	if ((j <= Step_Val.Len_Right_Down)&&
+//		  (TimeSlice.Count_Right >= Servo_Val.FinRight_Thrash_Down_DelayTime))
+//	{
+//		TimeSlice.Count_Right = 0;
+//		TIM_SetCompare1(TIM1, Step_Val.Right[j]);
+//		j++;
+//	}
+//	else if ((j > Step_Val.Len_Right_Down)&&
+//		       (TimeSlice.Count_Right >= Servo_Val.FinRight_Thrash_Up_DelayTime))
+//	{
+//		TimeSlice.Count_Right = 0;
+//		TIM_SetCompare1(TIM1, Step_Val.Right[j]);
+//		j++;
+//		if (j > Step_Val.Len_Right) j = 1;
+//	}
 }
 
 

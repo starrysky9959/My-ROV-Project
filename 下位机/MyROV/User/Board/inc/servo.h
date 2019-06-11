@@ -8,8 +8,8 @@
 #define TIM1_RCC_ENABLE  												RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);\
 																								RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE)																		
 
-#define TIM1_Period															(2000-1)
-#define TIM1_Prescaler 													(720-1)
+#define TIM1_Period															(20000-1)
+#define TIM1_Prescaler 													(72-1)
 
 //通道1 右侧控制划水的鱼鳍舵机
 #define FinLeft_Attitude_GPIO_PIN          			GPIO_Pin_8             
@@ -40,8 +40,8 @@
 #define TIM8_RCC_ENABLE       		   						RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC , ENABLE);\
 																								RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM8, ENABLE);																				
 
-#define TIM8_Period															(2000-1)
-#define TIM8_Prescaler 													(720-1)
+#define TIM8_Period															(20000-1)
+#define TIM8_Prescaler 													(72-1)
 
 //通道1 控制摄像机云台位置的舵机
 #define FinTail_Advance_GPIO_PIN          			GPIO_Pin_6            
@@ -88,6 +88,19 @@ typedef struct
 
 extern SERVO_ValTypedef Servo_Val;
 
+typedef struct
+{
+	int Left[120];
+	int Right[120];
+	int Len_Left;
+	int Len_Left_Down;
+	int Len_Left_Up;
+	int Len_Right;
+	int Len_Right_Down;
+	int Len_Right_Up;
+}STEP_ValTypedef;
+
+extern STEP_ValTypedef Step_Val;
 
 /********************************************函数声明********************************************/
 extern void TIM1_Init(void);
@@ -95,5 +108,5 @@ extern void TIM8_Init(void);
 extern void Servo_PositionSet(void);
 extern void Servo_WorkingLoop(void);
 extern void Servo_Reset(void);
-
+extern void Servo_Calculation(void);
 #endif

@@ -8,7 +8,12 @@ struct TS
 	int Count_100ms;
 	int Count_200ms;
 	int Count_5000ms;
+	int Count_Left;
+	int Count_Right;
+	int Left_Flag;	 
+	int Right_Flag;
 };
+extern struct TS TimeSlice;
 
 /********************************************º¯ÊıÉùÃ÷********************************************/
 extern void SpecialAction(void);

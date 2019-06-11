@@ -36,7 +36,7 @@
             this.Lab_Flag = new System.Windows.Forms.Label();
             this.Btn_Start = new System.Windows.Forms.Button();
             this.Btn_Stop = new System.Windows.Forms.Button();
-            this.Btn_Help = new System.Windows.Forms.Button();
+            this.Btn_Send = new System.Windows.Forms.Button();
             this.Btn_Parameter = new System.Windows.Forms.Button();
             this.Btn_Open = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -54,13 +54,13 @@
             this.Lab_Val_AngleSpeedZ = new System.Windows.Forms.Label();
             this.PicBox_Video = new System.Windows.Forms.PictureBox();
             this.Btn_TurnLeft = new System.Windows.Forms.Button();
-            this.Btn_Dive = new System.Windows.Forms.Button();
+            this.Btn_Down = new System.Windows.Forms.Button();
             this.Btn_Hover = new System.Windows.Forms.Button();
             this.Btn_SpeedLv3 = new System.Windows.Forms.Button();
             this.Btn_SpeedLv2 = new System.Windows.Forms.Button();
             this.Btn_SpeedLv1 = new System.Windows.Forms.Button();
             this.Btn_TurnRight = new System.Windows.Forms.Button();
-            this.Btn_Float = new System.Windows.Forms.Button();
+            this.Btn_Up = new System.Windows.Forms.Button();
             this.GroupBox_KeyBoard = new System.Windows.Forms.GroupBox();
             this.Btn_KeyPressW = new System.Windows.Forms.Button();
             this.Btn_KeyPressA = new System.Windows.Forms.Button();
@@ -91,6 +91,8 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.Lab_ControlMode = new System.Windows.Forms.Label();
             this.Hud = new MissionPlanner.Controls.HUD();
+            this.Btn_HeadUp = new System.Windows.Forms.Button();
+            this.Btn_HeadDown = new System.Windows.Forms.Button();
             this.GroupBox_Init.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicBox_Video)).BeginInit();
@@ -111,7 +113,7 @@
             this.GroupBox_Init.Controls.Add(this.Lab_Flag);
             this.GroupBox_Init.Controls.Add(this.Btn_Start);
             this.GroupBox_Init.Controls.Add(this.Btn_Stop);
-            this.GroupBox_Init.Controls.Add(this.Btn_Help);
+            this.GroupBox_Init.Controls.Add(this.Btn_Send);
             this.GroupBox_Init.Controls.Add(this.Btn_Parameter);
             this.GroupBox_Init.Controls.Add(this.Btn_Open);
             this.GroupBox_Init.Controls.Add(this.groupBox3);
@@ -178,17 +180,18 @@
             this.Btn_Stop.UseVisualStyleBackColor = false;
             this.Btn_Stop.Click += new System.EventHandler(this.Btn_Stop_Click);
             // 
-            // Btn_Help
+            // Btn_Send
             // 
-            this.Btn_Help.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.Btn_Help.Font = new System.Drawing.Font("微软雅黑", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.Btn_Help.ForeColor = System.Drawing.Color.Black;
-            this.Btn_Help.Location = new System.Drawing.Point(180, 150);
-            this.Btn_Help.Name = "Btn_Help";
-            this.Btn_Help.Size = new System.Drawing.Size(90, 50);
-            this.Btn_Help.TabIndex = 2;
-            this.Btn_Help.Text = "帮助";
-            this.Btn_Help.UseVisualStyleBackColor = false;
+            this.Btn_Send.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.Btn_Send.Font = new System.Drawing.Font("微软雅黑", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Btn_Send.ForeColor = System.Drawing.Color.Black;
+            this.Btn_Send.Location = new System.Drawing.Point(180, 150);
+            this.Btn_Send.Name = "Btn_Send";
+            this.Btn_Send.Size = new System.Drawing.Size(90, 50);
+            this.Btn_Send.TabIndex = 2;
+            this.Btn_Send.Text = "传输";
+            this.Btn_Send.UseVisualStyleBackColor = false;
+            this.Btn_Send.Click += new System.EventHandler(this.Btn_Send_Click);
             // 
             // Btn_Parameter
             // 
@@ -372,17 +375,17 @@
             this.Btn_TurnLeft.Text = "左转弯";
             this.Btn_TurnLeft.UseVisualStyleBackColor = false;
             // 
-            // Btn_Dive
+            // Btn_Down
             // 
-            this.Btn_Dive.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.Btn_Dive.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.Btn_Dive.ForeColor = System.Drawing.Color.Black;
-            this.Btn_Dive.Location = new System.Drawing.Point(10, 225);
-            this.Btn_Dive.Name = "Btn_Dive";
-            this.Btn_Dive.Size = new System.Drawing.Size(90, 50);
-            this.Btn_Dive.TabIndex = 21;
-            this.Btn_Dive.Text = "下潜";
-            this.Btn_Dive.UseVisualStyleBackColor = false;
+            this.Btn_Down.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.Btn_Down.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Btn_Down.ForeColor = System.Drawing.Color.Black;
+            this.Btn_Down.Location = new System.Drawing.Point(10, 223);
+            this.Btn_Down.Name = "Btn_Down";
+            this.Btn_Down.Size = new System.Drawing.Size(90, 50);
+            this.Btn_Down.TabIndex = 21;
+            this.Btn_Down.Text = "下潜";
+            this.Btn_Down.UseVisualStyleBackColor = false;
             // 
             // Btn_Hover
             // 
@@ -431,6 +434,7 @@
             this.Btn_SpeedLv1.TabIndex = 25;
             this.Btn_SpeedLv1.Text = "一档速";
             this.Btn_SpeedLv1.UseVisualStyleBackColor = false;
+            this.Btn_SpeedLv1.Click += new System.EventHandler(this.Btn_SpeedLv1_Click);
             // 
             // Btn_TurnRight
             // 
@@ -444,17 +448,17 @@
             this.Btn_TurnRight.Text = "右转弯";
             this.Btn_TurnRight.UseVisualStyleBackColor = false;
             // 
-            // Btn_Float
+            // Btn_Up
             // 
-            this.Btn_Float.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.Btn_Float.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.Btn_Float.ForeColor = System.Drawing.Color.Black;
-            this.Btn_Float.Location = new System.Drawing.Point(116, 225);
-            this.Btn_Float.Name = "Btn_Float";
-            this.Btn_Float.Size = new System.Drawing.Size(90, 50);
-            this.Btn_Float.TabIndex = 28;
-            this.Btn_Float.Text = "漂浮";
-            this.Btn_Float.UseVisualStyleBackColor = false;
+            this.Btn_Up.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.Btn_Up.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Btn_Up.ForeColor = System.Drawing.Color.Black;
+            this.Btn_Up.Location = new System.Drawing.Point(116, 225);
+            this.Btn_Up.Name = "Btn_Up";
+            this.Btn_Up.Size = new System.Drawing.Size(90, 50);
+            this.Btn_Up.TabIndex = 28;
+            this.Btn_Up.Text = "漂浮";
+            this.Btn_Up.UseVisualStyleBackColor = false;
             // 
             // GroupBox_KeyBoard
             // 
@@ -514,13 +518,13 @@
             // 
             // GroupBox_Command
             // 
-            this.GroupBox_Command.Controls.Add(this.Btn_Float);
+            this.GroupBox_Command.Controls.Add(this.Btn_Up);
             this.GroupBox_Command.Controls.Add(this.Btn_TurnRight);
             this.GroupBox_Command.Controls.Add(this.Btn_SpeedLv1);
             this.GroupBox_Command.Controls.Add(this.Btn_SpeedLv2);
             this.GroupBox_Command.Controls.Add(this.Btn_SpeedLv3);
             this.GroupBox_Command.Controls.Add(this.Btn_Hover);
-            this.GroupBox_Command.Controls.Add(this.Btn_Dive);
+            this.GroupBox_Command.Controls.Add(this.Btn_Down);
             this.GroupBox_Command.Controls.Add(this.Btn_TurnLeft);
             this.GroupBox_Command.Location = new System.Drawing.Point(295, 37);
             this.GroupBox_Command.Name = "GroupBox_Command";
@@ -552,20 +556,19 @@
             // 视频传输设置ToolStripMenuItem
             // 
             this.视频传输设置ToolStripMenuItem.Name = "视频传输设置ToolStripMenuItem";
-            this.视频传输设置ToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.视频传输设置ToolStripMenuItem.Size = new System.Drawing.Size(174, 26);
             this.视频传输设置ToolStripMenuItem.Text = "视频传输设置";
             this.视频传输设置ToolStripMenuItem.Click += new System.EventHandler(this.视频传输设置ToolStripMenuItem_Click);
             // 
             // PID系数设置ToolStripMenuItem
             // 
             this.PID系数设置ToolStripMenuItem.Name = "PID系数设置ToolStripMenuItem";
-            this.PID系数设置ToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.PID系数设置ToolStripMenuItem.Size = new System.Drawing.Size(174, 26);
             this.PID系数设置ToolStripMenuItem.Text = "PID系数设置";
             this.PID系数设置ToolStripMenuItem.Click += new System.EventHandler(this.PID系数设置ToolStripMenuItem_Click);
             // 
             // Timer_UpdateData
             // 
-            this.Timer_UpdateData.Interval = 50;
             this.Timer_UpdateData.Tick += new System.EventHandler(this.DisplayRefresh);
             // 
             // GroupBox_AngleSpeed
@@ -839,10 +842,32 @@
             this.Hud.wpno = 0;
             this.Hud.xtrack_error = 0F;
             // 
+            // Btn_HeadUp
+            // 
+            this.Btn_HeadUp.Location = new System.Drawing.Point(1119, 63);
+            this.Btn_HeadUp.Name = "Btn_HeadUp";
+            this.Btn_HeadUp.Size = new System.Drawing.Size(65, 48);
+            this.Btn_HeadUp.TabIndex = 60;
+            this.Btn_HeadUp.Text = "云台升";
+            this.Btn_HeadUp.UseVisualStyleBackColor = true;
+            this.Btn_HeadUp.Click += new System.EventHandler(this.Btn_HeadUp_Click);
+            // 
+            // Btn_HeadDown
+            // 
+            this.Btn_HeadDown.Location = new System.Drawing.Point(1119, 129);
+            this.Btn_HeadDown.Name = "Btn_HeadDown";
+            this.Btn_HeadDown.Size = new System.Drawing.Size(65, 48);
+            this.Btn_HeadDown.TabIndex = 61;
+            this.Btn_HeadDown.Text = "云台降";
+            this.Btn_HeadDown.UseVisualStyleBackColor = true;
+            this.Btn_HeadDown.Click += new System.EventHandler(this.Btn_HeadDown_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1196, 777);
+            this.Controls.Add(this.Btn_HeadDown);
+            this.Controls.Add(this.Btn_HeadUp);
             this.Controls.Add(this.Hud);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.GroupBox_压力深度);
@@ -862,6 +887,7 @@
             this.Text = "ROV上位机";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);
             this.GroupBox_Init.ResumeLayout(false);
@@ -889,7 +915,7 @@
         private System.Windows.Forms.Label Lab_Flag;
         private System.Windows.Forms.Button Btn_Start;
         private System.Windows.Forms.Button Btn_Stop;
-        private System.Windows.Forms.Button Btn_Help;
+        private System.Windows.Forms.Button Btn_Send;
         private System.Windows.Forms.Button Btn_Parameter;
         private System.Windows.Forms.Button Btn_Open;
         private System.Windows.Forms.Label Lab_Pressure;
@@ -906,13 +932,13 @@
         private System.Windows.Forms.Label Lab_Val_AngleSpeedZ;
         public System.Windows.Forms.PictureBox PicBox_Video;
         private System.Windows.Forms.Button Btn_TurnLeft;
-        private System.Windows.Forms.Button Btn_Dive;
+        private System.Windows.Forms.Button Btn_Down;
         private System.Windows.Forms.Button Btn_Hover;
         private System.Windows.Forms.Button Btn_SpeedLv3;
         private System.Windows.Forms.Button Btn_SpeedLv2;
         private System.Windows.Forms.Button Btn_SpeedLv1;
         private System.Windows.Forms.Button Btn_TurnRight;
-        private System.Windows.Forms.Button Btn_Float;
+        private System.Windows.Forms.Button Btn_Up;
         private System.Windows.Forms.GroupBox GroupBox_KeyBoard;
         private System.Windows.Forms.Button Btn_KeyPressW;
         private System.Windows.Forms.Button Btn_KeyPressA;
@@ -945,6 +971,8 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label Lab_ControlMode;
         private MissionPlanner.Controls.HUD Hud;
+        private System.Windows.Forms.Button Btn_HeadUp;
+        private System.Windows.Forms.Button Btn_HeadDown;
     }
 }
 

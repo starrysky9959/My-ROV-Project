@@ -21,23 +21,9 @@ namespace ROV_Test
 {
     public partial class MainForm : Form
     {
-        /// <summary>
-        /// 主函数
-        /// </summary>
-        public MainForm()
-        {
-            InitializeComponent();
-            Camera_Init.Owner = this;
-            //禁止主窗体对跨线程调用检查  为了能在其他线程调用本线程的控件
-            CheckForIllegalCrossThreadCalls = false;
-        }
-
-        //实例化一个SerialPort
 
 
-
-
-        #region 读写INI文件部分
+#region 读写INI文件部分
         /// <summary>
         /// 声明写入INI文件的API函数 
         /// </summary>
@@ -66,13 +52,13 @@ namespace ROV_Test
         static string FileName = Application.StartupPath + "\\Config.ini";
 
         /// <summary>
-        /// 读取存档（string类型）
+        /// 读取存档
         /// </summary>
         /// <param name="Section">INI文件中的字段名</param>
         /// <param name="Ident">Section下一个键名，即具体的变量名</param>
         /// <param name="Default">如果为空的返回值</param>
         /// <returns></returns>
-        public string ReadIni_string(string Section, string Ident, string Default)
+        public string ReadIni(string Section, string Ident, string Default)
         {
             Byte[] Buffer = new Byte[65535];
             int bufLen = GetPrivateProfileString(Section, Ident, Default, Buffer, Buffer.GetUpperBound(0), FileName);
@@ -99,7 +85,19 @@ namespace ROV_Test
 
 
 
-        //public MainForm Mycontrol = new MainForm();
+        /// <summary>
+        /// 主函数
+        /// </summary>
+        public MainForm()
+        {
+            InitializeComponent();
+            Camera_Init.Owner = this;
+            //禁止主窗体对跨线程调用检查  为了能在其他线程调用本线程的控件
+            CheckForIllegalCrossThreadCalls = false;
+        }
+
+ 
+
         /// <summary>
         /// 主函数初始化
         /// </summary>
@@ -117,22 +115,50 @@ namespace ROV_Test
             ComDevice.DataBits = 8;
             ComDevice.StopBits = StopBits.One;
             Lab_Flag.BackColor = Color.Red;
+
             //绑定事件
             ComDevice.DataReceived += new SerialDataReceivedEventHandler(Com_DataReceived);
-            //MyRov.ServoData.FinLeft_Attitude_Position = 50;
 
             Timer_UpdateData.Start();   //数据更新定时器使能
             //初始化为自由操控模式
             RadBtn_FreeMode.Checked = true;
             MyRov.Mode.ControlMode = 0;
             IsWorking = true;
-            
-
         }
+
+
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            MyRov.ServoData.FinTail_Advance_StartingPosition = Convert.ToUInt16(ReadIni("舵机参数—尾部推进舵机", "起始位置", "0"));
+            MyRov.ServoData.FinTail_Advance_EndingPosition   = Convert.ToUInt16(ReadIni("舵机参数—尾部推进舵机", "终止位置", "0"));
+            MyRov.ServoData.FinTail_Advance_EachCCR          = Convert.ToUInt16(ReadIni("舵机参数—尾部推进舵机", "每次改变的占空比", "100"));
+            MyRov.ServoData.FinTail_Advance_DelayTime        = Convert.ToUInt16(ReadIni("舵机参数—尾部推进舵机", "延时长度", "0"));
+
+            MyRov.ServoData.FinLeft_Attitude_Position        = Convert.ToUInt16(ReadIni("舵机参数—左侧鱼鳍姿态舵机", "终止位置", "0"));
+
+            MyRov.ServoData.FinLeft_Thrash_StartingPosition  = Convert.ToUInt16(ReadIni("舵机参数—左侧鱼鳍划水舵机", "起始位置", "0"));
+            MyRov.ServoData.FinLeft_Thrash_EndingPosition    = Convert.ToUInt16(ReadIni("舵机参数—左侧鱼鳍划水舵机", "终止位置", "0"));
+            MyRov.ServoData.FinLeft_Thrash_Down_EachCCR      = Convert.ToUInt16(ReadIni("舵机参数—左侧鱼鳍划水舵机", "向下拍水时 每次改变的占空比", "100"));
+            MyRov.ServoData.FinLeft_Thrash_Down_DelayTime    = Convert.ToUInt16(ReadIni("舵机参数—左侧鱼鳍划水舵机", "向下拍水时 延时长度", "0"));
+            MyRov.ServoData.FinLeft_Thrash_Up_EachCCR        = Convert.ToUInt16(ReadIni("舵机参数—左侧鱼鳍划水舵机", "向上拍水时 每次改变的占空比", "100"));
+            MyRov.ServoData.FinLeft_Thrash_Up_DelayTime      = Convert.ToUInt16(ReadIni("舵机参数—左侧鱼鳍划水舵机", "向上拍水时 延时长度", "0"));
+
+            MyRov.ServoData.FinRight_Attitude_Position       = Convert.ToUInt16(ReadIni("舵机参数—右侧鱼鳍姿态舵机", "终止位置", "0"));
+
+            MyRov.ServoData.FinRight_Thrash_StartingPosition = Convert.ToUInt16(ReadIni("舵机参数—右侧鱼鳍划水舵机", "起始位置", "0"));
+            MyRov.ServoData.FinRight_Thrash_EndingPosition   = Convert.ToUInt16(ReadIni("舵机参数—右侧鱼鳍划水舵机", "终止位置", "0"));
+            MyRov.ServoData.FinRight_Thrash_Down_EachCCR     = Convert.ToUInt16(ReadIni("舵机参数—右侧鱼鳍划水舵机", "向下拍水时 每次改变的占空比", "100"));
+            MyRov.ServoData.FinRight_Thrash_Down_DelayTime   = Convert.ToUInt16(ReadIni("舵机参数—右侧鱼鳍划水舵机", "向下拍水时 延时长度", "0"));
+            MyRov.ServoData.FinRight_Thrash_Up_EachCCR       = Convert.ToUInt16(ReadIni("舵机参数—右侧鱼鳍划水舵机", "向上拍水时 每次改变的占空比", "100"));
+            MyRov.ServoData.FinRight_Thrash_Up_DelayTime     = Convert.ToUInt16(ReadIni("舵机参数—右侧鱼鳍划水舵机", "向上拍水时 延时长度", "0"));
+
+            MyRov.ServoData.Camera_Position = Convert.ToUInt16(ReadIni("舵机参数—摄像机云台舵机", "终止位置", "0"));
+        }
+
+
 
         //窗体实例化
         网络摄像头 Camera_Init = new 网络摄像头();
-        PID系数 PID_Parameter = new PID系数();
 
         /// <summary>
         /// 在文本框显示消息
@@ -141,6 +167,56 @@ namespace ROV_Test
         void ShowMsg(string message)
         {
             Txt_Info.AppendText(message+"\r\n");
+        }
+
+        //创建一个子线程
+        public Thread COMMAND;
+
+        /// <summary>
+        /// 在子线程中发送指令
+        /// </summary>
+        /// <param name="o"></param>
+        public void Send_CommandLoop()
+        {
+            while (b)
+            {                
+                SendCommand(TX_StartBit_MODE, MyRov);               
+                SendCommand(TX_StartBit_SERVO, MyRov);
+                SendCommand(TX_StartBit_SERVO, MyRov);
+                SendCommand(TX_StartBit_SERVO, MyRov);
+                SendCommand(TX_StartBit_SERVO, MyRov);
+                SendCommand(TX_StartBit_SERVO, MyRov);
+                SendCommand(TX_StartBit_SERVO, MyRov);
+                SendCommand(TX_StartBit_PID, MyRov);
+                Delay(180); 
+            }
+        }
+        //Delay function
+        public static void Delay(int milliSecond)
+        {
+            int start = Environment.TickCount;
+            while (Math.Abs(Environment.TickCount - start) < milliSecond)
+            {
+                Application.DoEvents();
+            }
+        }
+        bool b = false;
+        private void Btn_Send_Click(object sender, EventArgs e)
+        {
+            if (b==false)
+            {
+                b = true;
+                Btn_Send.Text = "停止";
+                //新开一个后台线程，启动
+                COMMAND = new Thread(Send_CommandLoop);
+                COMMAND.IsBackground = true;
+                COMMAND.Start();                
+            }
+            else
+            {
+                b = false;
+                Btn_Send.Text = "传输";
+            }
         }
 
 
@@ -155,8 +231,8 @@ namespace ROV_Test
 
             Lab_Time.Text = DateTime.Now.ToLongTimeString() + "\r\n";//系统时间
 
-            //SetProcessValue_Depth((Int16)MyRov.MS5837Data.Depth);
-            //SetProcessValue_Pressure((Int16)MyRov.MS5837Data.Pressure);
+            SetProcessValue_Depth((Int16)MyRov.MS5837Data.Depth);
+            SetProcessValue_Pressure((Int16)MyRov.MS5837Data.Pressure);
             Lab_Val_Temperature.Text = MyRov.MS5837Data.Temperature.ToString();
 
             Lab_Val_AccelerationX.Text = MyRov.JY901Data.AccelerationX.ToString();//X轴加速度
@@ -171,13 +247,12 @@ namespace ROV_Test
             Lab_Val_AngleSpeedY.Text = MyRov.JY901Data.AngleSpeedX.ToString();//Y轴角速度
             Lab_Val_AngleSpeedZ.Text = MyRov.JY901Data.AngleSpeedX.ToString();//Z轴角速度
 
-            // ShowMsg(MyRov.MS5837Data.Depth.ToString());
-            //ShowMsg(MyRov.MS5837Data.Pressure.ToString());
-            //ShowMsg(MyRov.MS5837Data.Temperature.ToString());
+            ShowMsg(MyRov.MS5837Data.Depth.ToString() + "      " + MyRov.MS5837Data.Pressure.ToString() + "      " + MyRov.MS5837Data.Temperature.ToString());
+
         }
 
 
-    #region Socket部分（暂时不用）
+        #region Socket部分（暂时不用）
         ////创建一个Socket
         //Socket socketWatch = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         ////创建一个新线程
@@ -283,7 +358,7 @@ namespace ROV_Test
         #endregion
 
 
-    #region 串口部分代码
+        #region 串口部分代码
 
         /// <summary>
         /// 打开串口
@@ -301,6 +376,7 @@ namespace ROV_Test
                     {
                         ComDevice.PortName = portList[0];
                     }
+                    //打开串口
                     ComDevice.Open();
                 }
                 catch (Exception ex)
@@ -376,6 +452,7 @@ namespace ROV_Test
         /// <param name="e"></param>
         private void PID系数设置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            PID系数 PID_Parameter = new PID系数();
             PID_Parameter.Show();
         }
 
@@ -391,6 +468,8 @@ namespace ROV_Test
             Servo_Parameter.Show();
         }
 
+
+#region 鱼体特殊指令
         /// <summary>
         /// 发送鱼体启动指令
         /// </summary>
@@ -402,15 +481,30 @@ namespace ROV_Test
             {
                 try
                 {
-                    MyRov.ServoData.FinLeft_Attitude_Position = 100;
+                    MyRov.ServoData.FinTail_Advance_StartingPosition = 3000;
+                    MyRov.ServoData.FinTail_Advance_EndingPosition = 4000;
+                    MyRov.ServoData.FinTail_Advance_EachCCR = 100;
+                    MyRov.ServoData.FinTail_Advance_DelayTime = 20;
 
-                    //MyRov.ServoData.FinLeft_Thrash_StartingPosition = 120;
-                    //MyRov.ServoData.FinLeft_Thrash_EndingPosition = 230;
-                    //MyRov.ServoData.FinLeft_Thrash_Down_EachCCR = 2;
-                    //MyRov.ServoData.FinLeft_Thrash_Down_DelayTime = 5;
-                    
-                    //MyRov.ServoData.FinLeft_Thrash_Up_EachCCR = 5;
-                    //MyRov.ServoData.FinLeft_Thrash_Up_DelayTime = 15;
+                    MyRov.ServoData.FinLeft_Attitude_Position = 2500;
+
+                    MyRov.ServoData.FinLeft_Thrash_StartingPosition = 2000;
+                    MyRov.ServoData.FinLeft_Thrash_EndingPosition = 4000;
+                    MyRov.ServoData.FinLeft_Thrash_Down_EachCCR = 100;
+                    MyRov.ServoData.FinLeft_Thrash_Down_DelayTime = 25;
+                    MyRov.ServoData.FinLeft_Thrash_Up_EachCCR = 100;
+                    MyRov.ServoData.FinLeft_Thrash_Up_DelayTime = 25;
+
+                    MyRov.ServoData.FinRight_Attitude_Position = 2500;
+
+                    MyRov.ServoData.FinRight_Thrash_StartingPosition = 2000;
+                    MyRov.ServoData.FinRight_Thrash_EndingPosition = 4000;
+                    MyRov.ServoData.FinRight_Thrash_Down_EachCCR = 100;
+                    MyRov.ServoData.FinRight_Thrash_Down_DelayTime = 25;
+                    MyRov.ServoData.FinRight_Thrash_Up_EachCCR = 100;
+                    MyRov.ServoData.FinRight_Thrash_Up_DelayTime = 5;
+
+                    MyRov.ServoData.Camera_Position = 1000;
 
                     SendCommand(TX_StartBit_SERVO, MyRov);
                 }
@@ -425,9 +519,54 @@ namespace ROV_Test
             }
         }
 
-        
+        private void Btn_SpeedLv1_Click(object sender, EventArgs e)
+        {
+            if (ComDevice.IsOpen)
+            {
+                try
+                {
+                    MyRov.ServoData.FinTail_Advance_StartingPosition =3000;
+                    MyRov.ServoData.FinTail_Advance_EndingPosition   =4000;
+                    MyRov.ServoData.FinTail_Advance_EachCCR          =100;
+                    MyRov.ServoData.FinTail_Advance_DelayTime        =20;
+                    
+                    MyRov.ServoData.FinLeft_Attitude_Position        = 2500;
 
-    #region 更新进度条百分比数据显示部分
+                    MyRov.ServoData.FinLeft_Thrash_StartingPosition = 2000;
+                    MyRov.ServoData.FinLeft_Thrash_EndingPosition = 4000;
+                    MyRov.ServoData.FinLeft_Thrash_Down_EachCCR = 100;
+                    MyRov.ServoData.FinLeft_Thrash_Down_DelayTime = 25;
+                    MyRov.ServoData.FinLeft_Thrash_Up_EachCCR = 100;
+                    MyRov.ServoData.FinLeft_Thrash_Up_DelayTime = 25;
+
+                    MyRov.ServoData.FinRight_Attitude_Position = 2500;
+
+                    MyRov.ServoData.FinRight_Thrash_StartingPosition = 2000;
+                    MyRov.ServoData.FinRight_Thrash_EndingPosition = 4000;
+                    MyRov.ServoData.FinRight_Thrash_Down_EachCCR = 100;
+                    MyRov.ServoData.FinRight_Thrash_Down_DelayTime = 25;
+                    MyRov.ServoData.FinRight_Thrash_Up_EachCCR = 100;
+                    MyRov.ServoData.FinRight_Thrash_Up_DelayTime = 5;
+
+                    MyRov.ServoData.Camera_Position = 1000;
+
+                    SendCommand(TX_StartBit_SERVO, MyRov);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("串口未打开");
+            }
+        }
+        #endregion
+
+
+
+#region 更新进度条百分比数据显示部分
 
         /// <summary>
         /// 实现深度进度条的百分比显示
@@ -442,7 +581,7 @@ namespace ROV_Test
             this.VertProgressBar_Depth.Value = value;
         }
 
-
+        
         /// <summary>
         /// 实现压力进度条的百分比显示
         /// </summary>
@@ -586,6 +725,7 @@ namespace ROV_Test
             {
                 Camera_Init.th.Abort();
             }
+            Camera_Init.Close();
         }
 
 
@@ -623,6 +763,23 @@ namespace ROV_Test
                 MessageBox.Show("串口未打开");
             }
         }
+
+
+
+        private void Btn_HeadUp_Click(object sender, EventArgs e)
+        {
+            MyRov.ServoData.Camera_Position += 100;
+            SendCommand(RX_StartBit_SERVO, MyRov);
+        }
+
+        private void Btn_HeadDown_Click(object sender, EventArgs e)
+        {
+            MyRov.ServoData.Camera_Position -= 100;
+            SendCommand(RX_StartBit_SERVO, MyRov);
+        }
+
+
+
     }
 
 

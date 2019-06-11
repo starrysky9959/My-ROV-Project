@@ -17,12 +17,10 @@
 
 
 //接收数据包
-#define RX_RGB_BUFF_LEN										//接收上位机的RGB灯指令数据包
 #define RX_MODE_BUFF_LEN					20			//接收上位机的操作模式变更指令数据包
 #define RX_SERVO_BUFF_LEN 				38			//接收上位机的舵机指令数据包
 #define RX_PID_BUFF_LEN						64			//接收上位机的PID指令数据包
 
-#define	RX_StartBit_RGB       		0xAA    //接收上位机的RGB灯指令
 #define	RX_StartBit_MODE      		0xAB    //接收上位机的操作模式变更指令
 #define	RX_StartBit_SERVO         0xAC		//接收上位机的舵机指令
 #define	RX_StartBit_PID           0xAD    //接收上位机的PID指令

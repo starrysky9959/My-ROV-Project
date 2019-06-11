@@ -171,8 +171,7 @@ void Command_ReceiveAndCheck(uint8_t data)
 	if (RX_Cnt==1)	//表示该字节为数据包起始位
 	{
 		startbit=data;
-		if (startbit!=RX_StartBit_RGB &&
-				startbit!=RX_StartBit_MODE &&
+		if (startbit!=RX_StartBit_MODE &&
 				startbit!=RX_StartBit_SERVO &&
 				startbit!=RX_StartBit_PID)			//起始位不符合要求，舍弃当前已接收到的数据
 		{
@@ -293,6 +292,63 @@ void RX_MODE_DataHandler(RX_MODE_Buff_Union Data)
 **************************************************************/
 void RX_SERVO_DataHandler(RX_SEVRO_Buff_Union Data)
 {
+//	int i;
+//	
+//	//云台舵机
+//	if (Servo_Val.Camera_Position <= Data.servodata.Camera_Position)
+//	{
+//		for (i = Servo_Val.Camera_Position; i <= Data.servodata.Camera_Position; i += 50)
+//		{
+//			TIM_SetCompare1(TIM8, i);
+//			delay_ms(25);
+//		}
+//	}
+//	else
+//	{
+//		for (i = Servo_Val.Camera_Position; i >= Data.servodata.Camera_Position; i -= 50)
+//		{
+//			TIM_SetCompare1(TIM8, i);
+//			delay_ms(25);
+//		}
+//	}
+//	
+//	//左侧鱼鳍姿态舵机
+//	if (Servo_Val.FinLeft_Attitude_Position <= Data.servodata.FinLeft_Attitude_Position)
+//	{
+//		for (i = Servo_Val.FinLeft_Attitude_Position; i <= Data.servodata.FinLeft_Attitude_Position; i += 50)
+//		{
+//			TIM_SetCompare4(TIM1, i);
+//			delay_ms(25);
+//		}
+//	}
+//	else
+//	{
+//		for (i = Servo_Val.FinLeft_Attitude_Position; i >= Data.servodata.FinLeft_Attitude_Position; i -= 50)
+//		{
+//			TIM_SetCompare4(TIM1, i);
+//			delay_ms(25);
+//		}
+//	}
+//	
+//	//右侧鱼鳍姿态舵机
+//	if (Servo_Val.FinRight_Attitude_Position <= Data.servodata.FinRight_Attitude_Position)
+//	{
+//		for (i = Servo_Val.FinRight_Attitude_Position; i <= Data.servodata.FinRight_Attitude_Position; i += 50)
+//		{
+//			TIM_SetCompare3(TIM1, i);
+//			delay_ms(25);
+//		}
+//	}
+//	else
+//	{
+//		for (i = Servo_Val.FinRight_Attitude_Position; i >= Data.servodata.FinRight_Attitude_Position; i -= 50)
+//		{
+//			TIM_SetCompare3(TIM1, i);
+//			delay_ms(25);
+//		}
+//	}
+
+	
   Servo_Val.FinTail_Advance_StartingPosition = Data.servodata.FinTail_Advance_StartingPosition;  //尾部推进舵机 起始位置
   Servo_Val.FinTail_Advance_EndingPosition   = Data.servodata.FinTail_Advance_EndingPosition;    //尾部推进舵机 终止位置
   Servo_Val.FinTail_Advance_EachCCR          = Data.servodata.FinTail_Advance_EachCCR;           //尾部推进舵机 每次改变的占空比
@@ -318,8 +374,8 @@ void RX_SERVO_DataHandler(RX_SEVRO_Buff_Union Data)
 
   Servo_Val.Camera_Position = Data.servodata.Camera_Position;      //摄像机云台舵机 位置
 	
-	//更新舵机位置
-	Servo_PositionSet();
+	Servo_PositionSet();	//更新舵机位置
+	//Servo_Calculation();	//更新步进值
 }
 
 

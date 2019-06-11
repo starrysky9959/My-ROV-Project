@@ -8,7 +8,7 @@
 *******************************************************************************/
 
 #include "tick.h"
-#include "control.h"
+#include "timeslice.h"
 #include "usart1.h"
 
 /**************************************************************
@@ -43,7 +43,7 @@ void TICK_TIM_Init(void)
 	TIM_ITConfig(TICK_TIM, TIM_IT_Update , ENABLE);         
 	
 	NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0;	//抢占优先级0
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=1;	//抢占优先级0
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;				//子优先级0
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			//IRQ通道使能
 	NVIC_Init(&NVIC_InitStructure);	//根据指定的参数初始化VIC寄存器
@@ -69,6 +69,9 @@ void TIM4_IRQHandler(void)
 		TimeSlice.Count_100ms += 10;
 		TimeSlice.Count_200ms += 10;
 		TimeSlice.Count_5000ms += 10;
+//		TimeSlice.Count_Left += 10;
+//		TimeSlice.Count_Right += 10;
+		SpecialAction();
 		TIM_ClearITPendingBit(TICK_TIM, TIM_IT_Update);
   }
 }

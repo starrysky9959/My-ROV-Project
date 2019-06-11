@@ -94,8 +94,9 @@ namespace ROV_Test
             IntPtr ptr = FindWindow(IntPtr.Zero, title);
             if (ptr != IntPtr.Zero)
             {
-                int ret = PostMessage(ptr, WM_CLOSE, 0, 0);
+                //int ret = PostMessage(ptr, WM_CLOSE, 0, 0);
                 Thread.Sleep(500);
+                PostMessage(ptr, WM_CLOSE, 0, 0);  
                 ptr = FindWindow(IntPtr.Zero, title);
                 if (ptr != IntPtr.Zero)
                 {
@@ -118,7 +119,7 @@ namespace ROV_Test
                     foreach (string title in titles)
                     {
                         FindAndKillWindow(title);
-                        Thread.Sleep(800);
+                        Thread.Sleep(500);
                     }
                     
                 }

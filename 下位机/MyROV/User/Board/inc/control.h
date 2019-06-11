@@ -21,7 +21,7 @@ extern struct PID PID_Depth;
 extern struct PID PID_Pitch;
 extern struct PID PID_AngleSpeedY;
 extern struct PID PID_AccelerationY;
-extern struct TS TimeSlice;
+
 
 /************************************************º¯ÊýÉùÃ÷*********************************************/
 extern void ClosedLoop_Control(void);

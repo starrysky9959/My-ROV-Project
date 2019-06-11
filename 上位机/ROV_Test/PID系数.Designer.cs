@@ -603,6 +603,7 @@
             this.Controls.Add(this.GroupBox_Depth_PID);
             this.Name = "PID系数";
             this.Text = "PID参数 ";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PID系数_FormClosing);
             this.Shown += new System.EventHandler(this.PID系数_Shown);
             this.GroupBox_Depth_PID.ResumeLayout(false);
             this.GroupBox_Depth_PID.PerformLayout();

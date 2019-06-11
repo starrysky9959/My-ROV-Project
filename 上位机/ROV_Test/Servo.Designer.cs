@@ -665,6 +665,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "Servo参数";
             this.Text = "Servo";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Servo参数_FormClosing);
             this.Shown += new System.EventHandler(this.Servo参数_Shown);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

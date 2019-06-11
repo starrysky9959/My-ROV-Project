@@ -37,6 +37,7 @@
             this.Btn_Preservation = new System.Windows.Forms.Button();
             this.Btn_Cancel = new System.Windows.Forms.Button();
             this.Btn_Connect = new System.Windows.Forms.Button();
+            this.Btn_Close = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -138,10 +139,24 @@
             this.Btn_Connect.UseVisualStyleBackColor = false;
             this.Btn_Connect.Click += new System.EventHandler(this.Btn_Connect_Click);
             // 
+            // Btn_Close
+            // 
+            this.Btn_Close.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.Btn_Close.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Btn_Close.ForeColor = System.Drawing.Color.Black;
+            this.Btn_Close.Location = new System.Drawing.Point(512, 300);
+            this.Btn_Close.Name = "Btn_Close";
+            this.Btn_Close.Size = new System.Drawing.Size(119, 51);
+            this.Btn_Close.TabIndex = 25;
+            this.Btn_Close.Text = "停止传输";
+            this.Btn_Close.UseVisualStyleBackColor = false;
+            this.Btn_Close.Click += new System.EventHandler(this.Btn_Close_Click);
+            // 
             // 网络摄像头
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(692, 437);
+            this.Controls.Add(this.Btn_Close);
             this.Controls.Add(this.Btn_Connect);
             this.Controls.Add(this.Btn_Cancel);
             this.Controls.Add(this.Btn_Preservation);
@@ -171,5 +186,6 @@
         private System.Windows.Forms.Button Btn_Preservation;
         private System.Windows.Forms.Button Btn_Cancel;
         private System.Windows.Forms.Button Btn_Connect;
+        private System.Windows.Forms.Button Btn_Close;
     }
 }

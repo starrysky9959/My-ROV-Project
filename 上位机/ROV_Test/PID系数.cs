@@ -28,7 +28,7 @@ namespace ROV_Test
         }
 
 
-    #region 读写INI文件部分
+#region 读写INI文件部分
         /// <summary>
         /// 声明写入INI文件的API函数 
         /// </summary>
@@ -118,6 +118,8 @@ namespace ROV_Test
             Txt_AccelerationY_Kd.Text = ReadIni("PID系数—Y轴加速度", "Kd", "0");
             Txt_AccelerationY_Target.Text = ReadIni("PID系数—Y轴加速度", "Target", "0");
 
+            RadBtn_None.Checked = true;
+
             MessageBox.Show("PID系数初始化完成", "Success");
             FindAndKillWindow();
         }
@@ -170,7 +172,6 @@ namespace ROV_Test
 
             SendCommand(TX_StartBit_PID, MyRov);
 
-            MessageBox.Show("数据保存成功并已发送对应指令", "Success");
             FindAndKillWindow();
         }
 
@@ -258,6 +259,11 @@ namespace ROV_Test
                 MyRov.Mode.AccelerationYMode = 0;
             }
             SendCommand(TX_StartBit_MODE, MyRov);
+        }
+
+        private void PID系数_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = false;
         }
     }
 }
