@@ -181,7 +181,7 @@ namespace ROV_Test
             WriteIni("舵机参数—摄像机云台舵机", "终止位置 ", Txt_Camera_Position.Text);
             MyRov.ServoData.Camera_Position = Convert.ToUInt16(Txt_Camera_Position.Text);
  
-                SendCommand(TX_StartBit_SERVO, MyRov);
+            SendCommand(TX_StartBit_SERVO, MyRov);
             SendCommand(TX_StartBit_SERVO, MyRov);
             SendCommand(TX_StartBit_SERVO, MyRov);
             SendCommand(TX_StartBit_SERVO, MyRov);

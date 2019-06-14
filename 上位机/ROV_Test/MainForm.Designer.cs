@@ -374,6 +374,7 @@
             this.Btn_TurnLeft.TabIndex = 20;
             this.Btn_TurnLeft.Text = "左转弯";
             this.Btn_TurnLeft.UseVisualStyleBackColor = false;
+            this.Btn_TurnLeft.Click += new System.EventHandler(this.Btn_TurnLeft_Click);
             // 
             // Btn_Down
             // 
@@ -447,6 +448,7 @@
             this.Btn_TurnRight.TabIndex = 26;
             this.Btn_TurnRight.Text = "右转弯";
             this.Btn_TurnRight.UseVisualStyleBackColor = false;
+            this.Btn_TurnRight.Click += new System.EventHandler(this.Btn_TurnRight_Click);
             // 
             // Btn_Up
             // 

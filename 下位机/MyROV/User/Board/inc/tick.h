@@ -8,7 +8,7 @@
 #define TICK_TIM           		    					TIM4
 
 #define TICK_TIM_Period											(1000-1)
-#define TICK_TIM_Prescaler 									(720-1)
+#define TICK_TIM_Prescaler 									(1800-1)
 
 /********************************************º¯ÊýÉùÃ÷********************************************/
 extern void TICK_TIM_Init(void);

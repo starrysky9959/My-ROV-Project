@@ -187,8 +187,9 @@ namespace ROV_Test
                 SendCommand(TX_StartBit_SERVO, MyRov);
                 SendCommand(TX_StartBit_SERVO, MyRov);
                 SendCommand(TX_StartBit_SERVO, MyRov);
+                SendCommand(TX_StartBit_SERVO, MyRov);
                 SendCommand(TX_StartBit_PID, MyRov);
-                Delay(180); 
+                Delay(150); 
             }
         }
         //Delay function
@@ -470,6 +471,7 @@ namespace ROV_Test
 
 
 #region 鱼体特殊指令
+
         /// <summary>
         /// 发送鱼体启动指令
         /// </summary>
@@ -481,32 +483,18 @@ namespace ROV_Test
             {
                 try
                 {
-                    MyRov.ServoData.FinTail_Advance_StartingPosition = 3000;
-                    MyRov.ServoData.FinTail_Advance_EndingPosition = 4000;
+                    MyRov.ServoData.FinTail_Advance_StartingPosition = 600;
+                    MyRov.ServoData.FinTail_Advance_EndingPosition = 1400;
                     MyRov.ServoData.FinTail_Advance_EachCCR = 100;
-                    MyRov.ServoData.FinTail_Advance_DelayTime = 20;
+                    MyRov.ServoData.FinTail_Advance_DelayTime = 40;
 
-                    MyRov.ServoData.FinLeft_Attitude_Position = 2500;
+                    MyRov.ServoData.FinLeft_Attitude_Position = 1275;
 
-                    MyRov.ServoData.FinLeft_Thrash_StartingPosition = 2000;
-                    MyRov.ServoData.FinLeft_Thrash_EndingPosition = 4000;
-                    MyRov.ServoData.FinLeft_Thrash_Down_EachCCR = 100;
-                    MyRov.ServoData.FinLeft_Thrash_Down_DelayTime = 25;
-                    MyRov.ServoData.FinLeft_Thrash_Up_EachCCR = 100;
-                    MyRov.ServoData.FinLeft_Thrash_Up_DelayTime = 25;
-
-                    MyRov.ServoData.FinRight_Attitude_Position = 2500;
-
-                    MyRov.ServoData.FinRight_Thrash_StartingPosition = 2000;
-                    MyRov.ServoData.FinRight_Thrash_EndingPosition = 4000;
-                    MyRov.ServoData.FinRight_Thrash_Down_EachCCR = 100;
-                    MyRov.ServoData.FinRight_Thrash_Down_DelayTime = 25;
-                    MyRov.ServoData.FinRight_Thrash_Up_EachCCR = 100;
-                    MyRov.ServoData.FinRight_Thrash_Up_DelayTime = 5;
-
+                    MyRov.ServoData.FinRight_Attitude_Position = 800;
+                    
                     MyRov.ServoData.Camera_Position = 1000;
 
-                    SendCommand(TX_StartBit_SERVO, MyRov);
+                    for (int i = 0; i < 5; i++) SendCommand(TX_StartBit_SERVO, MyRov);
                 }
                 catch (Exception ex)
                 {
@@ -519,6 +507,114 @@ namespace ROV_Test
             }
         }
 
+
+        /// <summary>
+        /// 停止命令
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_Stop_Click(object sender, EventArgs e)
+        {
+            if (ComDevice.IsOpen)
+            {
+                try
+                {
+
+                    MyRov.ServoData.FinTail_Advance_StartingPosition = 1000;
+                    MyRov.ServoData.FinTail_Advance_EndingPosition = 1000;
+                    MyRov.ServoData.FinTail_Advance_EachCCR = 100;
+                    MyRov.ServoData.FinTail_Advance_DelayTime = 40;
+
+                    MyRov.ServoData.FinLeft_Attitude_Position = 1275;
+
+                    MyRov.ServoData.FinRight_Attitude_Position = 800;
+
+                    MyRov.ServoData.Camera_Position = 1000;
+
+                    for (int i = 0; i < 5; i++) SendCommand(TX_StartBit_SERVO, MyRov);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("串口未打开");
+            }
+        }
+
+
+        /// <summary>
+        /// 左转弯
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_TurnLeft_Click(object sender, EventArgs e)
+        {
+            if (ComDevice.IsOpen)
+            {
+                try
+                {
+                    MyRov.ServoData.FinTail_Advance_StartingPosition = 1000;
+                    MyRov.ServoData.FinTail_Advance_EndingPosition = 1000;
+                    for (int i = 0; i < 10; i++) SendCommand(TX_StartBit_SERVO, MyRov);
+                    Delay(1000);
+
+                    MyRov.ServoData.FinTail_Advance_StartingPosition = 1500;
+                    MyRov.ServoData.FinTail_Advance_EndingPosition = 1500;
+                    
+                    MyRov.ServoData.FinTail_Advance_EachCCR = 100;
+                    MyRov.ServoData.FinTail_Advance_DelayTime = 40;
+
+                    for (int i = 0; i < 10; i++) SendCommand(TX_StartBit_SERVO, MyRov);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("串口未打开");
+            }
+        }
+
+
+        /// <summary>
+        /// 右拐弯
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_TurnRight_Click(object sender, EventArgs e)
+        {
+            if (ComDevice.IsOpen)
+            {
+                try
+                {
+                    MyRov.ServoData.FinTail_Advance_StartingPosition = 1000;
+                    MyRov.ServoData.FinTail_Advance_EndingPosition = 1000;
+                    for (int i = 0; i < 10; i++) SendCommand(TX_StartBit_SERVO, MyRov);
+                    Delay(1500);
+
+                    MyRov.ServoData.FinTail_Advance_StartingPosition = 600;
+                    MyRov.ServoData.FinTail_Advance_EndingPosition = 600;
+
+                    MyRov.ServoData.FinTail_Advance_EachCCR = 100;
+                    MyRov.ServoData.FinTail_Advance_DelayTime = 40;
+
+                    for (int i = 0; i < 10; i++) SendCommand(TX_StartBit_SERVO, MyRov);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("串口未打开");
+            }
+        }
         private void Btn_SpeedLv1_Click(object sender, EventArgs e)
         {
             if (ComDevice.IsOpen)
@@ -729,40 +825,6 @@ namespace ROV_Test
         }
 
 
-        /// <summary>
-        /// 停止命令
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Btn_Stop_Click(object sender, EventArgs e)
-        {
-            if (ComDevice.IsOpen)
-            {
-                try
-                {
-                    MyRov.ServoData.FinTail_Advance_StartingPosition = 100;
-                    MyRov.ServoData.FinTail_Advance_EndingPosition = 100;
-
-                    //MyRov.ServoData.FinLeft_Thrash_StartingPosition = 120;
-                    //MyRov.ServoData.FinLeft_Thrash_EndingPosition = 230;
-                    //MyRov.ServoData.FinLeft_Thrash_Down_EachCCR = 2;
-                    //MyRov.ServoData.FinLeft_Thrash_Down_DelayTime = 5;
-                    
-                    //MyRov.ServoData.FinLeft_Thrash_Up_EachCCR = 5;
-                    //MyRov.ServoData.FinLeft_Thrash_Up_DelayTime = 15;
-
-                    SendCommand(TX_StartBit_SERVO, MyRov);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }
-            else
-            {
-                MessageBox.Show("串口未打开");
-            }
-        }
 
 
 
@@ -777,8 +839,6 @@ namespace ROV_Test
             MyRov.ServoData.Camera_Position -= 100;
             SendCommand(RX_StartBit_SERVO, MyRov);
         }
-
-
 
     }
 

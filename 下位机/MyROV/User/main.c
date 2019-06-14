@@ -39,18 +39,15 @@ int main(void)
 	TIM1_Init();					//舵机相关定时器初始化
 	TIM8_Init();					//舵机相关定时器初始化
 	MS5837_Init();				//深度传感器初始化
+	//摄像头暂时使用duo5 TIM1 CH2
 	Servo_Reset();				//舵机位置初始化
 	//Servo_Calculation();  //舵机步进值计算
 	TICK_TIM_Init();			//计时的定时器初始化
-
+	
 	//动起来
 	while (1)
-	{				
-//		TIM_SetCompare2(TIM1,  3400);
-//			delay_ms(1000);
-//		TIM_SetCompare1(TIM1, 4400);
-//		delay_ms(1000);
-		//Servo_PositionSet();	//舵机位置更新
+	{		
+		Servo_PositionSet();	//舵机位置更新
 		Servo_WorkingLoop();	//舵机摆动
 	}
 }

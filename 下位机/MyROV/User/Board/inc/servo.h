@@ -9,7 +9,7 @@
 																								RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE)																		
 
 #define TIM1_Period															(20000-1)
-#define TIM1_Prescaler 													(72-1)
+#define TIM1_Prescaler 													(180-1)
 
 //通道1 右侧控制划水的鱼鳍舵机
 #define FinLeft_Attitude_GPIO_PIN          			GPIO_Pin_8             
@@ -41,7 +41,7 @@
 																								RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM8, ENABLE);																				
 
 #define TIM8_Period															(20000-1)
-#define TIM8_Prescaler 													(72-1)
+#define TIM8_Prescaler 													(180-1)
 
 //通道1 控制摄像机云台位置的舵机
 #define FinTail_Advance_GPIO_PIN          			GPIO_Pin_6            
