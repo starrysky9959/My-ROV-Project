@@ -84,15 +84,17 @@
             this.Lab_AccelerationZ = new System.Windows.Forms.Label();
             this.Lab_Val_AccelerationY = new System.Windows.Forms.Label();
             this.Lab_Val_AccelerationX = new System.Windows.Forms.Label();
-            this.Lab_Time = new System.Windows.Forms.Label();
             this.GroupBox_压力深度 = new System.Windows.Forms.GroupBox();
             this.RadBtn_FreeMode = new System.Windows.Forms.RadioButton();
             this.RadBtn_PIDMode = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.RadBtn_ObjectTrack = new System.Windows.Forms.RadioButton();
             this.Lab_ControlMode = new System.Windows.Forms.Label();
             this.Hud = new MissionPlanner.Controls.HUD();
             this.Btn_HeadUp = new System.Windows.Forms.Button();
             this.Btn_HeadDown = new System.Windows.Forms.Button();
+            this.Btn_KeyPressE = new System.Windows.Forms.Button();
+            this.Btn_KeyPressQ = new System.Windows.Forms.Button();
             this.GroupBox_Init.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicBox_Video)).BeginInit();
@@ -118,7 +120,7 @@
             this.GroupBox_Init.Controls.Add(this.Btn_Open);
             this.GroupBox_Init.Controls.Add(this.groupBox3);
             this.GroupBox_Init.Font = new System.Drawing.Font("宋体", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.GroupBox_Init.Location = new System.Drawing.Point(5, 31);
+            this.GroupBox_Init.Location = new System.Drawing.Point(10, 31);
             this.GroupBox_Init.Name = "GroupBox_Init";
             this.GroupBox_Init.Size = new System.Drawing.Size(284, 322);
             this.GroupBox_Init.TabIndex = 0;
@@ -196,14 +198,15 @@
             // Btn_Parameter
             // 
             this.Btn_Parameter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.Btn_Parameter.Font = new System.Drawing.Font("微软雅黑", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Btn_Parameter.Font = new System.Drawing.Font("微软雅黑", 12.5F, System.Drawing.FontStyle.Bold);
             this.Btn_Parameter.ForeColor = System.Drawing.Color.Black;
             this.Btn_Parameter.Location = new System.Drawing.Point(180, 20);
             this.Btn_Parameter.Name = "Btn_Parameter";
             this.Btn_Parameter.Size = new System.Drawing.Size(90, 50);
             this.Btn_Parameter.TabIndex = 1;
-            this.Btn_Parameter.Text = "参数";
+            this.Btn_Parameter.Text = "摄像头";
             this.Btn_Parameter.UseVisualStyleBackColor = false;
+            this.Btn_Parameter.Click += new System.EventHandler(this.Btn_Parameter_Click);
             // 
             // Btn_Open
             // 
@@ -355,13 +358,17 @@
             // 
             // PicBox_Video
             // 
+            this.PicBox_Video.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.PicBox_Video.Image = ((System.Drawing.Image)(resources.GetObject("PicBox_Video.Image")));
-            this.PicBox_Video.Location = new System.Drawing.Point(295, 322);
+            this.PicBox_Video.Location = new System.Drawing.Point(313, 254);
             this.PicBox_Video.Name = "PicBox_Video";
-            this.PicBox_Video.Size = new System.Drawing.Size(640, 427);
+            this.PicBox_Video.Size = new System.Drawing.Size(741, 498);
             this.PicBox_Video.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PicBox_Video.TabIndex = 19;
             this.PicBox_Video.TabStop = false;
+            this.PicBox_Video.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PicBox_Video_MouseClick);
+            this.PicBox_Video.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PicBox_Video_MouseMove);
+            this.PicBox_Video.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.PicBox_Video_MouseWheel);
             // 
             // Btn_TurnLeft
             // 
@@ -381,7 +388,7 @@
             this.Btn_Down.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.Btn_Down.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Btn_Down.ForeColor = System.Drawing.Color.Black;
-            this.Btn_Down.Location = new System.Drawing.Point(10, 223);
+            this.Btn_Down.Location = new System.Drawing.Point(225, 90);
             this.Btn_Down.Name = "Btn_Down";
             this.Btn_Down.Size = new System.Drawing.Size(90, 50);
             this.Btn_Down.TabIndex = 21;
@@ -442,7 +449,7 @@
             this.Btn_TurnRight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.Btn_TurnRight.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Btn_TurnRight.ForeColor = System.Drawing.Color.Black;
-            this.Btn_TurnRight.Location = new System.Drawing.Point(116, 24);
+            this.Btn_TurnRight.Location = new System.Drawing.Point(116, 25);
             this.Btn_TurnRight.Name = "Btn_TurnRight";
             this.Btn_TurnRight.Size = new System.Drawing.Size(90, 50);
             this.Btn_TurnRight.TabIndex = 26;
@@ -455,7 +462,7 @@
             this.Btn_Up.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.Btn_Up.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Btn_Up.ForeColor = System.Drawing.Color.Black;
-            this.Btn_Up.Location = new System.Drawing.Point(116, 225);
+            this.Btn_Up.Location = new System.Drawing.Point(225, 25);
             this.Btn_Up.Name = "Btn_Up";
             this.Btn_Up.Size = new System.Drawing.Size(90, 50);
             this.Btn_Up.TabIndex = 28;
@@ -464,11 +471,13 @@
             // 
             // GroupBox_KeyBoard
             // 
+            this.GroupBox_KeyBoard.Controls.Add(this.Btn_KeyPressE);
+            this.GroupBox_KeyBoard.Controls.Add(this.Btn_KeyPressQ);
             this.GroupBox_KeyBoard.Controls.Add(this.Btn_KeyPressW);
             this.GroupBox_KeyBoard.Controls.Add(this.Btn_KeyPressA);
             this.GroupBox_KeyBoard.Controls.Add(this.Btn_KeyPressS);
             this.GroupBox_KeyBoard.Controls.Add(this.Btn_KeyPressD);
-            this.GroupBox_KeyBoard.Location = new System.Drawing.Point(942, 579);
+            this.GroupBox_KeyBoard.Location = new System.Drawing.Point(1119, 603);
             this.GroupBox_KeyBoard.Name = "GroupBox_KeyBoard";
             this.GroupBox_KeyBoard.Size = new System.Drawing.Size(246, 171);
             this.GroupBox_KeyBoard.TabIndex = 29;
@@ -528,9 +537,9 @@
             this.GroupBox_Command.Controls.Add(this.Btn_Hover);
             this.GroupBox_Command.Controls.Add(this.Btn_Down);
             this.GroupBox_Command.Controls.Add(this.Btn_TurnLeft);
-            this.GroupBox_Command.Location = new System.Drawing.Point(295, 37);
+            this.GroupBox_Command.Location = new System.Drawing.Point(320, 29);
             this.GroupBox_Command.Name = "GroupBox_Command";
-            this.GroupBox_Command.Size = new System.Drawing.Size(215, 279);
+            this.GroupBox_Command.Size = new System.Drawing.Size(321, 217);
             this.GroupBox_Command.TabIndex = 31;
             this.GroupBox_Command.TabStop = false;
             this.GroupBox_Command.Text = "特殊动作";
@@ -542,7 +551,7 @@
             this.设置ToolStripMenuItem});
             this.menuStrip_设置.Location = new System.Drawing.Point(0, 0);
             this.menuStrip_设置.Name = "menuStrip_设置";
-            this.menuStrip_设置.Size = new System.Drawing.Size(1196, 28);
+            this.menuStrip_设置.Size = new System.Drawing.Size(1371, 28);
             this.menuStrip_设置.TabIndex = 32;
             this.menuStrip_设置.Text = "menuStrip1";
             // 
@@ -593,7 +602,7 @@
             // 
             this.GroupBox_Temperature.Controls.Add(this.Lab_Temperature);
             this.GroupBox_Temperature.Controls.Add(this.Lab_Val_Temperature);
-            this.GroupBox_Temperature.Location = new System.Drawing.Point(970, 290);
+            this.GroupBox_Temperature.Location = new System.Drawing.Point(1119, 300);
             this.GroupBox_Temperature.Name = "GroupBox_Temperature";
             this.GroupBox_Temperature.Size = new System.Drawing.Size(146, 82);
             this.GroupBox_Temperature.TabIndex = 44;
@@ -634,7 +643,7 @@
             this.GroupBox_Acceleration.Controls.Add(this.Lab_Val_AccelerationY);
             this.GroupBox_Acceleration.Controls.Add(this.Lab_Val_AccelerationX);
             this.GroupBox_Acceleration.ForeColor = System.Drawing.Color.Chocolate;
-            this.GroupBox_Acceleration.Location = new System.Drawing.Point(12, 359);
+            this.GroupBox_Acceleration.Location = new System.Drawing.Point(10, 359);
             this.GroupBox_Acceleration.Name = "GroupBox_Acceleration";
             this.GroupBox_Acceleration.Size = new System.Drawing.Size(263, 186);
             this.GroupBox_Acceleration.TabIndex = 48;
@@ -704,17 +713,6 @@
             this.Lab_Val_AccelerationX.TabIndex = 12;
             this.Lab_Val_AccelerationX.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // Lab_Time
-            // 
-            this.Lab_Time.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Lab_Time.Font = new System.Drawing.Font("楷体", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.Lab_Time.Location = new System.Drawing.Point(814, 322);
-            this.Lab_Time.Name = "Lab_Time";
-            this.Lab_Time.Size = new System.Drawing.Size(122, 43);
-            this.Lab_Time.TabIndex = 49;
-            this.Lab_Time.Text = "time";
-            this.Lab_Time.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // GroupBox_压力深度
             // 
             this.GroupBox_压力深度.Controls.Add(this.Lab_Depth);
@@ -722,7 +720,7 @@
             this.GroupBox_压力深度.Controls.Add(this.VertProgressBar_Pressure);
             this.GroupBox_压力深度.Controls.Add(this.VertProgressBar_Depth);
             this.GroupBox_压力深度.ForeColor = System.Drawing.Color.Blue;
-            this.GroupBox_压力深度.Location = new System.Drawing.Point(978, 51);
+            this.GroupBox_压力深度.Location = new System.Drawing.Point(1217, 44);
             this.GroupBox_压力深度.Name = "GroupBox_压力深度";
             this.GroupBox_压力深度.Size = new System.Drawing.Size(135, 230);
             this.GroupBox_压力深度.TabIndex = 50;
@@ -733,7 +731,7 @@
             // 
             this.RadBtn_FreeMode.AutoSize = true;
             this.RadBtn_FreeMode.Font = new System.Drawing.Font("幼圆", 10F, System.Drawing.FontStyle.Bold);
-            this.RadBtn_FreeMode.Location = new System.Drawing.Point(6, 22);
+            this.RadBtn_FreeMode.Location = new System.Drawing.Point(6, 26);
             this.RadBtn_FreeMode.Name = "RadBtn_FreeMode";
             this.RadBtn_FreeMode.Size = new System.Drawing.Size(143, 21);
             this.RadBtn_FreeMode.TabIndex = 56;
@@ -757,22 +755,36 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.RadBtn_ObjectTrack);
             this.groupBox1.Controls.Add(this.Lab_ControlMode);
             this.groupBox1.Controls.Add(this.RadBtn_PIDMode);
             this.groupBox1.Controls.Add(this.RadBtn_FreeMode);
-            this.groupBox1.Location = new System.Drawing.Point(945, 380);
+            this.groupBox1.Location = new System.Drawing.Point(1122, 399);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(208, 146);
+            this.groupBox1.Size = new System.Drawing.Size(208, 198);
             this.groupBox1.TabIndex = 58;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "控制模式选择";
+            // 
+            // RadBtn_ObjectTrack
+            // 
+            this.RadBtn_ObjectTrack.AutoSize = true;
+            this.RadBtn_ObjectTrack.Font = new System.Drawing.Font("幼圆", 10F, System.Drawing.FontStyle.Bold);
+            this.RadBtn_ObjectTrack.Location = new System.Drawing.Point(6, 101);
+            this.RadBtn_ObjectTrack.Name = "RadBtn_ObjectTrack";
+            this.RadBtn_ObjectTrack.Size = new System.Drawing.Size(105, 21);
+            this.RadBtn_ObjectTrack.TabIndex = 59;
+            this.RadBtn_ObjectTrack.TabStop = true;
+            this.RadBtn_ObjectTrack.Text = "对象追踪";
+            this.RadBtn_ObjectTrack.UseVisualStyleBackColor = true;
+            this.RadBtn_ObjectTrack.CheckedChanged += new System.EventHandler(this.RadBtn_ObjectTrack_CheckedChanged);
             // 
             // Lab_ControlMode
             // 
             this.Lab_ControlMode.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.Lab_ControlMode.Font = new System.Drawing.Font("楷体", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Lab_ControlMode.ForeColor = System.Drawing.Color.Red;
-            this.Lab_ControlMode.Location = new System.Drawing.Point(6, 97);
+            this.Lab_ControlMode.Location = new System.Drawing.Point(6, 137);
             this.Lab_ControlMode.Name = "Lab_ControlMode";
             this.Lab_ControlMode.Size = new System.Drawing.Size(192, 43);
             this.Lab_ControlMode.TabIndex = 58;
@@ -810,7 +822,7 @@
             this.Hud.heading = 0F;
             this.Hud.hudcolor = System.Drawing.Color.LightGray;
             this.Hud.linkqualitygcs = 0F;
-            this.Hud.Location = new System.Drawing.Point(528, 37);
+            this.Hud.Location = new System.Drawing.Point(666, 29);
             this.Hud.lowairspeed = false;
             this.Hud.lowgroundspeed = false;
             this.Hud.lowvoltagealert = false;
@@ -824,7 +836,7 @@
             this.Hud.pitch = 0F;
             this.Hud.roll = 0F;
             this.Hud.Russian = false;
-            this.Hud.Size = new System.Drawing.Size(435, 275);
+            this.Hud.Size = new System.Drawing.Size(435, 219);
             this.Hud.skyColor1 = System.Drawing.Color.Blue;
             this.Hud.skyColor2 = System.Drawing.Color.LightBlue;
             this.Hud.speedunit = null;
@@ -864,22 +876,43 @@
             this.Btn_HeadDown.UseVisualStyleBackColor = true;
             this.Btn_HeadDown.Click += new System.EventHandler(this.Btn_HeadDown_Click);
             // 
+            // Btn_KeyPressE
+            // 
+            this.Btn_KeyPressE.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Btn_KeyPressE.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Btn_KeyPressE.Location = new System.Drawing.Point(163, 12);
+            this.Btn_KeyPressE.Name = "Btn_KeyPressE";
+            this.Btn_KeyPressE.Size = new System.Drawing.Size(80, 80);
+            this.Btn_KeyPressE.TabIndex = 62;
+            this.Btn_KeyPressE.Text = "E";
+            this.Btn_KeyPressE.UseVisualStyleBackColor = false;
+            // 
+            // Btn_KeyPressQ
+            // 
+            this.Btn_KeyPressQ.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Btn_KeyPressQ.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Btn_KeyPressQ.Location = new System.Drawing.Point(3, 12);
+            this.Btn_KeyPressQ.Name = "Btn_KeyPressQ";
+            this.Btn_KeyPressQ.Size = new System.Drawing.Size(80, 80);
+            this.Btn_KeyPressQ.TabIndex = 63;
+            this.Btn_KeyPressQ.Text = "Q";
+            this.Btn_KeyPressQ.UseVisualStyleBackColor = false;
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(1196, 777);
+            this.ClientSize = new System.Drawing.Size(1371, 790);
             this.Controls.Add(this.Btn_HeadDown);
             this.Controls.Add(this.Btn_HeadUp);
-            this.Controls.Add(this.Hud);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.GroupBox_压力深度);
-            this.Controls.Add(this.Lab_Time);
+            this.Controls.Add(this.Hud);
             this.Controls.Add(this.GroupBox_Acceleration);
+            this.Controls.Add(this.GroupBox_压力深度);
             this.Controls.Add(this.GroupBox_Temperature);
+            this.Controls.Add(this.PicBox_Video);
             this.Controls.Add(this.GroupBox_AngleSpeed);
             this.Controls.Add(this.GroupBox_Command);
             this.Controls.Add(this.GroupBox_KeyBoard);
-            this.Controls.Add(this.PicBox_Video);
             this.Controls.Add(this.GroupBox_Init);
             this.Controls.Add(this.menuStrip_设置);
             this.KeyPreview = true;
@@ -964,7 +997,6 @@
         private System.Windows.Forms.Label Lab_AccelerationZ;
         private System.Windows.Forms.Label Lab_Val_AccelerationY;
         private System.Windows.Forms.Label Lab_Val_AccelerationX;
-        private System.Windows.Forms.Label Lab_Time;
         private System.Windows.Forms.GroupBox GroupBox_压力深度;
         private System.Windows.Forms.ToolStripMenuItem PID系数设置ToolStripMenuItem;
         private System.Windows.Forms.Button Btn_Servo;
@@ -975,6 +1007,9 @@
         private MissionPlanner.Controls.HUD Hud;
         private System.Windows.Forms.Button Btn_HeadUp;
         private System.Windows.Forms.Button Btn_HeadDown;
+        private System.Windows.Forms.RadioButton RadBtn_ObjectTrack;
+        private System.Windows.Forms.Button Btn_KeyPressE;
+        private System.Windows.Forms.Button Btn_KeyPressQ;
     }
 }
 

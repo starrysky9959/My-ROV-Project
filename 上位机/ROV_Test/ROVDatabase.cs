@@ -11,7 +11,7 @@ namespace ROV_Test
         //控制模式选择
         public struct ModeSelection
         {
-            public int ControlMode;         //0 表示自由操控模式 ；1 表示PID闭环控制模式
+            public int ControlMode;         //0 表示自由操控模式 ；1 表示PID闭环控制模式；2 表示对象追踪模式
             //0 表示不可调；1 表示可调
             //前三个PID控制至多选一个
             public int PitchMode;           

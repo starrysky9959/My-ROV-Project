@@ -164,15 +164,15 @@ void Servo_Reset()
 	Servo_Val.FinRight_Thrash_Down_DelayTime = 10;
 	Servo_Val.FinRight_Thrash_Up_DelayTime   = 15;
 	
-	Servo_Val.FinTail_Advance_StartingPosition = 600;  //尾部推进舵机 起始位置
-  Servo_Val.FinTail_Advance_EndingPosition   = 600;   //尾部推进舵机 终止位置
-  Servo_Val.FinLeft_Attitude_Position        = 1300;   			//左侧鱼鳍姿态舵机 终止位置
+	Servo_Val.FinTail_Advance_StartingPosition = 1450;  //尾部推进舵机 起始位置
+  Servo_Val.FinTail_Advance_EndingPosition   = 1450;   //尾部推进舵机 终止位置
+  Servo_Val.FinLeft_Attitude_Position        = 1275;   			//左侧鱼鳍姿态舵机 终止位置
   Servo_Val.FinLeft_Thrash_StartingPosition	 = 2500;   //左侧鱼鳍划水舵机 起始位置
   Servo_Val.FinLeft_Thrash_EndingPosition		 = 2500;     //左侧鱼鳍划水舵机 终止位置
-  Servo_Val.FinRight_Attitude_Position			 = 900;  			//右侧鱼鳍姿态舵机 终止位置
-	Servo_Val.FinRight_Thrash_StartingPosition = 900;  //右侧鱼鳍划水舵机 起始位置
+  Servo_Val.FinRight_Attitude_Position			 = 960;  			//右侧鱼鳍姿态舵机 终止位置
+	Servo_Val.FinRight_Thrash_StartingPosition = 960;  //右侧鱼鳍划水舵机 起始位置
   Servo_Val.FinRight_Thrash_EndingPosition	 = 1900;    //右侧鱼鳍划水舵机 终止位置
-	Servo_Val.Camera_Position									 = 800;                   //摄像机云台舵机 位置  
+	Servo_Val.Camera_Position									 = 1000;                   //摄像机云台舵机 位置  
 	
 	TIM_SetCompare2(TIM1, Servo_Val.Camera_Position);
 	//TIM_SetCompare1(TIM8, Servo_Val.Camera_Position);

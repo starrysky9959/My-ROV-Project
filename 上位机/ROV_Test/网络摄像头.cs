@@ -161,6 +161,7 @@ namespace ROV_Test
             while (true)
             {
                 cap.Read(Source);
+                //Source.ImWrite(@"D:\Show me your Code\GitHub仓库\My-ROV-Project\temp.jpg");
                 if (Isopen == 0) break;
                 try
                 {

@@ -33,7 +33,7 @@ struct TS TimeSclice={0};
 int main(void)
 {	
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); //设置NVIC中断分组2:2位抢占优先级，2位响应优先级
-	SysTick_Init();	//延时函数初始化
+	SysTick_Init();				//延时函数初始化
   USART1_Init(115200);  //初始化USART1 下位机<——>PC端
 	USART2_Init(9600);		//初始化USART2	JY901——>下位机
 	TIM1_Init();					//舵机相关定时器初始化

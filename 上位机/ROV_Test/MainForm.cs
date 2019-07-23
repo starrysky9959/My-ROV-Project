@@ -14,6 +14,9 @@ using Microsoft.Win32;
 using System.Runtime.InteropServices;
 //using SpeechLib;
 using System.Threading;
+using OpenCvSharp.Extensions;
+using OpenCvSharp;
+using OpenCvSharp.Tracking;
 using static ROV_Test.Data_TX_RX;
 using static ROV_Test.Data;
 using static ROV_Test.MessageBoxHandler;
@@ -124,9 +127,15 @@ namespace ROV_Test
             RadBtn_FreeMode.Checked = true;
             MyRov.Mode.ControlMode = 0;
             IsWorking = true;
+            Path = "rtsp://" + UserName + ":" + Password + "@" + IPAddress + "/Streaming/Channels/0"; //设置图传路径
         }
 
 
+        /// <summary>
+        /// 预加载时读取存档
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainForm_Shown(object sender, EventArgs e)
         {
             MyRov.ServoData.FinTail_Advance_StartingPosition = Convert.ToUInt16(ReadIni("舵机参数—尾部推进舵机", "起始位置", "0"));
@@ -160,6 +169,8 @@ namespace ROV_Test
         //窗体实例化
         网络摄像头 Camera_Init = new 网络摄像头();
 
+
+
         /// <summary>
         /// 在文本框显示消息
         /// </summary>
@@ -169,6 +180,9 @@ namespace ROV_Test
             Txt_Info.AppendText(message+"\r\n");
         }
 
+
+
+        #region 后台子线程发送指令
         //创建一个子线程
         public Thread COMMAND;
 
@@ -189,7 +203,7 @@ namespace ROV_Test
                 SendCommand(TX_StartBit_SERVO, MyRov);
                 SendCommand(TX_StartBit_SERVO, MyRov);
                 SendCommand(TX_StartBit_PID, MyRov);
-                Delay(150); 
+                Delay(180); 
             }
         }
         //Delay function
@@ -219,9 +233,10 @@ namespace ROV_Test
                 Btn_Send.Text = "传输";
             }
         }
+#endregion
 
 
-        private DateTime TimeStart = DateTime.Now;  //用于显示当前系统时间
+
         /// <summary>
         /// 数据更新   20Hz
         /// </summary>
@@ -229,9 +244,6 @@ namespace ROV_Test
         /// <param name="e"></param>
         private void DisplayRefresh(object sender, EventArgs e)
         {
-
-            Lab_Time.Text = DateTime.Now.ToLongTimeString() + "\r\n";//系统时间
-
             SetProcessValue_Depth((Int16)MyRov.MS5837Data.Depth);
             SetProcessValue_Pressure((Int16)MyRov.MS5837Data.Pressure);
             Lab_Val_Temperature.Text = MyRov.MS5837Data.Temperature.ToString();
@@ -253,110 +265,192 @@ namespace ROV_Test
         }
 
 
-        #region Socket部分（暂时不用）
-        ////创建一个Socket
-        //Socket socketWatch = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        ////创建一个新线程
-        //Thread th;
 
-        ///// <summary>
-        ///// 与客户端连接
-        ///// </summary>
-        ///// <param name="sender"></param>
-        ///// <param name="e"></param>
-        //private void Btn_Connect_Click(object sender, EventArgs e)
-        //{
-        //    if (Btn_Connect.Text == "连接")
-        //    {
-        //        //把ip地址字符串转换为IPAddress类型的实例
-        //        IPAddress ipAddr = IPAddress.Parse(PC_IpAddress.ToString());
-        //        //用指定的端口和ip初始化IPEndPoint类的新实例
-        //        IPEndPoint ipe = new IPEndPoint(ipAddr, Convert.ToInt32(Port.ToString()));
-        //        //创建socket并开始监听
-        //        socketWatch = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        //        //连接到服务器
-        //        try
-        //        {
-        //            socketWatch.Connect(ipe);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            ShowMsg(ex.Message);
-        //        }
+        #region 摄像头与对象追踪
 
-        //        ShowMsg("连接成功！");
-        //        //开启一个新线程，接收各传感器数据，后台执行
-        //        th = new Thread(ReceiveData);
-        //        th.IsBackground = true;
-        //        th.Start();
-        //    }
-        //    else if (Btn_Connect.Text=="断开")
-        //    {
-        //        //终止线程
-        //        th.Abort();
-        //        socketWatch.Close();
-        //        Btn_Connect.Text = "连接";
-        //    }
-        //}
+        //摄像头获取图像相关
+        public string Path = "";
+        Mat src = new Mat();                            //源mat
+        public Thread th;
+        public UInt16 Isopen = 0;
+        public string UserName = "admin";
+        public string Password = "123456";
+        public string IPAddress = "169.254.200.254";
 
-        ///// <summary>
-        ///// 接收数据并更新
-        ///// </summary>
-        ///// <param name="buffer">接收数据的数组</param>
-        ///// <param name="n">将数据读入缓冲区</param>
-        ///// <param name="CheckBit">数据校验位</param>
-        ///// <param name="i">循环控制量</param>
-        //void ReceiveData()
-        //{
-        //    try
-        //    {
-        //        //定义用于接收数据的byte数组buffer
-        //        byte[] buffer = new byte[100];
-        //        //将数据读入缓冲区
-        //        int n = socketWatch.Receive(buffer, 21, 0);
-        //        //数据校验位
-        //        byte CheckBit = 0X77;
-        //        //和前20位数据异或，进行数据校验
-        //        for (int i = 0; i < 20; i++)
-        //        {
-        //            CheckBit ^= buffer[i];
-        //        }
-        //        //数据类型位=1，数据长度位=21，校验位相同，数据合法
-        //        if ((buffer[0] == 1) && (buffer[1] == 21) && (buffer[20] == CheckBit))
-        //        {
-        //            //传感器参数结构体数据更新
-        //            SensorData.Pressure = BitConverter.ToInt16(buffer, 2);
-        //            SensorData.Depth = BitConverter.ToInt16(buffer, 4);
-        //            SensorData.Temperature = BitConverter.ToInt16(buffer, 6);
-        //            SensorData.PitchAngle = BitConverter.ToInt16(buffer, 8);
-        //            SensorData.YawAngle = BitConverter.ToInt16(buffer, 10);
-        //            SensorData.RollAngle = BitConverter.ToInt16(buffer, 12);
-        //            SensorData.AngleSpeedX = BitConverter.ToInt16(buffer, 14);
-        //            SensorData.AngleSpeedX = BitConverter.ToInt16(buffer, 16);
-        //            SensorData.AngleSpeedX = BitConverter.ToInt16(buffer, 18);
-        //            //UI界面数据更新
-        //            Lab_Val_Pressure.Text = SensorData.Pressure.ToString();
-        //            Lab_Val_Depth.Text = SensorData.Depth.ToString();
-        //            Lab_Val_Temperature.Text = SensorData.Temperature.ToString();
-        //            //Lab_Val_PitchAngle.Text = SensorData.PitchAngle.ToString();
-        //            Hud.pitch = SensorData.PitchAngle;
-        //            //Lab_Val_YawAngle.Text = SensorData.YawAngle.ToString();
-        //            Hud.SSA = SensorData.YawAngle;
-        //            //Lab_Val_RollAngle.Text = SensorData.RollAngle.ToString();
-        //            Hud.roll = SensorData.RollAngle;
-        //            Lab_Val_AngleSpeedX.Text = SensorData.AngleSpeedX.ToString();
-        //            Lab_Val_AngleSpeedY.Text = SensorData.AngleSpeedX.ToString();
-        //            Lab_Val_AngleSpeedZ.Text = SensorData.AngleSpeedX.ToString();
-        //            Hsi.Heading = SensorData.YawAngle;
-        //            ShowMsg("传感器数据更新成功！");
-        //        }
-        //    }
-        //    catch(Exception e)
-        //    {
-        //        ShowMsg(e.Message);
-        //    }
-        //}
-        #endregion
+        //对象追踪相关
+        int ptX = 150;                                  //目标左上角在画面中的坐标
+        int ptY = 150;
+        int bboxSize = 150;                             //选择框大小
+        int tgtSize = 150;                              //跟踪目标大小
+        int videoW = 640;                               //视频尺寸
+        int videoH = 480;
+        System.Drawing.Point target = new System.Drawing.Point();   //目标中心坐标
+        Mat roi = new Mat(100, 100, new MatType());     //roi
+        Rect2d bbox;                                    //选择框
+        Rect2d tgt;                                     //跟踪框
+        Rect _bbox;
+        Rect _tgt;
+        bool trackStatus = false;                       //在不在跟踪
+        bool cal = false;                               //在不在解算
+        TrackerMOSSE Tracker;                           //追踪算法
+
+
+        /// <summary>
+        /// 更新跟踪目标
+        /// </summary>
+        public void updateTracker()             
+        {
+            while (cal) ;                           //等
+            tgt = bbox;                             //设置跟踪框
+            if (Tracker != null) Tracker.Dispose();  //毙了之前的进程
+            GC.Collect();                           //资源回收
+            Tracker = TrackerMOSSE.Create();        //设置新的跟踪进程
+            Tracker.Init(src, tgt);                 //初始化
+        }
+
+
+
+        /// <summary>
+        /// 鼠标点击图像 开始新的跟踪
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PicBox_Video_MouseClick(object sender, MouseEventArgs e)
+        {
+            updateTracker();
+        }
+
+
+
+        /// <summary>
+        /// 鼠标左键设置跟踪目标
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PicBox_Video_MouseMove(object sender, MouseEventArgs e)
+        {
+            ptX = e.X * 5 / 2;
+            ptY = e.Y * 5 / 2;
+            ptX = ptX > (bboxSize / 2) ? (ptX - (bboxSize / 2)) : 0;
+            ptY = ptY > (bboxSize / 2) ? (ptY - (bboxSize / 2)) : 0;
+            ptX = (ptX + bboxSize) > src.Cols ? (src.Cols - bboxSize) : ptX;
+            ptY = (ptY + bboxSize) > src.Rows ? (src.Rows - bboxSize) : ptY;
+        }
+
+
+
+        /// <summary>       
+        /// 鼠标滚轮改变跟踪框尺寸       
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PicBox_Video_MouseWheel(object sender, MouseEventArgs e)          //
+        {
+            if (e.Delta > 0)
+            {
+                bboxSize = bboxSize < 200 ? (bboxSize + 5) : 200;
+            }
+            if (e.Delta < 0)
+            {
+                bboxSize = bboxSize > 50 ? (bboxSize - 5) : 50;
+            }
+        }
+
+
+        /// <summary>
+        /// 获取图像
+        /// </summary>
+        public void Cap_Run(object o)
+        {
+            VideoCapture cap = new VideoCapture(Path);
+            cap.Read(src);
+            double timer = 0;
+            double fps = 0;
+            while (true)
+            {
+                cal = true;
+                fps = Cv2.GetTickFrequency() / (Cv2.GetTickCount() - timer);
+                timer = Cv2.GetTickCount();
+                cap.Read(src);                                          //读画面和参数
+                bbox = new Rect2d(ptX, ptY, bboxSize, bboxSize);        //更新选择框
+                if (Tracker != null && !Tracker.IsDisposed)             //在跟踪？
+                {
+                    trackStatus = Tracker.Update(src, ref tgt);         //更新跟踪参数
+                    _tgt = tgt.ToRect();                                //冗余但懒得改的转换
+                    Cv2.Rectangle(src, _tgt, Scalar.Lime, 2);           //画跟踪框
+                    Rect roiRect = tgt.ToRect();                        //roi
+                    target.X = (int)(2 * tgt.X + tgt.Width) / 2;        //目标坐标
+                    target.Y = (int)(2 * tgt.Y + tgt.Height) / 2;
+                    tgtSize = (int)tgt.Width;
+                    try
+                    {
+                        Mat _roi = new Mat(src, roiRect);               //roi显示在小窗里，窗被我删了
+                        _roi.CopyTo(roi);
+                    }
+                    catch
+                    {
+                    }
+                }
+                _bbox = bbox.ToRect();                                  //冗余但懒得改的转换
+                Cv2.Rectangle(src, _bbox, Scalar.Red, 1);               //画选择框
+                if (trackStatus)                                        //正在跟踪的画面指示
+                {
+                    Cv2.Line(src, target.X - tgtSize / 2, target.Y, target.X, target.Y + tgtSize / 2, Scalar.Lime, 2);
+                    Cv2.Line(src, target.X, target.Y + tgtSize / 2, target.X + tgtSize / 2, target.Y, Scalar.Lime, 2);
+                    Cv2.Line(src, target.X + tgtSize / 2, target.Y, target.X, target.Y - tgtSize / 2, Scalar.Lime, 2);
+                    Cv2.Line(src, target.X, target.Y - tgtSize / 2, target.X - tgtSize / 2, target.Y, Scalar.Lime, 2);
+                    Cv2.PutText(src, "X:" + target.X.ToString() + "|" + "Y:" + target.Y.ToString(), new OpenCvSharp.Point(tgt.X, tgt.Y - 5),
+                    HersheyFonts.HersheyPlain, 3, Scalar.Lime, 3);
+                }
+                Cv2.PutText(src, "FPS:" + ((int)fps).ToString(), new OpenCvSharp.Point(1, videoH - 9), HersheyFonts.HersheyPlain, 2, Scalar.Black, 2);
+                Cv2.PutText(src, "FPS:" + ((int)fps).ToString(), new OpenCvSharp.Point(0, videoH - 10), HersheyFonts.HersheyPlain, 2, Scalar.Lime, 2);
+                
+                PicBox_Video.Image = BitmapConverter.ToBitmap(src);
+                cal = false;
+                GC.Collect();
+                //Cv2.WaitKey(50);
+                if (MyRov.Mode.ControlMode == 2)
+                {
+                    if (target.X < 600)
+                    {
+                        TurnLeft();
+                    }
+                    if (target.X > 1000)
+                    {
+                        TurnRight();
+                    }
+                    if (target.Y < 400)
+                    {
+                        Up();
+                    }
+                    if (target.Y > 700)
+                    {
+                        Down();
+                    }
+                    if (target.X>=600 && target.X<=1000 && target.Y>=400 && target.Y<=700)
+                    {
+                        Advance();
+                    }
+                }
+            }
+            if (Isopen == 0) this.th.Abort();
+        }
+
+
+        /// <summary>
+        /// 打开摄像头传输图像
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_Parameter_Click(object sender, EventArgs e)
+        {
+            th = new Thread(Cap_Run);
+            Isopen = 1;
+            th.Start();
+            bbox = new Rect2d(0, 0, bboxSize, bboxSize);
+        }
+#endregion
+
 
 
         #region 串口部分代码
@@ -446,6 +540,7 @@ namespace ROV_Test
         }
 
 
+
         /// <summary>
         /// 菜单打开PID系数设置界面
         /// </summary>
@@ -456,6 +551,7 @@ namespace ROV_Test
             PID系数 PID_Parameter = new PID系数();
             PID_Parameter.Show();
         }
+
 
 
         /// <summary>
@@ -470,10 +566,60 @@ namespace ROV_Test
         }
 
 
-#region 鱼体特殊指令
+        #region 动作
+        public void TurnLeft()
+        {
+            MyRov.ServoData.FinTail_Advance_StartingPosition = 1450;
+            MyRov.ServoData.FinTail_Advance_EndingPosition = 1900;
+            MyRov.ServoData.FinTail_Advance_EachCCR = 50;
+            MyRov.ServoData.FinTail_Advance_DelayTime = 30;
+            for (int i = 0; i < 5; i++) SendCommand(TX_StartBit_SERVO, MyRov);
+        }
+        public void TurnRight()
+        {
+            MyRov.ServoData.FinTail_Advance_StartingPosition = 110;
+            MyRov.ServoData.FinTail_Advance_EndingPosition = 1450;
+            MyRov.ServoData.FinTail_Advance_EachCCR = 50;
+            MyRov.ServoData.FinTail_Advance_DelayTime = 30;
+            for (int i = 0; i < 5; i++) SendCommand(TX_StartBit_SERVO, MyRov);
+        }
+        public void Up()
+        {
+            MyRov.ServoData.FinLeft_Attitude_Position = 992;
+            MyRov.ServoData.FinRight_Attitude_Position = 1260;
+            for (int i = 0; i < 5; i++) SendCommand(TX_StartBit_SERVO, MyRov);
+        }
+        public void Down()
+        {
+            MyRov.ServoData.FinLeft_Attitude_Position = 1557;
+            MyRov.ServoData.FinRight_Attitude_Position = 660;
+            for (int i = 0; i < 5; i++) SendCommand(TX_StartBit_SERVO, MyRov);
+        }
+        public void Advance()
+        {
+            MyRov.ServoData.FinTail_Advance_StartingPosition = 1100;
+            MyRov.ServoData.FinTail_Advance_EndingPosition = 1900;
+            MyRov.ServoData.FinTail_Advance_EachCCR = 50;
+            MyRov.ServoData.FinTail_Advance_DelayTime = 20;
+            for (int i = 0; i < 5; i++) SendCommand(TX_StartBit_SERVO, MyRov);
+        }
+        public void Stop()
+        {
+            MyRov.ServoData.FinTail_Advance_StartingPosition = 1450;
+            MyRov.ServoData.FinTail_Advance_EndingPosition = 1450;
+            MyRov.ServoData.FinTail_Advance_EachCCR = 100;
+            MyRov.ServoData.FinTail_Advance_DelayTime = 40;
+            for (int i = 0; i < 5; i++) SendCommand(TX_StartBit_SERVO, MyRov);
+        }
+
+        #endregion
+
+
+
+        #region 鱼体特殊指令
 
         /// <summary>
-        /// 发送鱼体启动指令
+        /// 启动指令
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -483,14 +629,14 @@ namespace ROV_Test
             {
                 try
                 {
-                    MyRov.ServoData.FinTail_Advance_StartingPosition = 600;
-                    MyRov.ServoData.FinTail_Advance_EndingPosition = 1400;
-                    MyRov.ServoData.FinTail_Advance_EachCCR = 100;
-                    MyRov.ServoData.FinTail_Advance_DelayTime = 40;
+                    MyRov.ServoData.FinTail_Advance_StartingPosition = 1100;
+                    MyRov.ServoData.FinTail_Advance_EndingPosition = 1900;
+                    MyRov.ServoData.FinTail_Advance_EachCCR = 50;
+                    MyRov.ServoData.FinTail_Advance_DelayTime = 20;
 
                     MyRov.ServoData.FinLeft_Attitude_Position = 1275;
 
-                    MyRov.ServoData.FinRight_Attitude_Position = 800;
+                    MyRov.ServoData.FinRight_Attitude_Position = 960;
                     
                     MyRov.ServoData.Camera_Position = 1000;
 
@@ -519,15 +665,14 @@ namespace ROV_Test
             {
                 try
                 {
-
-                    MyRov.ServoData.FinTail_Advance_StartingPosition = 1000;
-                    MyRov.ServoData.FinTail_Advance_EndingPosition = 1000;
-                    MyRov.ServoData.FinTail_Advance_EachCCR = 100;
-                    MyRov.ServoData.FinTail_Advance_DelayTime = 40;
+                    MyRov.ServoData.FinTail_Advance_StartingPosition = 1450;
+                    MyRov.ServoData.FinTail_Advance_EndingPosition = 1450;
+                    MyRov.ServoData.FinTail_Advance_EachCCR = 50;
+                    MyRov.ServoData.FinTail_Advance_DelayTime = 20;
 
                     MyRov.ServoData.FinLeft_Attitude_Position = 1275;
 
-                    MyRov.ServoData.FinRight_Attitude_Position = 800;
+                    MyRov.ServoData.FinRight_Attitude_Position = 960;
 
                     MyRov.ServoData.Camera_Position = 1000;
 
@@ -556,18 +701,11 @@ namespace ROV_Test
             {
                 try
                 {
-                    MyRov.ServoData.FinTail_Advance_StartingPosition = 1000;
-                    MyRov.ServoData.FinTail_Advance_EndingPosition = 1000;
+                    MyRov.ServoData.FinTail_Advance_StartingPosition = 1100;
+                    MyRov.ServoData.FinTail_Advance_EndingPosition = 1100;
                     for (int i = 0; i < 10; i++) SendCommand(TX_StartBit_SERVO, MyRov);
                     Delay(1000);
-
-                    MyRov.ServoData.FinTail_Advance_StartingPosition = 1500;
-                    MyRov.ServoData.FinTail_Advance_EndingPosition = 1500;
-                    
-                    MyRov.ServoData.FinTail_Advance_EachCCR = 100;
-                    MyRov.ServoData.FinTail_Advance_DelayTime = 40;
-
-                    for (int i = 0; i < 10; i++) SendCommand(TX_StartBit_SERVO, MyRov);
+                    TurnLeft();
                 }
                 catch (Exception ex)
                 {
@@ -592,18 +730,11 @@ namespace ROV_Test
             {
                 try
                 {
-                    MyRov.ServoData.FinTail_Advance_StartingPosition = 1000;
-                    MyRov.ServoData.FinTail_Advance_EndingPosition = 1000;
+                    MyRov.ServoData.FinTail_Advance_StartingPosition = 1450;
+                    MyRov.ServoData.FinTail_Advance_EndingPosition = 1800;
                     for (int i = 0; i < 10; i++) SendCommand(TX_StartBit_SERVO, MyRov);
-                    Delay(1500);
-
-                    MyRov.ServoData.FinTail_Advance_StartingPosition = 600;
-                    MyRov.ServoData.FinTail_Advance_EndingPosition = 600;
-
-                    MyRov.ServoData.FinTail_Advance_EachCCR = 100;
-                    MyRov.ServoData.FinTail_Advance_DelayTime = 40;
-
-                    for (int i = 0; i < 10; i++) SendCommand(TX_StartBit_SERVO, MyRov);
+                    Delay(1000);
+                    TurnRight();
                 }
                 catch (Exception ex)
                 {
@@ -658,11 +789,28 @@ namespace ROV_Test
                 MessageBox.Show("串口未打开");
             }
         }
+
         #endregion
 
+        
+
+        #region 摄像头云台升降
+        private void Btn_HeadUp_Click(object sender, EventArgs e)
+        {
+            MyRov.ServoData.Camera_Position += 100;
+            SendCommand(RX_StartBit_SERVO, MyRov);
+        }
+
+        private void Btn_HeadDown_Click(object sender, EventArgs e)
+        {
+            MyRov.ServoData.Camera_Position -= 100;
+            SendCommand(RX_StartBit_SERVO, MyRov);
+        }
+#endregion
 
 
-#region 更新进度条百分比数据显示部分
+
+        #region 更新进度条百分比数据显示部分
 
         /// <summary>
         /// 实现深度进度条的百分比显示
@@ -694,11 +842,7 @@ namespace ROV_Test
 
 
 
-
-
-
-
-#region 控制模式选择
+        #region 控制模式选择
 
         /// <summary>
         /// 选择自由操控模式
@@ -725,13 +869,17 @@ namespace ROV_Test
             SendCommand(TX_StartBit_MODE, MyRov);
         }
 
+        private void RadBtn_ObjectTrack_CheckedChanged(object sender, EventArgs e)
+        {
+            Lab_ControlMode.Text = "你选择了对象追踪模式";
+            MyRov.Mode.ControlMode = 2;
+            SendCommand(TX_StartBit_MODE, MyRov);
+        }
+        #endregion
 
-#endregion
 
 
-
-
-#region 键盘控制部分
+        #region 键盘控制部分
         /// <summary>
         /// 按下键盘
         /// </summary>
@@ -739,28 +887,44 @@ namespace ROV_Test
         /// <param name="e"></param>
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (MyRov.Mode.ControlMode == 0)
+            if (MyRov.Mode.ControlMode != 1)
             {
                 switch (e.KeyCode)
                 {
                     case (Keys.W):
                         {
+                            Advance();
                             Btn_KeyPressW.BackColor = Color.Red;
                             break;
                         }
                     case (Keys.A):
                         {
+                            TurnLeft();                            
                             Btn_KeyPressA.BackColor = Color.Red;
                             break;
                         }
                     case (Keys.S):
                         {
+                            Stop();
                             Btn_KeyPressS.BackColor = Color.Red;
                             break;
                         }
                     case (Keys.D):
                         {
+                            TurnRight();
                             Btn_KeyPressD.BackColor = Color.Red;
+                            break;
+                        }
+                    case (Keys.Q):
+                        {
+                            Up();
+                            Btn_KeyPressQ.BackColor = Color.Red;
+                            break;
+                        }
+                    case (Keys.E):
+                        {
+                            Down();
+                            Btn_KeyPressE.BackColor = Color.Red;
                             break;
                         }
                 }
@@ -779,7 +943,7 @@ namespace ROV_Test
         /// <param name="e"></param>
         private void MainForm_KeyUp(object sender, KeyEventArgs e)
         {         
-            if (MyRov.Mode.ControlMode == 0)
+            if (MyRov.Mode.ControlMode != 1)
             {
                 switch (e.KeyCode)
                 {
@@ -803,6 +967,16 @@ namespace ROV_Test
                             Btn_KeyPressD.BackColor = Color.White;
                             break;
                         }
+                    case (Keys.Q):
+                        {
+                            Btn_KeyPressQ.BackColor = Color.White;
+                            break;
+                        }
+                    case (Keys.E):
+                        {
+                            Btn_KeyPressE.BackColor = Color.White;
+                            break;
+                        }
                 }
             }
             else
@@ -814,6 +988,12 @@ namespace ROV_Test
 
         #endregion
 
+         
+        /// <summary>
+        /// 关闭前结束所以进程
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = false;
@@ -825,27 +1005,14 @@ namespace ROV_Test
         }
 
 
-
-
-
-        private void Btn_HeadUp_Click(object sender, EventArgs e)
-        {
-            MyRov.ServoData.Camera_Position += 100;
-            SendCommand(RX_StartBit_SERVO, MyRov);
-        }
-
-        private void Btn_HeadDown_Click(object sender, EventArgs e)
-        {
-            MyRov.ServoData.Camera_Position -= 100;
-            SendCommand(RX_StartBit_SERVO, MyRov);
-        }
-
     }
 
 
 
 
-
+    /// <summary>
+    /// 方便其他程序调用 发送接收数据包
+    /// </summary>
     public static class Data
     {
         public static ROVDatabase MyRov = new ROVDatabase();
