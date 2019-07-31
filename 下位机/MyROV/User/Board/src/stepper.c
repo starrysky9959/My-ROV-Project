@@ -54,9 +54,9 @@ void Direction(int32_t dir, int32_t num)
 			for(i = 0; i < num; i++) 						// 1000 个脉冲
 			{
 				GPIO_ResetBits(GPIOA, GPIO_Pin_10);  //输出低电平
-				delay_us(30);
+				delay_us(20);
 				GPIO_SetBits(GPIOA, GPIO_Pin_10);		//输出高电平
-				delay_us(30);
+				delay_us(20);
 			}
 			current_pos -= num;
 			GPIO_ResetBits(GPIOA, GPIO_Pin_10); 		//暂停
@@ -69,9 +69,9 @@ void Direction(int32_t dir, int32_t num)
 			for(i = 0; i < num; i++) 						// 1000 个脉冲
 			{
 				GPIO_ResetBits(GPIOA, GPIO_Pin_10);  //输出低电平
-				delay_us(30);
+				delay_us(20);
 				GPIO_SetBits(GPIOA, GPIO_Pin_10);		//输出高电平
-				delay_us(30);
+				delay_us(20);
 			}
 			current_pos += num;
 			GPIO_ResetBits(GPIOA, GPIO_Pin_10); 		//暂停
