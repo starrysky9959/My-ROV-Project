@@ -52,6 +52,7 @@
 "..\..\output\ms5837.o"
 "..\..\output\timeslice.o"
 "..\..\output\usart1.o"
+"..\..\output\stepper.o"
 --library_type=microlib --strict --scatter "..\..\Output\Template.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

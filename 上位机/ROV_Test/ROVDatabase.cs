@@ -52,30 +52,18 @@ namespace ROV_Test
         //舵机数据  
         public struct SERVO
         {
-            public UInt16 FinTail_Advance_StartingPosition;  //尾部推进舵机 起始位置
-            public UInt16 FinTail_Advance_EndingPosition;    //尾部推进舵机 终止位置
-            public UInt16 FinTail_Advance_EachCCR;           //尾部推进舵机 每次改变的占空比
-            public UInt16 FinTail_Advance_DelayTime;         //尾部推进舵机 延时长度
+            public UInt16 FinTail_Front_StartingPosition;  //尾部舵机(前) 起始位置
+            public UInt16 FinTail_Front_EndingPosition;    //尾部舵机(前) 终止位置
+            public UInt16 FinTail_Front_EachCCR;           //尾部舵机(前) 每次改变的占空比
+            public UInt16 FinTail_Front_DelayTime;         //尾部舵机(前) 延时长度
 
-            public UInt16 FinLeft_Attitude_Position;         //左侧鱼鳍姿态舵机 终止位置
-
-            public UInt16 FinLeft_Thrash_StartingPosition;   //左侧鱼鳍划水舵机 起始位置
-            public UInt16 FinLeft_Thrash_EndingPosition;     //左侧鱼鳍划水舵机 终止位置
-            public UInt16 FinLeft_Thrash_Down_EachCCR;       //左侧鱼鳍划水舵机 向下拍水时 每次改变的占空比
-            public UInt16 FinLeft_Thrash_Down_DelayTime;     //左侧鱼鳍划水舵机 向下拍水时 延时长度
-            public UInt16 FinLeft_Thrash_Up_EachCCR;         //左侧鱼鳍划水舵机 向上拍水时 每次改变的占空比
-            public UInt16 FinLeft_Thrash_Up_DelayTime;       //左侧鱼鳍划水舵机 向上拍水时 延时长度        
-
-            public UInt16 FinRight_Attitude_Position;        //右侧鱼鳍姿态舵机 终止位置
-
-            public UInt16 FinRight_Thrash_StartingPosition;  //右侧鱼鳍划水舵机 起始位置
-            public UInt16 FinRight_Thrash_EndingPosition;    //右侧鱼鳍划水舵机 终止位置
-            public UInt16 FinRight_Thrash_Down_EachCCR;      //右侧鱼鳍划水舵机 向下拍水时 每次改变的占空比
-            public UInt16 FinRight_Thrash_Down_DelayTime;    //右侧鱼鳍划水舵机 向下拍水时 延时长度
-            public UInt16 FinRight_Thrash_Up_EachCCR;        //右侧鱼鳍划水舵机 向上拍水时 每次改变的占空比
-            public UInt16 FinRight_Thrash_Up_DelayTime;      //右侧鱼鳍划水舵机 向上拍水时 延时长度    
+            public UInt16 FinTail_Rear_StartingPosition;  //尾部舵机(后) 起始位置
+            public UInt16 FinTail_Rear_EndingPosition;    //尾部舵机(后) 终止位置
+            public UInt16 FinTail_Rear_EachCCR;           //尾部舵机(后) 每次改变的占空比
+            public UInt16 FinTail_Rear_DelayTime;         //尾部舵机(后) 延时长度
 
             public UInt16 Camera_Position;                   //摄像机云台舵机   终止位置    
+            public UInt16 Pulse_Num;                         //脉冲数
         };
         public SERVO ServoData = new SERVO();
 

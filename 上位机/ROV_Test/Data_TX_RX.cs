@@ -18,7 +18,7 @@ namespace ROV_Test
         //数据长度
         public const int RX_JY901_BUFF_LEN          = 36;        //JY901 参数数据包长度
         public const int RX_MS5837_BUFF_LEN         = 16;        //MS5837 参数数据包长度
-        public const int RX_SERVO_BUFF_LEN          = 38;        //舵机参数数据包长度
+        public const int RX_SERVO_BUFF_LEN          = 20;        //舵机参数数据包长度
         public const int RX_PID_BUFF_LEN            = 64;   	 //PID系数数据包长度
 
         //数据头，数据类型位
@@ -26,14 +26,14 @@ namespace ROV_Test
         public const byte RX_StartBit_MS5837        = 0xAB;		 //接收MS5837深度传感器数据
         public const byte RX_StartBit_SERVO         = 0xAC;      //接收舵机数据
         public const byte RX_StartBit_PID           = 0xAD;      //接收PID系数数据
-#endregion
+        #endregion
 
 
-#region 发送数据包相关常量定义
+        #region 发送数据包相关常量定义
         //数据长度
-        public const int TX_MODE_BUFF_LEN           = 20;      //操作模式变更指令数据包长度
-        public const int TX_SERVO_BUFF_LEN          = 38;     //舵机指令数据包长度
-        public const int TX_PID_BUFF_LEN            = 64;     //PID指令数据包长度
+        public const int TX_MODE_BUFF_LEN           = 20;        //操作模式变更指令数据包长度
+        public const int TX_SERVO_BUFF_LEN          = 20;        //舵机指令数据包长度
+        public const int TX_PID_BUFF_LEN            = 64;        //PID指令数据包长度
 
         //数据头，数据类型位
         public const byte TX_StartBit_MODE          = 0xAB;      //向下位机传输操作模式变更指令
@@ -124,30 +124,18 @@ namespace ROV_Test
 
                 case (RX_StartBit_SERVO):  //表示待解析的是舵机的数据包
                     {         
-                        MyRov.ServoData.FinTail_Advance_StartingPosition = BitConverter.ToUInt16(RxBuffer, 1); //尾部推进舵机 起始位置
-                        MyRov.ServoData.FinTail_Advance_EndingPosition   = BitConverter.ToUInt16(RxBuffer, 3); //尾部推进舵机 终止位置
-                        MyRov.ServoData.FinTail_Advance_EachCCR          = BitConverter.ToUInt16(RxBuffer, 5); //尾部推进舵机 每次改变的占空比
-                        MyRov.ServoData.FinTail_Advance_DelayTime        = BitConverter.ToUInt16(RxBuffer, 7);//尾部推进舵机 延时长度
+                        MyRov.ServoData.FinTail_Front_StartingPosition = BitConverter.ToUInt16(RxBuffer, 1); //尾部推进舵机 起始位置
+                        MyRov.ServoData.FinTail_Front_EndingPosition   = BitConverter.ToUInt16(RxBuffer, 3); //尾部推进舵机 终止位置
+                        MyRov.ServoData.FinTail_Front_EachCCR          = BitConverter.ToUInt16(RxBuffer, 5); //尾部推进舵机 每次改变的占空比
+                        MyRov.ServoData.FinTail_Front_DelayTime        = BitConverter.ToUInt16(RxBuffer, 7);//尾部推进舵机 延时长度
 
-                        MyRov.ServoData.FinLeft_Attitude_Position        = BitConverter.ToUInt16(RxBuffer, 9);//左侧鱼鳍姿态舵机 终止位置
+                        MyRov.ServoData.FinTail_Rear_StartingPosition = BitConverter.ToUInt16(RxBuffer, 9); //尾部推进舵机 起始位置
+                        MyRov.ServoData.FinTail_Rear_EndingPosition   = BitConverter.ToUInt16(RxBuffer, 11); //尾部推进舵机 终止位置
+                        MyRov.ServoData.FinTail_Rear_EachCCR          = BitConverter.ToUInt16(RxBuffer, 13); //尾部推进舵机 每次改变的占空比
+                        MyRov.ServoData.FinTail_Rear_DelayTime        = BitConverter.ToUInt16(RxBuffer, 15);//尾部推进舵机 延时长度
 
-                        MyRov.ServoData.FinLeft_Thrash_StartingPosition  = BitConverter.ToUInt16(RxBuffer, 11);//左侧鱼鳍划水舵机 起始位置
-                        MyRov.ServoData.FinLeft_Thrash_EndingPosition    = BitConverter.ToUInt16(RxBuffer, 13);//左侧鱼鳍划水舵机 终止位置
-                        MyRov.ServoData.FinLeft_Thrash_Down_EachCCR      = BitConverter.ToUInt16(RxBuffer, 15);//左侧鱼鳍划水舵机 向下拍水时 每次改变的占空比
-                        MyRov.ServoData.FinLeft_Thrash_Down_DelayTime    = BitConverter.ToUInt16(RxBuffer, 17);//左侧鱼鳍划水舵机 向下拍水时 延时长度
-                        MyRov.ServoData.FinLeft_Thrash_Up_EachCCR        = BitConverter.ToUInt16(RxBuffer, 19);//左侧鱼鳍划水舵机 向上拍水时 每次改变的占空比
-                        MyRov.ServoData.FinLeft_Thrash_Up_DelayTime      = BitConverter.ToUInt16(RxBuffer, 21);//左侧鱼鳍划水舵机 向上拍水时 延时长度        
-
-                        MyRov.ServoData.FinRight_Attitude_Position       = BitConverter.ToUInt16(RxBuffer, 23);//右侧鱼鳍姿态舵机 终止位置
-
-                        MyRov.ServoData.FinRight_Thrash_StartingPosition = BitConverter.ToUInt16(RxBuffer, 25);//右侧鱼鳍划水舵机 起始位置
-                        MyRov.ServoData.FinRight_Thrash_EndingPosition   = BitConverter.ToUInt16(RxBuffer, 27);//右侧鱼鳍划水舵机 终止位置
-                        MyRov.ServoData.FinRight_Thrash_Down_EachCCR     = BitConverter.ToUInt16(RxBuffer, 29);//右侧鱼鳍划水舵机 向下拍水时 每次改变的占空比
-                        MyRov.ServoData.FinRight_Thrash_Down_DelayTime   = BitConverter.ToUInt16(RxBuffer, 31);//右侧鱼鳍划水舵机 向下拍水时 延时长度
-                        MyRov.ServoData.FinRight_Thrash_Up_EachCCR       = BitConverter.ToUInt16(RxBuffer, 33);//右侧鱼鳍划水舵机 向上拍水时 每次改变的占空比
-                        MyRov.ServoData.FinRight_Thrash_Up_DelayTime     = BitConverter.ToUInt16(RxBuffer, 35);//右侧鱼鳍划水舵机 向上拍水时 延时长度    
-
-                        MyRov.ServoData.Camera_Position = BitConverter.ToUInt16(RxBuffer, 37);//摄像机云台舵机 位置   
+                        MyRov.ServoData.Camera_Position = BitConverter.ToUInt16(RxBuffer, 17);  //摄像机云台舵机 位置                           
+                        MyRov.ServoData.Pulse_Num = BitConverter.ToUInt16(RxBuffer, 19);        //脉冲数
                         break;
                     }
                 case (RX_StartBit_PID):  //表示待解析的是PID系数的数据包
@@ -166,7 +154,6 @@ namespace ROV_Test
                         MyRov.pidData_Yaw.Ki     = BitConverter.ToSingle(RxBuffer, 37);
                         MyRov.pidData_Yaw.Kd     = BitConverter.ToSingle(RxBuffer, 41);
                         MyRov.pidData_Yaw.Target = BitConverter.ToSingle(RxBuffer, 45);
-
 
                         MyRov.pidData_AccelerationY.Kp     = BitConverter.ToSingle(RxBuffer, 49);
                         MyRov.pidData_AccelerationY.Ki     = BitConverter.ToSingle(RxBuffer, 53);
@@ -207,30 +194,18 @@ namespace ROV_Test
                     }
                 case (TX_StartBit_SERVO):   //表示发送的是舵机相关的指令
                     {
-                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinTail_Advance_StartingPosition));
-                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinTail_Advance_EndingPosition));
-                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinTail_Advance_EachCCR));
-                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinTail_Advance_DelayTime));
+                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinTail_Front_StartingPosition));
+                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinTail_Front_EndingPosition));
+                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinTail_Front_EachCCR));
+                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinTail_Front_DelayTime));
 
-                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinLeft_Attitude_Position));
-
-                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinLeft_Thrash_StartingPosition));
-                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinLeft_Thrash_EndingPosition));
-                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinLeft_Thrash_Down_EachCCR));                      
-                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinLeft_Thrash_Down_DelayTime));
-                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinLeft_Thrash_Up_EachCCR));                      
-                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinLeft_Thrash_Up_DelayTime));
-                
-                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinRight_Attitude_Position));
-
-                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinRight_Thrash_StartingPosition));
-                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinRight_Thrash_EndingPosition));
-                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinRight_Thrash_Down_EachCCR));                    
-                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinRight_Thrash_Down_DelayTime));
-                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinRight_Thrash_Up_EachCCR));                       
-                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinRight_Thrash_Up_DelayTime));
+                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinTail_Rear_StartingPosition));
+                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinTail_Rear_EndingPosition));
+                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinTail_Rear_EachCCR));
+                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.FinTail_Rear_DelayTime));
 
                         List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.Camera_Position));
+                        List_TxBuffer.AddRange(BitConverter.GetBytes(MyRov.ServoData.Pulse_Num));
                         break;
                     }
                 case (TX_StartBit_PID):

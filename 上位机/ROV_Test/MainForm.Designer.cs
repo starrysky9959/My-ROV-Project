@@ -62,6 +62,8 @@
             this.Btn_TurnRight = new System.Windows.Forms.Button();
             this.Btn_Up = new System.Windows.Forms.Button();
             this.GroupBox_KeyBoard = new System.Windows.Forms.GroupBox();
+            this.Btn_KeyPressDOWN = new System.Windows.Forms.Button();
+            this.Btn_KeyPressUP = new System.Windows.Forms.Button();
             this.Btn_KeyPressW = new System.Windows.Forms.Button();
             this.Btn_KeyPressA = new System.Windows.Forms.Button();
             this.Btn_KeyPressS = new System.Windows.Forms.Button();
@@ -93,8 +95,6 @@
             this.Hud = new MissionPlanner.Controls.HUD();
             this.Btn_HeadUp = new System.Windows.Forms.Button();
             this.Btn_HeadDown = new System.Windows.Forms.Button();
-            this.Btn_KeyPressE = new System.Windows.Forms.Button();
-            this.Btn_KeyPressQ = new System.Windows.Forms.Button();
             this.GroupBox_Init.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicBox_Video)).BeginInit();
@@ -466,13 +466,14 @@
             this.Btn_Up.Name = "Btn_Up";
             this.Btn_Up.Size = new System.Drawing.Size(90, 50);
             this.Btn_Up.TabIndex = 28;
-            this.Btn_Up.Text = "漂浮";
+            this.Btn_Up.Text = "上浮";
             this.Btn_Up.UseVisualStyleBackColor = false;
+            this.Btn_Up.Click += new System.EventHandler(this.Btn_Up_Click);
             // 
             // GroupBox_KeyBoard
             // 
-            this.GroupBox_KeyBoard.Controls.Add(this.Btn_KeyPressE);
-            this.GroupBox_KeyBoard.Controls.Add(this.Btn_KeyPressQ);
+            this.GroupBox_KeyBoard.Controls.Add(this.Btn_KeyPressDOWN);
+            this.GroupBox_KeyBoard.Controls.Add(this.Btn_KeyPressUP);
             this.GroupBox_KeyBoard.Controls.Add(this.Btn_KeyPressW);
             this.GroupBox_KeyBoard.Controls.Add(this.Btn_KeyPressA);
             this.GroupBox_KeyBoard.Controls.Add(this.Btn_KeyPressS);
@@ -482,6 +483,28 @@
             this.GroupBox_KeyBoard.Size = new System.Drawing.Size(246, 171);
             this.GroupBox_KeyBoard.TabIndex = 29;
             this.GroupBox_KeyBoard.TabStop = false;
+            // 
+            // Btn_KeyPressDOWN
+            // 
+            this.Btn_KeyPressDOWN.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Btn_KeyPressDOWN.Font = new System.Drawing.Font("微软雅黑", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Btn_KeyPressDOWN.Location = new System.Drawing.Point(163, 12);
+            this.Btn_KeyPressDOWN.Name = "Btn_KeyPressDOWN";
+            this.Btn_KeyPressDOWN.Size = new System.Drawing.Size(80, 80);
+            this.Btn_KeyPressDOWN.TabIndex = 62;
+            this.Btn_KeyPressDOWN.Text = "↓";
+            this.Btn_KeyPressDOWN.UseVisualStyleBackColor = false;
+            // 
+            // Btn_KeyPressUP
+            // 
+            this.Btn_KeyPressUP.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Btn_KeyPressUP.Font = new System.Drawing.Font("微软雅黑", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Btn_KeyPressUP.Location = new System.Drawing.Point(3, 12);
+            this.Btn_KeyPressUP.Name = "Btn_KeyPressUP";
+            this.Btn_KeyPressUP.Size = new System.Drawing.Size(80, 80);
+            this.Btn_KeyPressUP.TabIndex = 63;
+            this.Btn_KeyPressUP.Text = "↑";
+            this.Btn_KeyPressUP.UseVisualStyleBackColor = false;
             // 
             // Btn_KeyPressW
             // 
@@ -602,7 +625,7 @@
             // 
             this.GroupBox_Temperature.Controls.Add(this.Lab_Temperature);
             this.GroupBox_Temperature.Controls.Add(this.Lab_Val_Temperature);
-            this.GroupBox_Temperature.Location = new System.Drawing.Point(1119, 300);
+            this.GroupBox_Temperature.Location = new System.Drawing.Point(1125, 311);
             this.GroupBox_Temperature.Name = "GroupBox_Temperature";
             this.GroupBox_Temperature.Size = new System.Drawing.Size(146, 82);
             this.GroupBox_Temperature.TabIndex = 44;
@@ -876,28 +899,6 @@
             this.Btn_HeadDown.UseVisualStyleBackColor = true;
             this.Btn_HeadDown.Click += new System.EventHandler(this.Btn_HeadDown_Click);
             // 
-            // Btn_KeyPressE
-            // 
-            this.Btn_KeyPressE.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Btn_KeyPressE.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.Btn_KeyPressE.Location = new System.Drawing.Point(163, 12);
-            this.Btn_KeyPressE.Name = "Btn_KeyPressE";
-            this.Btn_KeyPressE.Size = new System.Drawing.Size(80, 80);
-            this.Btn_KeyPressE.TabIndex = 62;
-            this.Btn_KeyPressE.Text = "E";
-            this.Btn_KeyPressE.UseVisualStyleBackColor = false;
-            // 
-            // Btn_KeyPressQ
-            // 
-            this.Btn_KeyPressQ.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Btn_KeyPressQ.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.Btn_KeyPressQ.Location = new System.Drawing.Point(3, 12);
-            this.Btn_KeyPressQ.Name = "Btn_KeyPressQ";
-            this.Btn_KeyPressQ.Size = new System.Drawing.Size(80, 80);
-            this.Btn_KeyPressQ.TabIndex = 63;
-            this.Btn_KeyPressQ.Text = "Q";
-            this.Btn_KeyPressQ.UseVisualStyleBackColor = false;
-            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1008,8 +1009,8 @@
         private System.Windows.Forms.Button Btn_HeadUp;
         private System.Windows.Forms.Button Btn_HeadDown;
         private System.Windows.Forms.RadioButton RadBtn_ObjectTrack;
-        private System.Windows.Forms.Button Btn_KeyPressE;
-        private System.Windows.Forms.Button Btn_KeyPressQ;
+        private System.Windows.Forms.Button Btn_KeyPressDOWN;
+        private System.Windows.Forms.Button Btn_KeyPressUP;
     }
 }
 

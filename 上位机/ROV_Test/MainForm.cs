@@ -99,8 +99,8 @@ namespace ROV_Test
             CheckForIllegalCrossThreadCalls = false;
         }
 
- 
 
+        public int current_pos = 0;
         /// <summary>
         /// 主函数初始化
         /// </summary>
@@ -138,30 +138,36 @@ namespace ROV_Test
         /// <param name="e"></param>
         private void MainForm_Shown(object sender, EventArgs e)
         {
-            MyRov.ServoData.FinTail_Advance_StartingPosition = Convert.ToUInt16(ReadIni("舵机参数—尾部推进舵机", "起始位置", "0"));
-            MyRov.ServoData.FinTail_Advance_EndingPosition   = Convert.ToUInt16(ReadIni("舵机参数—尾部推进舵机", "终止位置", "0"));
-            MyRov.ServoData.FinTail_Advance_EachCCR          = Convert.ToUInt16(ReadIni("舵机参数—尾部推进舵机", "每次改变的占空比", "100"));
-            MyRov.ServoData.FinTail_Advance_DelayTime        = Convert.ToUInt16(ReadIni("舵机参数—尾部推进舵机", "延时长度", "0"));
+            MyRov.ServoData.FinTail_Front_StartingPosition = Convert.ToUInt16(ReadIni("舵机参数—尾部舵机(前)", "起始位置", "0"));
+            MyRov.ServoData.FinTail_Front_EndingPosition   = Convert.ToUInt16(ReadIni("舵机参数—尾部舵机(前)", "终止位置", "0"));
+            MyRov.ServoData.FinTail_Front_EachCCR          = Convert.ToUInt16(ReadIni("舵机参数—尾部舵机(前)", "每次改变的占空比", "100"));
+            MyRov.ServoData.FinTail_Front_DelayTime        = Convert.ToUInt16(ReadIni("舵机参数—尾部舵机(前)", "延时长度", "50"));
 
-            MyRov.ServoData.FinLeft_Attitude_Position        = Convert.ToUInt16(ReadIni("舵机参数—左侧鱼鳍姿态舵机", "终止位置", "0"));
+            MyRov.ServoData.FinTail_Rear_StartingPosition = Convert.ToUInt16(ReadIni("舵机参数—尾部舵机(后)", "起始位置", "0"));
+            MyRov.ServoData.FinTail_Rear_EndingPosition   = Convert.ToUInt16(ReadIni("舵机参数—尾部舵机(后)", "终止位置", "0"));
+            MyRov.ServoData.FinTail_Rear_EachCCR          = Convert.ToUInt16(ReadIni("舵机参数—尾部舵机(后)", "每次改变的占空比", "100"));
+            MyRov.ServoData.FinTail_Rear_DelayTime        = Convert.ToUInt16(ReadIni("舵机参数—尾部舵机(后)", "延时长度", "50"));
 
-            MyRov.ServoData.FinLeft_Thrash_StartingPosition  = Convert.ToUInt16(ReadIni("舵机参数—左侧鱼鳍划水舵机", "起始位置", "0"));
-            MyRov.ServoData.FinLeft_Thrash_EndingPosition    = Convert.ToUInt16(ReadIni("舵机参数—左侧鱼鳍划水舵机", "终止位置", "0"));
-            MyRov.ServoData.FinLeft_Thrash_Down_EachCCR      = Convert.ToUInt16(ReadIni("舵机参数—左侧鱼鳍划水舵机", "向下拍水时 每次改变的占空比", "100"));
-            MyRov.ServoData.FinLeft_Thrash_Down_DelayTime    = Convert.ToUInt16(ReadIni("舵机参数—左侧鱼鳍划水舵机", "向下拍水时 延时长度", "0"));
-            MyRov.ServoData.FinLeft_Thrash_Up_EachCCR        = Convert.ToUInt16(ReadIni("舵机参数—左侧鱼鳍划水舵机", "向上拍水时 每次改变的占空比", "100"));
-            MyRov.ServoData.FinLeft_Thrash_Up_DelayTime      = Convert.ToUInt16(ReadIni("舵机参数—左侧鱼鳍划水舵机", "向上拍水时 延时长度", "0"));
+            //MyRov.ServoData.FinLeft_Attitude_Position        = Convert.ToUInt16(ReadIni("舵机参数—左侧鱼鳍姿态舵机", "终止位置", "0"));
 
-            MyRov.ServoData.FinRight_Attitude_Position       = Convert.ToUInt16(ReadIni("舵机参数—右侧鱼鳍姿态舵机", "终止位置", "0"));
+            //MyRov.ServoData.FinLeft_Thrash_StartingPosition  = Convert.ToUInt16(ReadIni("舵机参数—左侧鱼鳍划水舵机", "起始位置", "0"));
+            //MyRov.ServoData.FinLeft_Thrash_EndingPosition    = Convert.ToUInt16(ReadIni("舵机参数—左侧鱼鳍划水舵机", "终止位置", "0"));
+            //MyRov.ServoData.FinLeft_Thrash_Down_EachCCR      = Convert.ToUInt16(ReadIni("舵机参数—左侧鱼鳍划水舵机", "向下拍水时 每次改变的占空比", "100"));
+            //MyRov.ServoData.FinLeft_Thrash_Down_DelayTime    = Convert.ToUInt16(ReadIni("舵机参数—左侧鱼鳍划水舵机", "向下拍水时 延时长度", "0"));
+            //MyRov.ServoData.FinLeft_Thrash_Up_EachCCR        = Convert.ToUInt16(ReadIni("舵机参数—左侧鱼鳍划水舵机", "向上拍水时 每次改变的占空比", "100"));
+            //MyRov.ServoData.FinLeft_Thrash_Up_DelayTime      = Convert.ToUInt16(ReadIni("舵机参数—左侧鱼鳍划水舵机", "向上拍水时 延时长度", "0"));
 
-            MyRov.ServoData.FinRight_Thrash_StartingPosition = Convert.ToUInt16(ReadIni("舵机参数—右侧鱼鳍划水舵机", "起始位置", "0"));
-            MyRov.ServoData.FinRight_Thrash_EndingPosition   = Convert.ToUInt16(ReadIni("舵机参数—右侧鱼鳍划水舵机", "终止位置", "0"));
-            MyRov.ServoData.FinRight_Thrash_Down_EachCCR     = Convert.ToUInt16(ReadIni("舵机参数—右侧鱼鳍划水舵机", "向下拍水时 每次改变的占空比", "100"));
-            MyRov.ServoData.FinRight_Thrash_Down_DelayTime   = Convert.ToUInt16(ReadIni("舵机参数—右侧鱼鳍划水舵机", "向下拍水时 延时长度", "0"));
-            MyRov.ServoData.FinRight_Thrash_Up_EachCCR       = Convert.ToUInt16(ReadIni("舵机参数—右侧鱼鳍划水舵机", "向上拍水时 每次改变的占空比", "100"));
-            MyRov.ServoData.FinRight_Thrash_Up_DelayTime     = Convert.ToUInt16(ReadIni("舵机参数—右侧鱼鳍划水舵机", "向上拍水时 延时长度", "0"));
+            //MyRov.ServoData.FinRight_Attitude_Position       = Convert.ToUInt16(ReadIni("舵机参数—右侧鱼鳍姿态舵机", "终止位置", "0"));
+
+            //MyRov.ServoData.FinRight_Thrash_StartingPosition = Convert.ToUInt16(ReadIni("舵机参数—右侧鱼鳍划水舵机", "起始位置", "0"));
+            //MyRov.ServoData.FinRight_Thrash_EndingPosition   = Convert.ToUInt16(ReadIni("舵机参数—右侧鱼鳍划水舵机", "终止位置", "0"));
+            //MyRov.ServoData.FinRight_Thrash_Down_EachCCR     = Convert.ToUInt16(ReadIni("舵机参数—右侧鱼鳍划水舵机", "向下拍水时 每次改变的占空比", "100"));
+            //MyRov.ServoData.FinRight_Thrash_Down_DelayTime   = Convert.ToUInt16(ReadIni("舵机参数—右侧鱼鳍划水舵机", "向下拍水时 延时长度", "0"));
+            //MyRov.ServoData.FinRight_Thrash_Up_EachCCR       = Convert.ToUInt16(ReadIni("舵机参数—右侧鱼鳍划水舵机", "向上拍水时 每次改变的占空比", "100"));
+            //MyRov.ServoData.FinRight_Thrash_Up_DelayTime     = Convert.ToUInt16(ReadIni("舵机参数—右侧鱼鳍划水舵机", "向上拍水时 延时长度", "0"));
 
             MyRov.ServoData.Camera_Position = Convert.ToUInt16(ReadIni("舵机参数—摄像机云台舵机", "终止位置", "0"));
+            MyRov.ServoData.Pulse_Num = Convert.ToUInt16(ReadIni("步进电机参数", "脉冲数 ", "0"));
         }
 
 
@@ -201,9 +207,8 @@ namespace ROV_Test
                 SendCommand(TX_StartBit_SERVO, MyRov);
                 SendCommand(TX_StartBit_SERVO, MyRov);
                 SendCommand(TX_StartBit_SERVO, MyRov);
-                SendCommand(TX_StartBit_SERVO, MyRov);
                 SendCommand(TX_StartBit_PID, MyRov);
-                Delay(180); 
+                Delay(160); 
             }
         }
         //Delay function
@@ -569,46 +574,46 @@ namespace ROV_Test
         #region 动作
         public void TurnLeft()
         {
-            MyRov.ServoData.FinTail_Advance_StartingPosition = 1450;
-            MyRov.ServoData.FinTail_Advance_EndingPosition = 1900;
-            MyRov.ServoData.FinTail_Advance_EachCCR = 50;
-            MyRov.ServoData.FinTail_Advance_DelayTime = 30;
+            MyRov.ServoData.FinTail_Front_StartingPosition = 1900;
+            MyRov.ServoData.FinTail_Front_EndingPosition = 1900;
+            MyRov.ServoData.FinTail_Front_EachCCR = 50;
+            MyRov.ServoData.FinTail_Front_DelayTime = 30;
             for (int i = 0; i < 5; i++) SendCommand(TX_StartBit_SERVO, MyRov);
         }
         public void TurnRight()
         {
-            MyRov.ServoData.FinTail_Advance_StartingPosition = 110;
-            MyRov.ServoData.FinTail_Advance_EndingPosition = 1450;
-            MyRov.ServoData.FinTail_Advance_EachCCR = 50;
-            MyRov.ServoData.FinTail_Advance_DelayTime = 30;
+            MyRov.ServoData.FinTail_Front_StartingPosition = 1200;
+            MyRov.ServoData.FinTail_Front_EndingPosition = 1200;
+            MyRov.ServoData.FinTail_Front_EachCCR = 50;
+            MyRov.ServoData.FinTail_Front_DelayTime = 30;
             for (int i = 0; i < 5; i++) SendCommand(TX_StartBit_SERVO, MyRov);
         }
         public void Up()
         {
-            MyRov.ServoData.FinLeft_Attitude_Position = 992;
-            MyRov.ServoData.FinRight_Attitude_Position = 1260;
+            if (MyRov.ServoData.Pulse_Num <= 15000) return;
+            MyRov.ServoData.Pulse_Num -= 800;            
             for (int i = 0; i < 5; i++) SendCommand(TX_StartBit_SERVO, MyRov);
         }
         public void Down()
-        {
-            MyRov.ServoData.FinLeft_Attitude_Position = 1557;
-            MyRov.ServoData.FinRight_Attitude_Position = 660;
+        {            
+            if (MyRov.ServoData.Pulse_Num >= 35000) return;
+            MyRov.ServoData.Pulse_Num += 800;
             for (int i = 0; i < 5; i++) SendCommand(TX_StartBit_SERVO, MyRov);
         }
         public void Advance()
         {
-            MyRov.ServoData.FinTail_Advance_StartingPosition = 1100;
-            MyRov.ServoData.FinTail_Advance_EndingPosition = 1900;
-            MyRov.ServoData.FinTail_Advance_EachCCR = 50;
-            MyRov.ServoData.FinTail_Advance_DelayTime = 20;
+            MyRov.ServoData.FinTail_Rear_StartingPosition = 1100;
+            MyRov.ServoData.FinTail_Rear_EndingPosition = 1900;
+            MyRov.ServoData.FinTail_Rear_EachCCR = 50;
+            MyRov.ServoData.FinTail_Rear_DelayTime = 20;
             for (int i = 0; i < 5; i++) SendCommand(TX_StartBit_SERVO, MyRov);
         }
         public void Stop()
         {
-            MyRov.ServoData.FinTail_Advance_StartingPosition = 1450;
-            MyRov.ServoData.FinTail_Advance_EndingPosition = 1450;
-            MyRov.ServoData.FinTail_Advance_EachCCR = 100;
-            MyRov.ServoData.FinTail_Advance_DelayTime = 40;
+            MyRov.ServoData.FinTail_Rear_StartingPosition = 1450;
+            MyRov.ServoData.FinTail_Rear_EndingPosition = 1450;
+            MyRov.ServoData.FinTail_Rear_EachCCR = 100;
+            MyRov.ServoData.FinTail_Rear_DelayTime = 40;
             for (int i = 0; i < 5; i++) SendCommand(TX_StartBit_SERVO, MyRov);
         }
 
@@ -629,18 +634,16 @@ namespace ROV_Test
             {
                 try
                 {
-                    MyRov.ServoData.FinTail_Advance_StartingPosition = 1100;
-                    MyRov.ServoData.FinTail_Advance_EndingPosition = 1900;
-                    MyRov.ServoData.FinTail_Advance_EachCCR = 50;
-                    MyRov.ServoData.FinTail_Advance_DelayTime = 20;
-
-                    MyRov.ServoData.FinLeft_Attitude_Position = 1275;
-
-                    MyRov.ServoData.FinRight_Attitude_Position = 960;
+                    MyRov.ServoData.FinTail_Front_StartingPosition = 1100;
+                    MyRov.ServoData.FinTail_Front_EndingPosition = 1100;
+                    MyRov.ServoData.FinTail_Rear_StartingPosition = 1100;
+                    MyRov.ServoData.FinTail_Rear_EndingPosition = 1800;
+                    MyRov.ServoData.FinTail_Rear_EachCCR = 50;
+                    MyRov.ServoData.FinTail_Rear_DelayTime = 20;
                     
                     MyRov.ServoData.Camera_Position = 1000;
 
-                    for (int i = 0; i < 5; i++) SendCommand(TX_StartBit_SERVO, MyRov);
+                    for (int i = 0; i < 10; i++) SendCommand(TX_StartBit_SERVO, MyRov);
                 }
                 catch (Exception ex)
                 {
@@ -665,18 +668,17 @@ namespace ROV_Test
             {
                 try
                 {
-                    MyRov.ServoData.FinTail_Advance_StartingPosition = 1450;
-                    MyRov.ServoData.FinTail_Advance_EndingPosition = 1450;
-                    MyRov.ServoData.FinTail_Advance_EachCCR = 50;
-                    MyRov.ServoData.FinTail_Advance_DelayTime = 20;
+                    MyRov.ServoData.FinTail_Front_StartingPosition = 1450;
+                    MyRov.ServoData.FinTail_Front_EndingPosition = 1450;
+                    MyRov.ServoData.FinTail_Rear_StartingPosition = 1450;
+                    MyRov.ServoData.FinTail_Rear_EndingPosition = 1450;
+                    MyRov.ServoData.FinTail_Rear_EachCCR = 50;
+                    MyRov.ServoData.FinTail_Rear_DelayTime = 20;
 
-                    MyRov.ServoData.FinLeft_Attitude_Position = 1275;
-
-                    MyRov.ServoData.FinRight_Attitude_Position = 960;
 
                     MyRov.ServoData.Camera_Position = 1000;
 
-                    for (int i = 0; i < 5; i++) SendCommand(TX_StartBit_SERVO, MyRov);
+                    for (int i = 0; i < 10; i++) SendCommand(TX_StartBit_SERVO, MyRov);
                 }
                 catch (Exception ex)
                 {
@@ -701,10 +703,6 @@ namespace ROV_Test
             {
                 try
                 {
-                    MyRov.ServoData.FinTail_Advance_StartingPosition = 1100;
-                    MyRov.ServoData.FinTail_Advance_EndingPosition = 1100;
-                    for (int i = 0; i < 10; i++) SendCommand(TX_StartBit_SERVO, MyRov);
-                    Delay(1000);
                     TurnLeft();
                 }
                 catch (Exception ex)
@@ -730,8 +728,6 @@ namespace ROV_Test
             {
                 try
                 {
-                    MyRov.ServoData.FinTail_Advance_StartingPosition = 1450;
-                    MyRov.ServoData.FinTail_Advance_EndingPosition = 1800;
                     for (int i = 0; i < 10; i++) SendCommand(TX_StartBit_SERVO, MyRov);
                     Delay(1000);
                     TurnRight();
@@ -752,29 +748,11 @@ namespace ROV_Test
             {
                 try
                 {
-                    MyRov.ServoData.FinTail_Advance_StartingPosition =3000;
-                    MyRov.ServoData.FinTail_Advance_EndingPosition   =4000;
-                    MyRov.ServoData.FinTail_Advance_EachCCR          =100;
-                    MyRov.ServoData.FinTail_Advance_DelayTime        =20;
+                    MyRov.ServoData.FinTail_Rear_StartingPosition =1100;
+                    MyRov.ServoData.FinTail_Rear_EndingPosition   =1800;
+                    MyRov.ServoData.FinTail_Rear_EachCCR          =100;
+                    MyRov.ServoData.FinTail_Rear_DelayTime        =20;
                     
-                    MyRov.ServoData.FinLeft_Attitude_Position        = 2500;
-
-                    MyRov.ServoData.FinLeft_Thrash_StartingPosition = 2000;
-                    MyRov.ServoData.FinLeft_Thrash_EndingPosition = 4000;
-                    MyRov.ServoData.FinLeft_Thrash_Down_EachCCR = 100;
-                    MyRov.ServoData.FinLeft_Thrash_Down_DelayTime = 25;
-                    MyRov.ServoData.FinLeft_Thrash_Up_EachCCR = 100;
-                    MyRov.ServoData.FinLeft_Thrash_Up_DelayTime = 25;
-
-                    MyRov.ServoData.FinRight_Attitude_Position = 2500;
-
-                    MyRov.ServoData.FinRight_Thrash_StartingPosition = 2000;
-                    MyRov.ServoData.FinRight_Thrash_EndingPosition = 4000;
-                    MyRov.ServoData.FinRight_Thrash_Down_EachCCR = 100;
-                    MyRov.ServoData.FinRight_Thrash_Down_DelayTime = 25;
-                    MyRov.ServoData.FinRight_Thrash_Up_EachCCR = 100;
-                    MyRov.ServoData.FinRight_Thrash_Up_DelayTime = 5;
-
                     MyRov.ServoData.Camera_Position = 1000;
 
                     SendCommand(TX_StartBit_SERVO, MyRov);
@@ -790,19 +768,32 @@ namespace ROV_Test
             }
         }
 
+
+        /// <summary>
+        /// 调整鱼体重心，上浮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_Up_Click(object sender, EventArgs e)
+        {
+            MyRov.ServoData.Pulse_Num = 0;
+            for (int i = 0; i < 10; i++) SendCommand(TX_StartBit_SERVO, MyRov);
+        }
         #endregion
 
-        
+
 
         #region 摄像头云台升降
         private void Btn_HeadUp_Click(object sender, EventArgs e)
         {
+            if (MyRov.ServoData.Camera_Position >= 1800) return;
             MyRov.ServoData.Camera_Position += 100;
             SendCommand(RX_StartBit_SERVO, MyRov);
         }
 
         private void Btn_HeadDown_Click(object sender, EventArgs e)
         {
+            if (MyRov.ServoData.Camera_Position <= 400) return;
             MyRov.ServoData.Camera_Position -= 100;
             SendCommand(RX_StartBit_SERVO, MyRov);
         }
@@ -915,16 +906,16 @@ namespace ROV_Test
                             Btn_KeyPressD.BackColor = Color.Red;
                             break;
                         }
-                    case (Keys.Q):
+                    case (Keys.Up):
                         {
                             Up();
-                            Btn_KeyPressQ.BackColor = Color.Red;
+                            Btn_KeyPressUP.BackColor = Color.Red;
                             break;
                         }
-                    case (Keys.E):
+                    case (Keys.Down):
                         {
                             Down();
-                            Btn_KeyPressE.BackColor = Color.Red;
+                            Btn_KeyPressDOWN.BackColor = Color.Red;
                             break;
                         }
                 }
@@ -967,14 +958,14 @@ namespace ROV_Test
                             Btn_KeyPressD.BackColor = Color.White;
                             break;
                         }
-                    case (Keys.Q):
+                    case (Keys.Up):
                         {
-                            Btn_KeyPressQ.BackColor = Color.White;
+                            Btn_KeyPressUP.BackColor = Color.White;
                             break;
                         }
-                    case (Keys.E):
+                    case (Keys.Down):
                         {
-                            Btn_KeyPressE.BackColor = Color.White;
+                            Btn_KeyPressDOWN.BackColor = Color.White;
                             break;
                         }
                 }
@@ -988,7 +979,8 @@ namespace ROV_Test
 
         #endregion
 
-         
+        
+        
         /// <summary>
         /// 关闭前结束所以进程
         /// </summary>
@@ -997,13 +989,16 @@ namespace ROV_Test
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = false;
+            //电机复位
+            MyRov.ServoData.Pulse_Num = 25000;
+            for (int i = 0; i < 10; i++) SendCommand(TX_StartBit_SERVO, MyRov);
+
             if (Camera_Init.Isopen == 1)
             {
                 Camera_Init.th.Abort();
             }
             Camera_Init.Close();
         }
-
 
     }
 

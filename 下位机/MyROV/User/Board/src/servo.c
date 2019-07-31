@@ -97,31 +97,32 @@ void TIM8_Init(void)
 	TIM8_RCC_ENABLE;
 
   //指定引脚复用功能 
-	GPIO_PinAFConfig(FinTail_Advance_GPIO_PORT,FinTail_Advance_GPIO_PINSOURCE, FinTail_Advance_GPIO_AF); 
-	GPIO_PinAFConfig(Camera_Position_GPIO_PORT,Camera_Position_GPIO_PINSOURCE, Camera_Position_GPIO_AF); 
-	
+	GPIO_PinAFConfig(FinTail_Front_GPIO_PORT, FinTail_Front_GPIO_PINSOURCE, FinTail_Front_GPIO_AF); 
+	GPIO_PinAFConfig(FinTail_Rear_GPIO_PORT, FinTail_Rear_GPIO_PINSOURCE, FinTail_Rear_GPIO_AF); 	
+	GPIO_PinAFConfig(Camera_Position_GPIO_PORT, Camera_Position_GPIO_PINSOURCE, Camera_Position_GPIO_AF); 
+
 	//定时器通道引脚配置 														   
-	GPIO_InitStructure.GPIO_Pin = FinTail_Advance_GPIO_PIN;	
+	GPIO_InitStructure.GPIO_Pin = FinTail_Front_GPIO_PIN | FinTail_Rear_GPIO_PIN | Camera_Position_GPIO_PIN;	
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;    
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz; 
-	GPIO_Init(FinTail_Advance_GPIO_PORT, &GPIO_InitStructure);
+	GPIO_Init(GPIOC, &GPIO_InitStructure);
 	
 	//更改引脚，配置其他通道
-	GPIO_InitStructure.GPIO_Pin = Camera_Position_GPIO_PIN;		
-	GPIO_Init(Camera_Position_GPIO_PORT, &GPIO_InitStructure);
+//	GPIO_InitStructure.GPIO_Pin = Camera_Position_GPIO_PIN;		
+//	GPIO_Init(Camera_Position_GPIO_PORT, &GPIO_InitStructure);
 	
 	//周期
   TIM_TimeBaseStructure.TIM_Period = TIM8_Period;
 	//预分频系数
   TIM_TimeBaseStructure.TIM_Prescaler = TIM8_Prescaler;	
   // 采样时钟分频
-  TIM_TimeBaseStructure.TIM_ClockDivision=TIM_CKD_DIV1;
+  TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
   // 计数方式
   TIM_TimeBaseStructure.TIM_CounterMode=TIM_CounterMode_Up;
   // 重复计数器
-  TIM_TimeBaseStructure.TIM_RepetitionCounter=0;	
+  TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;	
 	// 初始化定时器TIMx, x[1,8]
 	TIM_TimeBaseInit(TIM8, &TIM_TimeBaseStructure);
 	
@@ -131,16 +132,14 @@ void TIM8_Init(void)
   TIM_OCInitStructure.TIM_Pulse = 0;
   TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low;
 
-  TIM_OC1Init(TIM8, &TIM_OCInitStructure);	   			//使能通道1
-	TIM_OC1PreloadConfig(TIM8, TIM_OCPreload_Enable);	//使能通道1重载
-	TIM_OC2Init(TIM8, &TIM_OCInitStructure);	   			//使能通道2
-	TIM_OC2PreloadConfig(TIM8, TIM_OCPreload_Enable);	//使能通道2重载
-		
-	// 使能定时器
-	TIM_Cmd(TIM8, ENABLE);	
-	
-	//主动输出使能
-  TIM_CtrlPWMOutputs(TIM8, ENABLE);
+  TIM_OC2Init(TIM8, &TIM_OCInitStructure);	   			//使能通道1
+	TIM_OC2PreloadConfig(TIM8, TIM_OCPreload_Enable);	//使能通道1重载
+	TIM_OC3Init(TIM8, &TIM_OCInitStructure);	   			//使能通道2
+	TIM_OC3PreloadConfig(TIM8, TIM_OCPreload_Enable);	//使能通道2重载
+	TIM_OC4Init(TIM8, &TIM_OCInitStructure);	   			//使能通道3
+	TIM_OC4PreloadConfig(TIM8, TIM_OCPreload_Enable);	//使能通道3重载		
+	TIM_Cmd(TIM8, ENABLE);														// 使能定时器
+  TIM_CtrlPWMOutputs(TIM8, ENABLE);									//主动输出使能
 }
 
 
@@ -152,35 +151,24 @@ void TIM8_Init(void)
 **************************************************************/
 void Servo_Reset()
 {
-	Servo_Val.FinTail_Advance_EachCCR      = 65;
-	Servo_Val.FinLeft_Thrash_Down_EachCCR  = 100; 
-	Servo_Val.FinLeft_Thrash_Up_EachCCR    = 100;
-	Servo_Val.FinRight_Thrash_Down_EachCCR = 100;
-	Servo_Val.FinRight_Thrash_Up_EachCCR   = 100;
+
 	
-	Servo_Val.FinTail_Advance_DelayTime			 = 25;
-	Servo_Val.FinLeft_Thrash_Down_DelayTime  = 10;
-	Servo_Val.FinLeft_Thrash_Up_DelayTime    = 15;
-	Servo_Val.FinRight_Thrash_Down_DelayTime = 10;
-	Servo_Val.FinRight_Thrash_Up_DelayTime   = 15;
+	Servo_Val.FinTail_Front_StartingPosition = 1460;
+	Servo_Val.FinTail_Front_EndingPosition 	 = 1460;
+	Servo_Val.FinTail_Front_EachCCR					 = 50;	
+	Servo_Val.FinTail_Front_DelayTime 			 = 100;
 	
-	Servo_Val.FinTail_Advance_StartingPosition = 1450;  //尾部推进舵机 起始位置
-  Servo_Val.FinTail_Advance_EndingPosition   = 1450;   //尾部推进舵机 终止位置
-  Servo_Val.FinLeft_Attitude_Position        = 1275;   			//左侧鱼鳍姿态舵机 终止位置
-  Servo_Val.FinLeft_Thrash_StartingPosition	 = 2500;   //左侧鱼鳍划水舵机 起始位置
-  Servo_Val.FinLeft_Thrash_EndingPosition		 = 2500;     //左侧鱼鳍划水舵机 终止位置
-  Servo_Val.FinRight_Attitude_Position			 = 960;  			//右侧鱼鳍姿态舵机 终止位置
-	Servo_Val.FinRight_Thrash_StartingPosition = 960;  //右侧鱼鳍划水舵机 起始位置
-  Servo_Val.FinRight_Thrash_EndingPosition	 = 1900;    //右侧鱼鳍划水舵机 终止位置
-	Servo_Val.Camera_Position									 = 1000;                   //摄像机云台舵机 位置  
+	Servo_Val.FinTail_Rear_StartingPosition = 1450;
+	Servo_Val.FinTail_Rear_EndingPosition 	= 1450;
+	Servo_Val.FinTail_Rear_EachCCR					= 50;	
+	Servo_Val.FinTail_Rear_DelayTime 			  = 100;
 	
-	TIM_SetCompare2(TIM1, Servo_Val.Camera_Position);
-	//TIM_SetCompare1(TIM8, Servo_Val.Camera_Position);
-	TIM_SetCompare2(TIM8, Servo_Val.FinTail_Advance_StartingPosition);
-	//TIM_SetCompare1(TIM1, Servo_Val.FinRight_Thrash_StartingPosition);
-	//TIM_SetCompare2(TIM1, Servo_Val.FinLeft_Thrash_StartingPosition);
-	TIM_SetCompare3(TIM1, Servo_Val.FinRight_Attitude_Position);
-	TIM_SetCompare4(TIM1, Servo_Val.FinLeft_Attitude_Position);
+	Servo_Val.Camera_Position = 1000;                   
+	
+	TIM_SetCompare2(TIM8, Servo_Val.Camera_Position);
+	TIM_SetCompare3(TIM8, Servo_Val.FinTail_Front_StartingPosition);
+	TIM_SetCompare4(TIM8, Servo_Val.FinTail_Rear_StartingPosition);
+
 }
 
 
@@ -192,78 +180,12 @@ void Servo_Reset()
 **************************************************************/
 void Servo_PositionSet()
 {
-	TIM_SetCompare4(TIM1, Servo_Val.FinLeft_Attitude_Position);
-	TIM_SetCompare3(TIM1, Servo_Val.FinRight_Attitude_Position);
-	//TIM_SetCompare1(TIM8, Servo_Val.Camera_Position);
-	TIM_SetCompare2(TIM1, Servo_Val.Camera_Position);
+	TIM_SetCompare2(TIM8, Servo_Val.Camera_Position);
 }
 
 
 /**************************************************************
- * @brief	左右鱼鳍步进数据计算
- * @param	
- * @retval
- * @addition	接收完舵机数据直接调用Servo_Calculation();
-**************************************************************/
-void Servo_Calculation()
-{
-	int i,sign;
-	//左侧舵机
-	if (Servo_Val.FinLeft_Thrash_StartingPosition < Servo_Val.FinLeft_Thrash_EndingPosition) 
-		   sign = 1;
-	else sign = -1;
-	Step_Val.Len_Left = 0;
-	Step_Val.Len_Left_Down = 0;
-	Step_Val.Len_Left_Up = 0;
-	//计算向下拍时的步进值
-	i = Servo_Val.FinLeft_Thrash_StartingPosition;
-	while (i != Servo_Val.FinLeft_Thrash_EndingPosition)
-	{
-		Step_Val.Len_Left++;
-		Step_Val.Len_Left_Down++;
-		Step_Val.Left[Step_Val.Len_Left] = i;
-		i += sign*Servo_Val.FinLeft_Thrash_Down_EachCCR;
-	}
-	//计算向上拍时的步进值
-	sign = (-1)*sign;
-	i = Servo_Val.FinLeft_Thrash_EndingPosition;
-	while (i != Servo_Val.FinLeft_Thrash_StartingPosition)
-	{
-		Step_Val.Len_Left++;
-		Step_Val.Len_Left_Up++;
-		Step_Val.Left[Step_Val.Len_Left] = i;
-		i += sign*Servo_Val.FinLeft_Thrash_Up_EachCCR;
-	}
-	
-	//右侧舵机
-	if (Servo_Val.FinRight_Thrash_StartingPosition < Servo_Val.FinRight_Thrash_EndingPosition) 
-		   sign = 1;
-	else sign = -1;
-	Step_Val.Len_Right = 0;
-	Step_Val.Len_Right_Down = 0;
-	Step_Val.Len_Right_Up = 0;
-	//计算向下拍时的步进值
-	i = Servo_Val.FinRight_Thrash_StartingPosition;
-	while (i != Servo_Val.FinRight_Thrash_EndingPosition)
-	{
-		Step_Val.Len_Right++;
-		Step_Val.Len_Right_Down++;
-		Step_Val.Right[Step_Val.Len_Right] = i;
-		i += sign*Servo_Val.FinRight_Thrash_Down_EachCCR;
-	}
-	//计算向上拍时的步进值
-	sign = (-1)*sign;
-	i = Servo_Val.FinRight_Thrash_EndingPosition;
-	while (i != Servo_Val.FinRight_Thrash_StartingPosition)
-	{
-		Step_Val.Len_Right++;
-		Step_Val.Len_Right_Up++;
-		Step_Val.Right[Step_Val.Len_Right] = i;
-		i += sign*Servo_Val.FinRight_Thrash_Up_EachCCR;
-	}
-}
-/**************************************************************
- * @brief	左右鱼鳍、尾部舵机循环摆动
+ * @brief	尾部舵机（后）循环摆动
  * @param	
  * @retval
  * @addition	除特定时刻进入中断，其余时间都在转动舵机
@@ -271,43 +193,45 @@ void Servo_Calculation()
 **************************************************************/
 void Servo_WorkingLoop()
 {
-	int i,j,k;
-//	int tot;
-//	
-//	tot = 0;
-//	i = Servo_Val.FinTail_Advance_StartingPosition;
-
-//	
-//	//尾部推进舵机的运动
-//	while (tot < 20)
+	int i,j;
+	j = 0;
+	for (i = Servo_Val.FinTail_Rear_StartingPosition; i <= Servo_Val.FinTail_Rear_EndingPosition; i += Servo_Val.FinTail_Rear_EachCCR) 
+	{
+		TIM_SetCompare3(TIM8, Servo_Val.FinTail_Front_StartingPosition + j * Servo_Val.FinTail_Front_EachCCR);
+		TIM_SetCompare4(TIM8, i);
+		j++;
+		delay_ms(Servo_Val.FinTail_Rear_DelayTime);
+	}	
+		
+	j = 0;
+	for (i = Servo_Val.FinTail_Rear_EndingPosition; i >= Servo_Val.FinTail_Rear_StartingPosition; i -= Servo_Val.FinTail_Rear_EachCCR) 
+	{
+		TIM_SetCompare3(TIM8, Servo_Val.FinTail_Front_EndingPosition - j * Servo_Val.FinTail_Front_EachCCR);
+		TIM_SetCompare4(TIM8, i);
+		j++;
+		delay_ms(Servo_Val.FinTail_Rear_DelayTime);
+	}	
+//	//前舵机
+//	for (i = Servo_Val.FinTail_Front_StartingPosition; i <= Servo_Val.FinTail_Front_EndingPosition; i += Servo_Val.FinTail_Front_EachCCR) 	
 //	{
-//		TIM_SetCompare2(TIM8, i);
-//		i += Servo_Val.FinTail_Advance_EachCCR;
-//		tot++;
-//		delay_ms(Servo_Val.FinTail_Advance_DelayTime);
+//		TIM_SetCompare3(TIM8, i);
+//		delay_ms(Servo_Val.FinTail_Front_DelayTime);
+//	}
+//	for (i = Servo_Val.FinTail_Front_EndingPosition; i >= Servo_Val.FinTail_Front_StartingPosition; i -= Servo_Val.FinTail_Front_EachCCR) 	
+//	{
+//		TIM_SetCompare3(TIM8, i);
+//		delay_ms(Servo_Val.FinTail_Front_DelayTime);
 //	}
 //	
-//	tot = 0;
-//	i = Servo_Val.FinTail_Advance_EndingPosition;
-//	
-//	//尾部推进舵机的运动
-//	while (tot < 20)
+//	//后舵机
+//	for (i = Servo_Val.FinTail_Rear_StartingPosition; i <= Servo_Val.FinTail_Rear_EndingPosition; i += Servo_Val.FinTail_Rear_EachCCR) 	
 //	{
-//		TIM_SetCompare2(TIM8, i);
-//		i -= Servo_Val.FinTail_Advance_EachCCR;
-//		tot++;
-//		delay_ms(Servo_Val.FinTail_Advance_DelayTime);
+//		TIM_SetCompare4(TIM8, i);
+//		delay_ms(Servo_Val.FinTail_Rear_DelayTime);
 //	}
-//	
-	for (i = Servo_Val.FinTail_Advance_StartingPosition; i <= Servo_Val.FinTail_Advance_EndingPosition; i += Servo_Val.FinTail_Advance_EachCCR) 	
-	{
-		TIM_SetCompare2(TIM8, i);
-		delay_ms(Servo_Val.FinTail_Advance_DelayTime);
-	}
-	for (i = Servo_Val.FinTail_Advance_EndingPosition; i >= Servo_Val.FinTail_Advance_StartingPosition; i -= Servo_Val.FinTail_Advance_EachCCR) 	
-	{
-		TIM_SetCompare2(TIM8, i);
-		delay_ms(Servo_Val.FinTail_Advance_DelayTime);
-	}
-
+//	for (i = Servo_Val.FinTail_Rear_EndingPosition; i >= Servo_Val.FinTail_Rear_StartingPosition; i -= Servo_Val.FinTail_Rear_EachCCR) 	
+//	{
+//		TIM_SetCompare4(TIM8, i);
+//		delay_ms(Servo_Val.FinTail_Rear_DelayTime);
+//	}
 }

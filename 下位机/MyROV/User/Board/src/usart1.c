@@ -99,7 +99,7 @@ void USART1_IRQHandler(void)
 {
 	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
   {
-		Command_ReceiveAndCheck(USART_ReceiveData(USART1));	//串口1接收到上位机发来的控制指令 			
+		Command_ReceiveAndCheck(USART_ReceiveData(USART1));	//串口1接收到上位机发来的控制指令 			 
 		USART_ClearITPendingBit(USART1, USART_IT_RXNE);
   }
 	USART_ClearITPendingBit(USART1,USART_IT_ORE);

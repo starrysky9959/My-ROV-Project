@@ -7,6 +7,7 @@
 #include "systick.h"
 #include "control.h"
 #include "MS5837.h"
+#include "stepper.h"
 
 /**************************************************************
  * @brief 根据起始码startbit，向上位机发送相应的ROV数据信息
@@ -30,15 +31,15 @@ void PackDataUp(uint8_t startbit)
 		case(TX_StartBit_JY901):
 		{
 			//将相关数据赋值给共用体内相应成员
-			TX_JY901_Data.motiondata.acc_x	 =JY901_Val.acc_x;
-			TX_JY901_Data.motiondata.acc_y	 =JY901_Val.acc_y;
-			TX_JY901_Data.motiondata.acc_z	 =JY901_Val.acc_z;
-			TX_JY901_Data.motiondata.angle_x =JY901_Val.angle_x;
-			TX_JY901_Data.motiondata.angle_y =JY901_Val.angle_y;
-			TX_JY901_Data.motiondata.angle_z =JY901_Val.angle_z;
-			TX_JY901_Data.motiondata.gyro_x	 =JY901_Val.gyro_x;
-			TX_JY901_Data.motiondata.gyro_y	 =JY901_Val.gyro_y;
-			TX_JY901_Data.motiondata.gyro_z	 =JY901_Val.gyro_z;
+			TX_JY901_Data.motiondata.acc_x	 = JY901_Val.acc_x;
+			TX_JY901_Data.motiondata.acc_y	 = JY901_Val.acc_y;
+			TX_JY901_Data.motiondata.acc_z	 = JY901_Val.acc_z;
+			TX_JY901_Data.motiondata.angle_x = JY901_Val.angle_x;
+			TX_JY901_Data.motiondata.angle_y = JY901_Val.angle_y;
+			TX_JY901_Data.motiondata.angle_z = JY901_Val.angle_z;
+			TX_JY901_Data.motiondata.gyro_x	 = JY901_Val.gyro_x;
+			TX_JY901_Data.motiondata.gyro_y	 = JY901_Val.gyro_y;
+			TX_JY901_Data.motiondata.gyro_z	 = JY901_Val.gyro_z;
 			//数据打包发送
 			USART1_PutChar(startbit);//发送数据头
 			for(i=0;i<TX_JY901_BUFF_LEN;i++)
@@ -55,10 +56,10 @@ void PackDataUp(uint8_t startbit)
 		case(TX_StartBit_MS5837):
 		{
 			//将相关数据赋值给共用体内相应成员
-			TX_MS5837_Data.ms5837data.depth		 =MS5837_Val.depth;
-			TX_MS5837_Data.ms5837data.temp		 =MS5837_Val.temp;
-			TX_MS5837_Data.ms5837data.pressure =MS5837_Val.pressure;
-			TX_MS5837_Data.ms5837data.offset	 =MS5837_Val.offset;
+			TX_MS5837_Data.ms5837data.depth		 = MS5837_Val.depth;
+			TX_MS5837_Data.ms5837data.temp		 = MS5837_Val.temp;
+			TX_MS5837_Data.ms5837data.pressure = MS5837_Val.pressure;
+			TX_MS5837_Data.ms5837data.offset	 = MS5837_Val.offset;
 			
 			//数据打包发送
 			USART1_PutChar(startbit);//发送数据头
@@ -76,30 +77,18 @@ void PackDataUp(uint8_t startbit)
 		case(TX_StartBit_SERVO):
 		{
 			//将相关数据赋值给共用体内相应成员
-			TX_SERVO_Data.servodata.FinTail_Advance_StartingPosition = Servo_Val.FinTail_Advance_StartingPosition;  //尾部推进舵机 起始位置
-			TX_SERVO_Data.servodata.FinTail_Advance_EndingPosition	 = Servo_Val.FinTail_Advance_EndingPosition;    //尾部推进舵机 终止位置
-			TX_SERVO_Data.servodata.FinTail_Advance_EachCCR					 = Servo_Val.FinTail_Advance_EachCCR;           //尾部推进舵机 每次改变的占空比
-			TX_SERVO_Data.servodata.FinTail_Advance_DelayTime				 = Servo_Val.FinTail_Advance_DelayTime;         //尾部推进舵机 延时长度
-
-			TX_SERVO_Data.servodata.FinLeft_Attitude_Position	 = Servo_Val.FinLeft_Attitude_Position;   //左侧鱼鳍姿态舵机 终止位置
-
-			TX_SERVO_Data.servodata.FinLeft_Thrash_StartingPosition	 = Servo_Val.FinLeft_Thrash_StartingPosition;   //左侧鱼鳍划水舵机 起始位置
-			TX_SERVO_Data.servodata.FinLeft_Thrash_EndingPosition    = Servo_Val.FinLeft_Thrash_EndingPosition;     //左侧鱼鳍划水舵机 终止位置
-			TX_SERVO_Data.servodata.FinLeft_Thrash_Down_EachCCR      = Servo_Val.FinLeft_Thrash_Down_EachCCR;       //左侧鱼鳍划水舵机 向下拍水时 每次改变的占空比
-			TX_SERVO_Data.servodata.FinLeft_Thrash_Down_DelayTime    = Servo_Val.FinLeft_Thrash_Down_DelayTime;     //左侧鱼鳍划水舵机 向下拍水时 延时长度
-			TX_SERVO_Data.servodata.FinLeft_Thrash_Up_EachCCR        = Servo_Val.FinLeft_Thrash_Up_EachCCR;         //左侧鱼鳍划水舵机 向上拍水时 每次改变的占空比
-			TX_SERVO_Data.servodata.FinLeft_Thrash_Up_DelayTime      = Servo_Val.FinLeft_Thrash_Up_DelayTime;       //左侧鱼鳍划水舵机 向上拍水时 延时长度        
-
-			TX_SERVO_Data.servodata.FinRight_Attitude_Position = Servo_Val.FinRight_Attitude_Position;  //右侧鱼鳍姿态舵机 终止位置
-
-			TX_SERVO_Data.servodata.FinRight_Thrash_StartingPosition = Servo_Val.FinRight_Thrash_StartingPosition;  //右侧鱼鳍划水舵机 起始位置
-			TX_SERVO_Data.servodata.FinRight_Thrash_EndingPosition   = Servo_Val.FinRight_Thrash_EndingPosition;    //右侧鱼鳍划水舵机 终止位置
-			TX_SERVO_Data.servodata.FinRight_Thrash_Down_EachCCR     = Servo_Val.FinRight_Thrash_Down_EachCCR;      //右侧鱼鳍划水舵机 向下拍水时 每次改变的占空比
-			TX_SERVO_Data.servodata.FinRight_Thrash_Down_DelayTime   = Servo_Val.FinRight_Thrash_Down_DelayTime;    //右侧鱼鳍划水舵机 向下拍水时 延时长度
-			TX_SERVO_Data.servodata.FinRight_Thrash_Up_EachCCR       = Servo_Val.FinRight_Thrash_Up_EachCCR;        //右侧鱼鳍划水舵机 向上拍水时 每次改变的占空比
-			TX_SERVO_Data.servodata.FinRight_Thrash_Up_DelayTime     = Servo_Val.FinRight_Thrash_Up_DelayTime;      //右侧鱼鳍划水舵机 向上拍水时 延时长度    
+			TX_SERVO_Data.servodata.FinTail_Front_StartingPosition = Servo_Val.FinTail_Front_StartingPosition;  //尾部舵机（前） 起始位置
+			TX_SERVO_Data.servodata.FinTail_Front_EndingPosition	 = Servo_Val.FinTail_Front_EndingPosition;    //尾部舵机（前） 终止位置
+			TX_SERVO_Data.servodata.FinTail_Front_EachCCR					 = Servo_Val.FinTail_Front_EachCCR;           //尾部舵机（前） 每次改变的占空比
+			TX_SERVO_Data.servodata.FinTail_Front_DelayTime				 = Servo_Val.FinTail_Front_DelayTime;         //尾部舵机（前） 延时长度
+			
+			TX_SERVO_Data.servodata.FinTail_Rear_StartingPosition = Servo_Val.FinTail_Rear_StartingPosition;  //尾部舵机（后） 起始位置
+			TX_SERVO_Data.servodata.FinTail_Rear_EndingPosition	  = Servo_Val.FinTail_Rear_EndingPosition;    //尾部舵机（后） 终止位置
+			TX_SERVO_Data.servodata.FinTail_Rear_EachCCR					= Servo_Val.FinTail_Rear_EachCCR;           //尾部舵机（后） 每次改变的占空比
+			TX_SERVO_Data.servodata.FinTail_Rear_DelayTime				= Servo_Val.FinTail_Rear_DelayTime;         //尾部舵机（后） 延时长度
 
 			TX_SERVO_Data.servodata.Camera_Position =	Servo_Val.Camera_Position;      //摄像机云台舵机 位置 
+			TX_SERVO_Data.servodata.Pulse_Num = Servo_Val.Pulse_Num;									//步进电机 位置
 			
 			//数据打包发送
 			USART1_PutChar(startbit);//发送数据头
@@ -159,6 +148,7 @@ void PackDataUp(uint8_t startbit)
 **************************************************************/
 void Command_ReceiveAndCheck(uint8_t data)
 {
+
 	static RX_SEVRO_Buff_Union RX_SEVRO_Data;
 	static RX_PID_Buff_Union 	 RX_PID_Data;
 	static RX_MODE_Buff_Union  RX_MODE_Data;
@@ -168,25 +158,25 @@ void Command_ReceiveAndCheck(uint8_t data)
 	uint8_t i,checkbit;
 	
 	RX_Cnt++;	//接收计数器自增一，表示当前数据包已接收到的字节数
-	if (RX_Cnt==1)	//表示该字节为数据包起始位
+	if (RX_Cnt == 1)	//表示该字节为数据包起始位
 	{
-		startbit=data;
-		if (startbit!=RX_StartBit_MODE &&
-				startbit!=RX_StartBit_SERVO &&
-				startbit!=RX_StartBit_PID)			//起始位不符合要求，舍弃当前已接收到的数据
+		startbit = data;
+		if (startbit != RX_StartBit_MODE &&
+				startbit != RX_StartBit_SERVO &&
+				startbit != RX_StartBit_PID)			//起始位不符合要求，舍弃当前已接收到的数据
 		{
-			RX_Cnt=0;		//计数器归零，重新开始计数
+			RX_Cnt = 0;		//计数器归零，重新开始计数
 		}
 		return;
 	}
 	
 	switch (startbit)	//按类型将数据存储到对应的共用体中
-	{		
+	{				
 		case(RX_StartBit_MODE):
 		{			
-			if (RX_Cnt<=RX_MODE_BUFF_LEN+1)
+			if (RX_Cnt <= RX_MODE_BUFF_LEN + 1)
 			{
-				RX_MODE_Data.RX_MODE_BUFF[RX_Cnt-2]=data;
+				RX_MODE_Data.RX_MODE_BUFF[RX_Cnt-2] = data;
 				return;
 			}
 			break;
@@ -194,7 +184,7 @@ void Command_ReceiveAndCheck(uint8_t data)
 		
 		case(RX_StartBit_SERVO):
 		{
-			if (RX_Cnt<=RX_SERVO_BUFF_LEN+1)
+			if (RX_Cnt <= RX_SERVO_BUFF_LEN + 1)
 			{
 				RX_SEVRO_Data.RX_SERVO_BUFF[RX_Cnt-2]=data;
 				return;
@@ -204,7 +194,7 @@ void Command_ReceiveAndCheck(uint8_t data)
 		
 		case(RX_StartBit_PID):
 		{
-			if (RX_Cnt<=RX_PID_BUFF_LEN+1)
+			if (RX_Cnt <= RX_PID_BUFF_LEN + 1)
 			{
 				RX_PID_Data.RX_PID_BUFF[RX_Cnt-2]=data;
 				return;
@@ -216,14 +206,14 @@ void Command_ReceiveAndCheck(uint8_t data)
 	//到此，数据包接收完毕，对数据进行校验
 	checkbit=0x00^startbit;
 	switch (startbit)
-	{
+	{		
 		case(RX_StartBit_MODE):
 		{
-			for (i=0;i<RX_MODE_BUFF_LEN;i++)
-			checkbit ^=RX_MODE_Data.RX_MODE_BUFF[i];
-			if (checkbit!=data)		//校验位不匹配则舍弃数据，重新开始；匹配则更新数据
+			for (i = 0;i < RX_MODE_BUFF_LEN; i++)
+			checkbit ^= RX_MODE_Data.RX_MODE_BUFF[i];
+			if (checkbit != data)		//校验位不匹配则舍弃数据，重新开始；匹配则更新数据
 			{
-				RX_Cnt=0;
+				RX_Cnt = 0;
 				return;
 			}
 			else
@@ -235,11 +225,11 @@ void Command_ReceiveAndCheck(uint8_t data)
 		
 		case(RX_StartBit_SERVO):
 		{
-			for (i=0;i<RX_SERVO_BUFF_LEN;i++)
-			checkbit ^=RX_SEVRO_Data.RX_SERVO_BUFF[i];
-			if (checkbit!=data)		//校验位不匹配则舍弃数据，重新开始；匹配则更新数据
+			for (i = 0; i < RX_SERVO_BUFF_LEN; i++)
+			checkbit ^= RX_SEVRO_Data.RX_SERVO_BUFF[i];
+			if (checkbit != data)		//校验位不匹配则舍弃数据，重新开始；匹配则更新数据
 			{
-				RX_Cnt=0;
+				RX_Cnt = 0;
 				return;
 			}
 			else
@@ -251,11 +241,11 @@ void Command_ReceiveAndCheck(uint8_t data)
 		
 		case(RX_StartBit_PID):
 		{
-			for (i=0;i<RX_PID_BUFF_LEN;i++)
-			checkbit ^=RX_PID_Data.RX_PID_BUFF[i];
-			if (checkbit!=data)		//校验位不匹配则舍弃数据，重新开始；匹配则更新数据
+			for (i = 0; i < RX_PID_BUFF_LEN; i++)
+			checkbit ^= RX_PID_Data.RX_PID_BUFF[i];
+			if (checkbit != data)		//校验位不匹配则舍弃数据，重新开始；匹配则更新数据
 			{
-				RX_Cnt=0;
+				RX_Cnt = 0;
 				return;
 			}
 			else
@@ -292,90 +282,21 @@ void RX_MODE_DataHandler(RX_MODE_Buff_Union Data)
 **************************************************************/
 void RX_SERVO_DataHandler(RX_SEVRO_Buff_Union Data)
 {
-//	int i;
-//	
-//	//云台舵机
-//	if (Servo_Val.Camera_Position <= Data.servodata.Camera_Position)
-//	{
-//		for (i = Servo_Val.Camera_Position; i <= Data.servodata.Camera_Position; i += 50)
-//		{
-//			TIM_SetCompare1(TIM8, i);
-//			delay_ms(25);
-//		}
-//	}
-//	else
-//	{
-//		for (i = Servo_Val.Camera_Position; i >= Data.servodata.Camera_Position; i -= 50)
-//		{
-//			TIM_SetCompare1(TIM8, i);
-//			delay_ms(25);
-//		}
-//	}
-//	
-//	//左侧鱼鳍姿态舵机
-//	if (Servo_Val.FinLeft_Attitude_Position <= Data.servodata.FinLeft_Attitude_Position)
-//	{
-//		for (i = Servo_Val.FinLeft_Attitude_Position; i <= Data.servodata.FinLeft_Attitude_Position; i += 50)
-//		{
-//			TIM_SetCompare4(TIM1, i);
-//			delay_ms(25);
-//		}
-//	}
-//	else
-//	{
-//		for (i = Servo_Val.FinLeft_Attitude_Position; i >= Data.servodata.FinLeft_Attitude_Position; i -= 50)
-//		{
-//			TIM_SetCompare4(TIM1, i);
-//			delay_ms(25);
-//		}
-//	}
-//	
-//	//右侧鱼鳍姿态舵机
-//	if (Servo_Val.FinRight_Attitude_Position <= Data.servodata.FinRight_Attitude_Position)
-//	{
-//		for (i = Servo_Val.FinRight_Attitude_Position; i <= Data.servodata.FinRight_Attitude_Position; i += 50)
-//		{
-//			TIM_SetCompare3(TIM1, i);
-//			delay_ms(25);
-//		}
-//	}
-//	else
-//	{
-//		for (i = Servo_Val.FinRight_Attitude_Position; i >= Data.servodata.FinRight_Attitude_Position; i -= 50)
-//		{
-//			TIM_SetCompare3(TIM1, i);
-//			delay_ms(25);
-//		}
-//	}
+  Servo_Val.FinTail_Front_StartingPosition = Data.servodata.FinTail_Front_StartingPosition;  //尾部舵机（前） 起始位置
+  Servo_Val.FinTail_Front_EndingPosition   = Data.servodata.FinTail_Front_EndingPosition;    //尾部舵机（前） 终止位置
+  Servo_Val.FinTail_Front_EachCCR          = Data.servodata.FinTail_Front_EachCCR;           //尾部舵机（前） 每次改变的占空比
+  Servo_Val.FinTail_Front_DelayTime        = Data.servodata.FinTail_Front_DelayTime;         //尾部舵机（前） 延时长度
 
+	Servo_Val.FinTail_Rear_StartingPosition = Data.servodata.FinTail_Rear_StartingPosition;  //尾部舵机（后） 起始位置
+  Servo_Val.FinTail_Rear_EndingPosition   = Data.servodata.FinTail_Rear_EndingPosition;    //尾部舵机（后） 终止位置
+  Servo_Val.FinTail_Rear_EachCCR          = Data.servodata.FinTail_Rear_EachCCR;           //尾部舵机（后） 每次改变的占空比
+  Servo_Val.FinTail_Rear_DelayTime        = Data.servodata.FinTail_Rear_DelayTime;         //尾部舵机（后）	延时长度
 	
-  Servo_Val.FinTail_Advance_StartingPosition = Data.servodata.FinTail_Advance_StartingPosition;  //尾部推进舵机 起始位置
-  Servo_Val.FinTail_Advance_EndingPosition   = Data.servodata.FinTail_Advance_EndingPosition;    //尾部推进舵机 终止位置
-  Servo_Val.FinTail_Advance_EachCCR          = Data.servodata.FinTail_Advance_EachCCR;           //尾部推进舵机 每次改变的占空比
-  Servo_Val.FinTail_Advance_DelayTime        = Data.servodata.FinTail_Advance_DelayTime;         //尾部推进舵机 延时长度
-
-	Servo_Val.FinLeft_Attitude_Position  = Data.servodata.FinLeft_Attitude_Position;   //左侧鱼鳍姿态舵机 终止位置
-
-	Servo_Val.FinLeft_Thrash_StartingPosition  = Data.servodata.FinLeft_Thrash_StartingPosition;   //左侧鱼鳍划水舵机 起始位置
-  Servo_Val.FinLeft_Thrash_EndingPosition 	 = Data.servodata.FinLeft_Thrash_EndingPosition;     //左侧鱼鳍划水舵机 终止位置
-  Servo_Val.FinLeft_Thrash_Down_EachCCR 		 = Data.servodata.FinLeft_Thrash_Down_EachCCR;       //左侧鱼鳍划水舵机 向下拍水时 每次改变的占空比
-  Servo_Val.FinLeft_Thrash_Down_DelayTime 	 = Data.servodata.FinLeft_Thrash_Down_DelayTime;     //左侧鱼鳍划水舵机 向下拍水时 延时长度
-  Servo_Val.FinLeft_Thrash_Up_EachCCR 			 = Data.servodata.FinLeft_Thrash_Up_EachCCR;         //左侧鱼鳍划水舵机 向上拍水时 每次改变的占空比
-  Servo_Val.FinLeft_Thrash_Up_DelayTime 		 = Data.servodata.FinLeft_Thrash_Up_DelayTime;       //左侧鱼鳍划水舵机 向上拍水时 延时长度        
-
-  Servo_Val.FinRight_Attitude_Position = Data.servodata.FinRight_Attitude_Position;  //右侧鱼鳍姿态舵机 终止位置
-
-  Servo_Val.FinRight_Thrash_StartingPosition = Data.servodata.FinRight_Thrash_StartingPosition;  //右侧鱼鳍划水舵机 起始位置
-  Servo_Val.FinRight_Thrash_EndingPosition 	 = Data.servodata.FinRight_Thrash_EndingPosition;    //右侧鱼鳍划水舵机 终止位置
-  Servo_Val.FinRight_Thrash_Down_EachCCR 		 = Data.servodata.FinRight_Thrash_Down_EachCCR;      //右侧鱼鳍划水舵机 向下拍水时 每次改变的占空比
-  Servo_Val.FinRight_Thrash_Down_DelayTime 	 = Data.servodata.FinRight_Thrash_Down_DelayTime;    //右侧鱼鳍划水舵机 向下拍水时 延时长度
-  Servo_Val.FinRight_Thrash_Up_EachCCR 			 = Data.servodata.FinRight_Thrash_Up_EachCCR;        //右侧鱼鳍划水舵机 向上拍水时 每次改变的占空比
-  Servo_Val.FinRight_Thrash_Up_DelayTime 		 = Data.servodata.FinRight_Thrash_Up_DelayTime;      //右侧鱼鳍划水舵机 向上拍水时 延时长度    
-
   Servo_Val.Camera_Position = Data.servodata.Camera_Position;      //摄像机云台舵机 位置
+	Servo_Val.Pulse_Num = Data.servodata.Pulse_Num;									 //步进电机 位置
 	
 	Servo_PositionSet();	//更新舵机位置
-	//Servo_Calculation();	//更新步进值
+	//AbsPosition(Servo_Val.Pulse_Num);
 }
 
 

@@ -69,8 +69,6 @@ void TIM4_IRQHandler(void)
 		TimeSlice.Count_100ms += 10;
 		TimeSlice.Count_200ms += 10;
 		TimeSlice.Count_5000ms += 10;
-//		TimeSlice.Count_Left += 10;
-//		TimeSlice.Count_Right += 10;
 		SpecialAction();
 		TIM_ClearITPendingBit(TICK_TIM, TIM_IT_Update);
   }

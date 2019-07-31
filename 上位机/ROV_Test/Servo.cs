@@ -16,7 +16,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using static ROV_Test.Data_TX_RX;
 using static ROV_Test.Data;
-using static ROV_Test.MessageBoxHandler;
 
 namespace ROV_Test
 {
@@ -89,8 +88,6 @@ namespace ROV_Test
 
 
 
-
-
         /// <summary>
         /// 读档，数据初始化
         /// </summary>
@@ -99,31 +96,19 @@ namespace ROV_Test
         private void Servo参数_Shown(object sender, EventArgs e)
         {
             //读档
-            Txt_FinTail_Advance_StartingPosition.Text = ReadIni("舵机参数—尾部推进舵机", "起始位置", "0");
-            Txt_FinTail_Advance_EndingPosition.Text   = ReadIni("舵机参数—尾部推进舵机", "终止位置", "0");
-            Txt_FinTail_Advance_EachCCR.Text          = ReadIni("舵机参数—尾部推进舵机", "每次改变的占空比", "100");            
-            Txt_FinTail_Advance_DelayTime.Text        = ReadIni("舵机参数—尾部推进舵机", "延时长度", "0");
+            Txt_FinTail_Front_StartingPosition.Text = ReadIni("舵机参数—尾部舵机(前)", "起始位置", "0");
+            Txt_FinTail_Front_EndingPosition.Text   = ReadIni("舵机参数—尾部舵机(前)", "终止位置", "0");
+            Txt_FinTail_Front_EachCCR.Text          = ReadIni("舵机参数—尾部舵机(前)", "每次改变的占空比", "100");            
+            Txt_FinTail_Front_DelayTime.Text        = ReadIni("舵机参数—尾部舵机(前)", "延时长度", "20");
 
-            Txt_FinLeft_Attitude_Position.Text        = ReadIni("舵机参数—左侧鱼鳍姿态舵机", "终止位置", "0");
-
-            Txt_FinLeft_Thrash_StartingPosition.Text  = ReadIni("舵机参数—左侧鱼鳍划水舵机", "起始位置", "0");
-            Txt_FinLeft_Thrash_EndingPosition.Text    = ReadIni("舵机参数—左侧鱼鳍划水舵机", "终止位置", "0");
-            Txt_FinLeft_Thrash_Down_EachCCR.Text      = ReadIni("舵机参数—左侧鱼鳍划水舵机", "向下拍水时 每次改变的占空比", "100");          
-            Txt_FinLeft_Thrash_Down_DelayTime.Text    = ReadIni("舵机参数—左侧鱼鳍划水舵机", "向下拍水时 延时长度", "0");
-            Txt_FinLeft_Thrash_Up_EachCCR.Text        = ReadIni("舵机参数—左侧鱼鳍划水舵机", "向上拍水时 每次改变的占空比", "100");            
-            Txt_FinLeft_Thrash_Up_DelayTime.Text      = ReadIni("舵机参数—左侧鱼鳍划水舵机", "向上拍水时 延时长度", "0");
-
-            Txt_FinRight_Attitude_Position.Text       = ReadIni("舵机参数—右侧鱼鳍姿态舵机", "终止位置", "0");
-
-            Txt_FinRight_Thrash_StartingPosition.Text = ReadIni("舵机参数—右侧鱼鳍划水舵机", "起始位置", "0");
-            Txt_FinRight_Thrash_EndingPosition.Text   = ReadIni("舵机参数—右侧鱼鳍划水舵机", "终止位置", "0");
-            Txt_FinRight_Thrash_Down_EachCCR.Text     = ReadIni("舵机参数—右侧鱼鳍划水舵机", "向下拍水时 每次改变的占空比", "100");            
-            Txt_FinRight_Thrash_Down_DelayTime.Text   = ReadIni("舵机参数—右侧鱼鳍划水舵机", "向下拍水时 延时长度", "0");
-            Txt_FinRight_Thrash_Up_EachCCR.Text       = ReadIni("舵机参数—右侧鱼鳍划水舵机", "向上拍水时 每次改变的占空比", "100");            
-            Txt_FinRight_Thrash_Up_DelayTime.Text     = ReadIni("舵机参数—右侧鱼鳍划水舵机", "向上拍水时 延时长度", "0");
+            Txt_FinTail_Rear_StartingPosition.Text = ReadIni("舵机参数—尾部舵机(后)", "起始位置", "0");
+            Txt_FinTail_Rear_EndingPosition.Text   = ReadIni("舵机参数—尾部舵机(后)", "终止位置", "0");
+            Txt_FinTail_Rear_EachCCR.Text          = ReadIni("舵机参数—尾部舵机(后)", "每次改变的占空比", "100");
+            Txt_FinTail_Rear_DelayTime.Text        = ReadIni("舵机参数—尾部舵机(后)", "延时长度", "20");
 
             Txt_Camera_Position.Text = ReadIni("舵机参数—摄像机云台舵机", "终止位置", "0");
-            
+
+            Txt_Stepper_Pulse.Text = ReadIni("步进电机参数", "脉冲数 ", "0");
         }
 
 
@@ -137,57 +122,31 @@ namespace ROV_Test
         {
           
             //存档
-            WriteIni("舵机参数—尾部推进舵机", "起始位置", Txt_FinTail_Advance_StartingPosition.Text);
-            WriteIni("舵机参数—尾部推进舵机", "终止位置", Txt_FinTail_Advance_EndingPosition.Text);
-            WriteIni("舵机参数—尾部推进舵机", "每次改变的占空比", Txt_FinTail_Advance_EachCCR.Text);
-            WriteIni("舵机参数—尾部推进舵机", "延时长度", Txt_FinTail_Advance_DelayTime.Text);
-            MyRov.ServoData.FinTail_Advance_StartingPosition = Convert.ToUInt16(Txt_FinTail_Advance_StartingPosition.Text);
-            MyRov.ServoData.FinTail_Advance_EndingPosition   = Convert.ToUInt16(Txt_FinTail_Advance_EndingPosition.Text);
-            MyRov.ServoData.FinTail_Advance_EachCCR          = Convert.ToUInt16(Txt_FinTail_Advance_EachCCR.Text);
-            MyRov.ServoData.FinTail_Advance_DelayTime        = Convert.ToUInt16(Txt_FinTail_Advance_DelayTime.Text);
+            WriteIni("舵机参数—尾部舵机(前)", "起始位置", Txt_FinTail_Front_StartingPosition.Text);
+            WriteIni("舵机参数—尾部舵机(前)", "终止位置", Txt_FinTail_Front_EndingPosition.Text);
+            WriteIni("舵机参数—尾部舵机(前)", "每次改变的占空比", Txt_FinTail_Front_EachCCR.Text);
+            WriteIni("舵机参数—尾部舵机(前)", "延时长度", Txt_FinTail_Front_DelayTime.Text);
+            MyRov.ServoData.FinTail_Front_StartingPosition = Convert.ToUInt16(Txt_FinTail_Front_StartingPosition.Text);
+            MyRov.ServoData.FinTail_Front_EndingPosition   = Convert.ToUInt16(Txt_FinTail_Front_EndingPosition.Text);
+            MyRov.ServoData.FinTail_Front_EachCCR          = Convert.ToUInt16(Txt_FinTail_Front_EachCCR.Text);
+            MyRov.ServoData.FinTail_Front_DelayTime        = Convert.ToUInt16(Txt_FinTail_Front_DelayTime.Text);
 
-            WriteIni("舵机参数—左侧鱼鳍姿态舵机", "终止位置", Txt_FinLeft_Attitude_Position.Text);
-            MyRov.ServoData.FinLeft_Attitude_Position = Convert.ToUInt16(Txt_FinLeft_Attitude_Position.Text);
-
-            WriteIni("舵机参数—左侧鱼鳍划水舵机", "起始位置", Txt_FinLeft_Thrash_StartingPosition.Text);
-            WriteIni("舵机参数—左侧鱼鳍划水舵机", "终止位置", Txt_FinLeft_Thrash_EndingPosition.Text);
-            WriteIni("舵机参数—左侧鱼鳍划水舵机", "向下拍水时 每次改变的占空比", Txt_FinLeft_Thrash_Down_EachCCR.Text);            
-            WriteIni("舵机参数—左侧鱼鳍划水舵机", "向下拍水时 延时长度", Txt_FinLeft_Thrash_Down_DelayTime.Text);
-            WriteIni("舵机参数—左侧鱼鳍划水舵机", "向上拍水时 每次改变的占空比", Txt_FinLeft_Thrash_Up_EachCCR.Text);            
-            WriteIni("舵机参数—左侧鱼鳍划水舵机", "向上拍水时 延时长度  ", Txt_FinLeft_Thrash_Up_DelayTime.Text);
-            MyRov.ServoData.FinLeft_Thrash_StartingPosition = Convert.ToUInt16(Txt_FinLeft_Thrash_StartingPosition.Text);
-            MyRov.ServoData.FinLeft_Thrash_EndingPosition   = Convert.ToUInt16(Txt_FinLeft_Thrash_EndingPosition.Text);
-            MyRov.ServoData.FinLeft_Thrash_Down_EachCCR     = Convert.ToUInt16(Txt_FinLeft_Thrash_Down_EachCCR.Text);            
-            MyRov.ServoData.FinLeft_Thrash_Down_DelayTime   = Convert.ToUInt16(Txt_FinLeft_Thrash_Down_DelayTime.Text);
-            MyRov.ServoData.FinLeft_Thrash_Up_EachCCR       = Convert.ToUInt16(Txt_FinLeft_Thrash_Up_EachCCR.Text);            
-            MyRov.ServoData.FinLeft_Thrash_Up_DelayTime     = Convert.ToUInt16(Txt_FinLeft_Thrash_Up_DelayTime.Text);
-
-            WriteIni("舵机参数—右侧鱼鳍姿态舵机", "终止位置", Txt_FinRight_Attitude_Position.Text);
-            MyRov.ServoData.FinRight_Attitude_Position = Convert.ToUInt16(Txt_FinRight_Attitude_Position.Text);
-
-            WriteIni("舵机参数—右侧鱼鳍划水舵机", "起始位置", Txt_FinRight_Thrash_StartingPosition.Text);
-            WriteIni("舵机参数—右侧鱼鳍划水舵机", "终止位置", Txt_FinRight_Thrash_EndingPosition.Text);
-            WriteIni("舵机参数—右侧鱼鳍划水舵机", "向下拍水时 每次改变的占空比", Txt_FinRight_Thrash_Down_EachCCR.Text);            
-            WriteIni("舵机参数—右侧鱼鳍划水舵机", "向下拍水时 延时长度", Txt_FinRight_Thrash_Down_DelayTime.Text);
-            WriteIni("舵机参数—右侧鱼鳍划水舵机", "向上拍水时 每次改变的占空比", Txt_FinRight_Thrash_Up_EachCCR.Text);           
-            WriteIni("舵机参数—右侧鱼鳍划水舵机", "向上拍水时 延时长度  ", Txt_FinRight_Thrash_Up_DelayTime.Text);
-            MyRov.ServoData.FinRight_Thrash_StartingPosition = Convert.ToUInt16(Txt_FinRight_Thrash_StartingPosition.Text);
-            MyRov.ServoData.FinRight_Thrash_EndingPosition   = Convert.ToUInt16(Txt_FinRight_Thrash_EndingPosition.Text);
-            MyRov.ServoData.FinRight_Thrash_Down_EachCCR     = Convert.ToUInt16(Txt_FinRight_Thrash_Down_EachCCR.Text);          
-            MyRov.ServoData.FinRight_Thrash_Down_DelayTime   = Convert.ToUInt16(Txt_FinRight_Thrash_Down_DelayTime.Text);
-            MyRov.ServoData.FinRight_Thrash_Up_EachCCR       = Convert.ToUInt16(Txt_FinRight_Thrash_Up_EachCCR.Text);            
-            MyRov.ServoData.FinRight_Thrash_Up_DelayTime     = Convert.ToUInt16(Txt_FinRight_Thrash_Up_DelayTime.Text);
+            WriteIni("舵机参数—尾部舵机(后)", "起始位置", Txt_FinTail_Rear_StartingPosition.Text);
+            WriteIni("舵机参数—尾部舵机(后)", "终止位置", Txt_FinTail_Rear_EndingPosition.Text);
+            WriteIni("舵机参数—尾部舵机(后)", "每次改变的占空比", Txt_FinTail_Rear_EachCCR.Text);
+            WriteIni("舵机参数—尾部舵机(后)", "延时长度", Txt_FinTail_Rear_DelayTime.Text);
+            MyRov.ServoData.FinTail_Rear_StartingPosition = Convert.ToUInt16(Txt_FinTail_Rear_StartingPosition.Text);
+            MyRov.ServoData.FinTail_Rear_EndingPosition   = Convert.ToUInt16(Txt_FinTail_Rear_EndingPosition.Text);
+            MyRov.ServoData.FinTail_Rear_EachCCR          = Convert.ToUInt16(Txt_FinTail_Rear_EachCCR.Text);
+            MyRov.ServoData.FinTail_Rear_DelayTime        = Convert.ToUInt16(Txt_FinTail_Rear_DelayTime.Text);
 
             WriteIni("舵机参数—摄像机云台舵机", "终止位置 ", Txt_Camera_Position.Text);
             MyRov.ServoData.Camera_Position = Convert.ToUInt16(Txt_Camera_Position.Text);
- 
-            SendCommand(TX_StartBit_SERVO, MyRov);
-            SendCommand(TX_StartBit_SERVO, MyRov);
-            SendCommand(TX_StartBit_SERVO, MyRov);
-            SendCommand(TX_StartBit_SERVO, MyRov);
-            SendCommand(TX_StartBit_SERVO, MyRov);
-            SendCommand(TX_StartBit_SERVO, MyRov);
+          
+            WriteIni("步进电机参数", "脉冲数 ", Txt_Stepper_Pulse.Text);
+            MyRov.ServoData.Pulse_Num = Convert.ToUInt16(Txt_Stepper_Pulse.Text);
 
+            for (int i = 0; i < 7; i++) SendCommand(TX_StartBit_SERVO, MyRov);
         }
 
 
@@ -205,6 +164,14 @@ namespace ROV_Test
         private void Servo参数_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = false;
+        }
+
+        private void Btn_Reset_Click(object sender, EventArgs e)
+        {
+            WriteIni("步进电机参数", "脉冲数 ", "25000");
+            MyRov.ServoData.Pulse_Num = 25000;
+            Txt_Stepper_Pulse.Text = "25000";
+            for (int i = 0; i < 7; i++) SendCommand(TX_StartBit_SERVO, MyRov);
         }
     }
 }

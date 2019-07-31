@@ -147,21 +147,26 @@ namespace ROV_Test
             this.Hide();
         }
 
-        ////定义一个代理
-        //public delegate void CallBackDelegate(string message);
-
+   
         
-
         /// <summary>
         /// 获取图像
         /// </summary>
         public void Cap_Run(object o)
         {
             VideoCapture cap = new VideoCapture(Path);
+            VideoWriter output = new VideoWriter();
+            int videoW = (int)cap.Get(CaptureProperty.FrameHeight);
+            int videoH = (int)cap.Get(CaptureProperty.FrameHeight);
+            int fps = (int)cap.Get(CaptureProperty.Fps);
+            Size videosize = new Size(videoW, videoH);
+            output.Open("demo.avi", FourCC.MJPG, fps, videosize);
+
             while (true)
             {
                 cap.Read(Source);
-                //Source.ImWrite(@"D:\Show me your Code\GitHub仓库\My-ROV-Project\temp.jpg");
+                output.Write(Source);
+                //Source.ImWrite("D:\\Show me your Code\\GitHub仓库\\My-ROV-Project\\temp.jpg");
                 if (Isopen == 0) break;
                 try
                 {
@@ -188,6 +193,12 @@ namespace ROV_Test
             th.Start();
         }
 
+
+        /// <summary>
+        /// 不是真的关掉
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void 网络摄像头_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = true;

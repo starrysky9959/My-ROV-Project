@@ -324,7 +324,7 @@
             <wLevel>0</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
-            <uC99>0</uC99>
+            <uC99>1</uC99>
             <uGnu>0</uGnu>
             <useXO>0</useXO>
             <v6Lang>0</v6Lang>
@@ -889,6 +889,16 @@
               <FileName>usart1.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\User\Board\inc\usart1.h</FilePath>
+            </File>
+            <File>
+              <FileName>stepper.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\Board\src\stepper.c</FilePath>
+            </File>
+            <File>
+              <FileName>stepper.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\User\Board\inc\stepper.h</FilePath>
             </File>
           </Files>
         </Group>
